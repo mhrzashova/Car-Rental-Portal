@@ -80,26 +80,10 @@ if(isset($_POST['login'])) // isset is click, submit vako ho ki haina check garx
         </div>
         <div class="error error-txt">Password can't be blank</div>
       </div>
-      <!-- <a href="#">Forgot password?</a> -->
       <input type="submit" name="login" value="Login">
     </form>
-    <!-- <div class="forgot-btn">
-      <button type="button">Forgot Password?</button>
-    </div> -->
     <label for="check">Don't have an account? </label><a href="register.php">Signup</a>
   </div>
-  <!-- <div class="popup-container" id="forgot-popup">
-      <div class="forgot popup">
-        <form action="" method="POST">
-          <h2>
-            <span>RESET PASSWORD</span>
-            <button type="reset" onclick="popup('forgot-popup')">X</button>
-          </h2>
-          <input type="email" placeholder="E-mail" name="email">
-          <button type="submit" class="reset-btn" name="send-reset-link">SEND LINK</button>
-        </form>
-      </div>
-    </div> -->
 
 </body>
 </html>

@@ -29,7 +29,7 @@ if (isset($_GET['logout'])) {
    <title>Home</title>
 
     <!-- Custom CSS file link  -->
-    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/home.css">
 
 </head>
 <body>
@@ -44,7 +44,8 @@ if (isset($_GET['logout'])) {
             $fetch = mysqli_fetch_assoc($select);
             if($fetch['image'] == ''){
                echo '<img src="images/default-avatar.png">';
-            }else{
+            }
+            else{
                //echo '<img src="'.$fetch['image'].'">';
                echo '<img src="uploaded_img/'.$fetch['image'].'">';
             }
@@ -52,7 +53,7 @@ if (isset($_GET['logout'])) {
          }
       ?>
       <!-- <label><h5>User Created!</h5></label> -->
-      <a href="userdashboard.php" class="btn">Edit Profile</a>
+      <a href="update_profile.php" class="btn">Edit Profile</a>
       <a href="home.php?logout=<?php echo $user_id; ?>" class="delete-btn">Logout</a>
       <p>New <a href="login.php">Login</a> or <a href="register.php">Register</a></p>
    </div>

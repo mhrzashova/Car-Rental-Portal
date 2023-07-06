@@ -65,11 +65,11 @@ if(isset($_POST['password']))
         <div class="flex">
         <div class="inputBox">
             <span>old password :</span>
-            <input type="password" name="old_password"  placeholder="Enter new password" pattern="^.{10,}$" class="box" required>
+            <input type="password" name="old_password"  placeholder="Enter new password" pattern="^.{8,}$" class="box" required>
             <span>new password :</span>
-            <input type="password" name="new_password" placeholder="Enter new password"  pattern="^.{10,}$" class="box"  required>
+            <input type="password" name="new_password" placeholder="Enter new password"  pattern="^.{8,}$" class="box"  required>
             <span>confirm password :</span>
-            <input type="password" name="confirm_password" placeholder="confirm new password" pattern="^.{10,}$" class="box"  required>
+            <input type="password" name="confirm_password" placeholder="confirm new password" pattern="^.{8,}$" class="box"  required>
         </div>
         </div>
         <input type="submit" value="Change Password" name="password" class="btn">

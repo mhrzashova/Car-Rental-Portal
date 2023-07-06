@@ -13,10 +13,6 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
     // md5 encryption for password
     $password = md5($_POST['password']);
     $cpassword =md5($_POST['confirm']);
-    $image = $_FILES['image']['name'];
-    $image_size = $_FILES['image']['size'];
-    $image_tmp_name = $_FILES['image']['tmp_name'];
-    $image_folder = 'uploaded_img/'.$image;
     
     //Database ko Path
     $connection = new mysqli("localhost","root","", "carrentalportal");// Checking Database Connection
@@ -30,11 +26,9 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
       if($password != $cpassword){
          $message[] = 'confirm password not matched!';
       }
-      elseif($image_size > 2000000){
-         $message[] = 'image size is too large!';
-      }else{
-         $insert = mysqli_query($connection, "INSERT INTO `users`(full_name ,email, password, gender, birth_date, phoneno, city, address, image) 
-         VALUES('$full_name','$email','$password','$gender','$birth_date', '$phone', '$city', '$address', '$image_folder')");
+      else{
+         $insert = mysqli_query($connection, "INSERT INTO `users`(full_name ,email, password, gender, birth_date, phoneno, city, address) 
+         VALUES('$full_name','$email','$password','$gender','$birth_date', '$phone', '$city', '$address')");
 
          if($insert){
           move_uploaded_file($image_tmp_name, $image_folder);
@@ -158,16 +152,16 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
           <div class="input-box">
           <label>Password</label>
           <div class="column">
-            <input type="password" name="password" pattern="^.{10,}$" placeholder="Enter Your Password" required />
-            <input type="password" name="confirm" pattern="^.{10,}$" placeholder="Confirm Password" required />
+            <input type="password" name="password" pattern="^.{8,}$" placeholder="Enter Your Password" required />
+            <input type="password" name="confirm" pattern="^.{8,}$" placeholder="Confirm Password" required />
             <div class="error-message" id="password-error"></div>
             <!-- password match vayena vane js use garera msg dinxa ki password
             re comfirm password match vako xaina
             yesle garda page reload hudaina, user le feri form bharnu pardaina -->
           </div>
-          <br>
+          <!--<br>
           <label>Choose profile picture</label>
-          <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png" required>
+          <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png" required> -->
         </div>
         <button type="submit" name="register">Submit</button>
 

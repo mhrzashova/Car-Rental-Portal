@@ -41,23 +41,40 @@ $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
         
         
         <div class="action">
-            <div class="profile" onclick="menuToggle();">
-            <?php
-                $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
-                if(mysqli_num_rows($select) > 0){
-                $fetch = mysqli_fetch_assoc($select);
-                if($fetch['image'] == ''){
-                echo '<img src="images/default-avatar.png">';
-                }else{
-               echo '<img src="uploaded_img/'.$fetch['image'].'">';
-                }
-                }
-            ?>
+            <!-- <div class="profile" onclick="menuToggle();"> -->
+            <div class="profile">
+    <?php
+        $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
+        if(mysqli_num_rows($select) > 0){
+            $fetch = mysqli_fetch_assoc($select);
+            if($fetch['image'] == ''){
+                echo '<img src="images/avatar.png" alt="Profile Picture" width="40" height="40">';
+            }else{
+                echo '<img class="profile_pic" src="uploaded_img/'.$fetch['image'].'" alt="Profile Picture" width="40" height="40">';
+            }
+        }
+    ?>
+</div>
+
+            <div class="p">
+            <h5><span>Profile</span></h5>
             </div>
-            
             <div class="menu">
                 <ul>
-                    <li><?php echo '<img src="uploaded_img/'.$fetch['image'].'">'; ?><a href="#"><?php echo ''.$fetch['full_name'].''; ?></a></li>
+                    <li>
+                        <?php
+                            $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
+                            if(mysqli_num_rows($select) > 0){
+                            $fetch = mysqli_fetch_assoc($select);
+                            if($fetch['image'] == ''){
+                            echo '<img src="images/avatar.png">';
+                            }else{
+                            echo '<img src="uploaded_img/'.$fetch['image'].'">';
+                            }
+                            }
+                        ?>
+                        <a href="#"><?php echo ''.$fetch['full_name'].''; ?></a>
+                    </li>
                     <li><img src="images/user.png"><a href="update_profile.php">Edit Profile</a></li>
                     <li><img src="images/padlock.png"><a href="password.php">Change Password</a></li>
                     <li><img src="images/log-out.png"><a href="index.php">Logout</a></li>
