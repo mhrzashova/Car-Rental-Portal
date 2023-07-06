@@ -86,6 +86,8 @@ if(isset($_POST['update_profile'])){
             <input type="email" name="update_email" value="<?php echo ($row['email']); ?>" readonly class="box">
             <span>Update your pic :</span>
             <input type="file" name="update_image" accept="image/jpg, image/jpeg, image/png" class="box">
+            <span>Upload licence photo :</span>
+            <input type="file" name="update_l_image" accept="image/jpg, image/jpeg, image/png" class="box">
          </div>
          
       </div>
