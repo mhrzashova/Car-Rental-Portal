@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css"/>
 </head>
 <body>
     <!-- Header -->

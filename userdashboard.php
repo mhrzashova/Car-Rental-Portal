@@ -20,6 +20,7 @@ $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
     <link rel="stylesheet" href="css/userdashboard.css">
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css"/>
 </head>
 <body>
     <!-- Header -->
@@ -37,7 +38,7 @@ $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
         
         <div class="search">
             <input class="srch" type="search" name="" placeholder="Search for cars....">
-            <a href="#"><button class="btn" >Search</button></a>
+            <a href="#services"><button class="btn" >Search</button></a>
         </div>
         
         <div class="action">
