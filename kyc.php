@@ -10,54 +10,32 @@ if(!isset($_SESSION['users']))//databse ko table ko nam
 $row = $_SESSION['users'];
 $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
 
-if(isset($_POST['update_profile'])){
+if(isset($_POST['update_kyc'])){
    
-   $update_image = $_FILES['update_image']['name'];
-   $update_image_size = $_FILES['update_image']['size'];
-   $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
-   $update_image_folder = 'uploaded_img/'.$update_image;
-
    $update_l_image = $_FILES['update_l_image']['name'];
    $update_l_image_size = $_FILES['update_l_image']['size'];
    $update_l_image_tmp_name = $_FILES['update_l_image']['tmp_name'];
    $update_l_image_folder = 'uploaded_img/'.$update_l_image;
    $allowed_width = 350;
    $allowed_height = 350;
+
+
+   if (!empty($update_l_image)) {
+      list($width, $height) = getimagesize($update_l_image_tmp_name);
    
-
-      if (!empty($update_image)) {
-         list($width, $height) = getimagesize($update_image_tmp_name);
-
-         if ($width > $allowed_width || $height > $allowed_height) {
-            $message[] = 'Image dimensions exceed the maximum allowed size (350px x 350px).';
-         } elseif ($update_image_size > 2000000) {
-       $message[] = 'Image file size is too large (maximum allowed: 2MB).';
-         } else {
-            $image_update_query = mysqli_query($connection, "UPDATE `users` SET image = '$update_image' WHERE user_id = '$user_id'") or die('Query failed');
-            if ($image_update_query) {
-               move_uploaded_file($update_image_tmp_name, $update_image_folder);
+      if ($width > $allowed_width || $height > $allowed_height) {
+         $message[] = 'Image dimensions exceed the maximum allowed size (350px x 350px).';
+      } elseif ($update_l_image_size > 2000000) {
+         $message[] = 'Image file size is too large (maximum allowed: 2MB).';
+      } else {
+            $l_image_update_query = mysqli_query($connection, "UPDATE `users` SET l_image = '$update_l_image' WHERE user_id = '$user_id'") or die('Query failed');
+            if ($l_image_update_query) {
+               move_uploaded_file($update_l_image_tmp_name, $update_l_image_folder);
             }
-            $message[] = 'Image updated successfully!';
+            $message[] = 'License Updated  successfully!';
          }
       }
-
-
-      if (!empty($update_l_image)) {
-         list($width, $height) = getimagesize($update_l_image_tmp_name);
-
-         if ($width > $allowed_width || $height > $allowed_height) {
-            $message[] = 'Image dimensions exceed the maximum allowed size (350px x 350px).';
-         } elseif ($update_l_image_size > 2000000) {
-            $message[] = 'Image file size is too large (maximum allowed: 2MB).';
-         } else {
-               $l_image_update_query = mysqli_query($connection, "UPDATE `users` SET l_image = '$update_l_image' WHERE user_id = '$user_id'") or die('Query failed');
-               if ($l_image_update_query) {
-                  move_uploaded_file($update_l_image_tmp_name, $update_l_image_folder);
-               }
-               $message[] = 'License Updated  successfully!';
-            }
-         }
-      }
+   } 
 
 ?>
 
@@ -91,10 +69,10 @@ if(isset($_POST['update_profile'])){
 
 <div class="flex">
       <?php 
-         if($fetch['image'] == ''){
-            echo '<img src="images/default-avatar.png">';
+         if($fetch['l_image'] == ''){
+            echo '<img src="images/license.png">';
          }else{
-            echo '<img src="uploaded_img/'.$fetch['image'].'">';
+            echo '<img src="uploaded_img/'.$fetch['l_image'].'">';
          }
          if(isset($message)){
             foreach($message as $message){
@@ -102,21 +80,19 @@ if(isset($_POST['update_profile'])){
             }
          }
       ?>
-      
       <h5><span>Image dimensions exceed the maximum allowed size (350px x 350px) and (maximum allowed: 2MB).</span></h5>
          <div class="inputBox">
             <span>Full Name :</span>
             <input type="text" name="update_full_name" value="<?php echo ($row['full_name']); ?>" readonly class="box">
             <span>Email :</span>
             <input type="email" name="update_email" value="<?php echo ($row['email']); ?>" readonly class="box">
-            <span>Update your pic :</span>
-            <input type="file" name="update_image" accept="image/jpg, image/jpeg, image/png" class="box">
             <span>Upload license photo :</span>
             <input type="file" name="update_l_image" accept="image/jpg, image/jpeg, image/png" class="box" required/>
+
          </div>
          
       </div>
-      <input type="submit" value="Update Profile" name="update_profile" class="btn">
+      <input type="submit" value="Update KYC" name="update_kyc" class="btn">
       <a href="userdashboard.php" class="delete-btn">Go To Dashboard</a>
    </form>
 

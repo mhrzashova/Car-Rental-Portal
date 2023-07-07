@@ -24,8 +24,9 @@
             <li><a href="#reviews">Reviews</a></li>
         </ul>
         <div class="search">
+            
             <input class="srch" type="search" name="" placeholder="Search for cars....">
-            <a href="#"><button class="btn" >Search</button></a>
+            <a href="#services"><button class="btn" >Search</button></a>
         </div>
         <div class="header-btn">
             <!-- <a href="#" class="sign-up">Sign Up</a> -->
