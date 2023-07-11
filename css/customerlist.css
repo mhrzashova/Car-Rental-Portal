@@ -525,48 +525,37 @@ button {
 }
 
 .home-content {
-  margin-left: 50px;
-  margin-right: 50px;
-}
+    padding: 20px;
+  }
+  
+  .home-content h2 {
+    margin-bottom: 20px;
+  }
+  
+  .home-content table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .home-content th,
+  .home-content td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .home-content th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .home-content tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .home-content tr:hover {
+    background-color: #e6e6e6;
+  }
 
-.home-content a button {
-  background-color: #a70f04;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.home-content a button:hover {
-  background-color: #640b03;
-  color: #fff;
-}
-
-.home-content table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.home-content table th,
-.home-content table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.home-content table th {
-  background-color: #f2f2f2;
-  font-weight: 600;
-}
-
-.home-content table td form {
-  display: inline-block;
-  margin-right: 5px;
-  margin-top: 5px;
-}
 
 

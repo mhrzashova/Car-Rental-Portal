@@ -49,6 +49,7 @@ if(isset($_POST['update_kyc'])){
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/update_profile.css">
+ 
 
 </head>
 <body> 

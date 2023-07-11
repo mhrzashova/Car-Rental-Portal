@@ -1,29 +1,4 @@
-<?php
-  session_start();
-  // session lai check gareko with $_SESSION variable
-  if(!isset($_SESSION['admin']))
-  {
-    //yedi session xaina vane login ma pathaidine
-    header("<Location:index.php");
-  }
-  //yedi session xa vane
-  $row = $_SESSION['admin'];
-  // email lai store gareko user ko database bata
-  $email = $row['email'];
-  //logout ko main functionality
-  if(isset($_POST['logout']))  //isset le click vako xa ki nai check garxa
-  {
-    //user ko data session bata hataideu
-    session_destroy();
-
-    //ani back to login page
-    header("Location:index.php");
-  }
-?>
-
-
 <!DOCTYPE html>
-<!-- Coding by CodingNepal | www.codingnepalweb.com -->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
@@ -32,6 +7,7 @@
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
    </head>
 <body>
   <div class="sidebar">
@@ -95,19 +71,68 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="admindashboard.php">
+      <a href="read.php">
               <?php 
-              //admin ko email display gareko
-              echo($email);
+              session_start();
+              if(!isset($_SESSION['admin']))//databse ko table ko nam
+              {
+                //yedi session xaina vane login ma pathaidine
+                header("Location:index.php");
+              }
+              $row = $_SESSION['admin'];
+              $adminid = $row['adminid'];
+              echo ($row['email']); 
               ?>
             </a>
       </div>
     </nav>
+
     <div class="home-content">
-        <main class="main">
-          <h1>Welcome To Admin Dashboard</h1>
-        </main>
-      </div>
+        <legend>Vehicle List</legend>
+        <a href="create.php"><button>New</button></a>
+        <table border='1' width="100%">
+        <tr>
+            <th>VehicleId</th><th>Vehicle Name</th><th>Vehicle Reg. Number</th><th>Vehicle Images<th>Vehicle Availability</th><th>Price Per Day</th><th>Mileage</th><th>Seat Capacity</th><th>Action</th> 
+        </tr>
+        <?php
+            $connection= new mysqli("localhost","root","","carrentalportal");
+            if($connection->connect_errno!=0){
+                die("connection failed");
+            }
+            $sql="SELECT * FROM crud";
+            if($result = $connection->query($sql))
+            {
+                while($row = $result->fetch_assoc())
+            {
+                echo "
+                    <tr>
+                    <td>".$row['vehicleid']."</td>
+                    <td>".$row['vehiclename']."</td>
+                    <td>".$row['vehicleno']."</td>
+                    <td>".$row['vehicleimages']."</td>
+                    <td>".$row['vehicleavailability']."</td> 
+                    <td>".$row['priceperday']."</td> 
+                    <td>".$row['mileage']."</td> 
+                    <td>".$row['seatcapacity']."</td> 
+                    <td>
+                        <form action='update.php' method='post'>
+                            <input type='hidden' value='".$row['vehicleid']."' name='vehicle_update'>
+                            <input type='submit' value = 'update' name='update'>
+                        </form> 
+
+                        <form action='delete.php' method='post'>
+                            <input type='hidden' value='".$row['vehicleid']."'name='vehicle_delete'>
+                            <input type='submit'value = 'Delete' name='delete'>
+                        </form> 
+
+                </td>           
+                </tr>
+                ";
+            }
+        }
+
+        ?>
+    </table>
     </div>
   </section>
 
@@ -126,4 +151,3 @@ sidebarBtn.onclick = function() {
 </body>
 </html>
 
-    

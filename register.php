@@ -106,6 +106,7 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
         <div class="input-box">
           <label>Email Address</label>
           <input type="email" placeholder="Enter email address" name="email" required />
+          
         </div>
 
         <div class="column">
@@ -140,13 +141,15 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
           <div class="column">
             <div class="select-box">
               <select name="city">
-              <<option hidden>City</option>
+                <option hidden>City</option>
                 <option>Kathmandu</option>
                 <option>Bhaktapur</option>
                 <option>Lalitpur</option>
               </select>
             </div>
-            <input type="text" name="address" placeholder="Enter your address" required />
+            <input type="text" placeholder="Enter your address" value="<?php if(isset($_POST['register'])) {echo $address;} ?>"
+            name="address" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" required />
+
           </div>
           </div>
           <div class="input-box">
