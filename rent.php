@@ -1,13 +1,13 @@
 <?php
-    include 'config.php';
-    session_start();
-    if(!isset($_SESSION['users']))//databse ko table ko nam
-    {
-    //yedi session xaina vane login ma pathaidine
-    header("Location:login.php");
-    }
-    $row = $_SESSION['users'];
-    $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
+include 'config.php';
+session_start();
+if(!isset($_SESSION['users']))//databse ko table ko nam
+{
+  //yedi session xaina vane login ma pathaidine
+  header("Location:login.php");
+}
+$row = $_SESSION['users'];
+$user_id = $row['user_id'];// yo important way ho uesr_id collect garne
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,38 +140,50 @@
     </section>
     <!-- Services -->
     <section class="services" id="services">
-        <div class="heading">
-            <span>Best Services</span>
-            <h1>Find The Best Car Suitable For You</h1>
-        </div>
+        
         <div class="services-container">
-            <?php
-            // Fetch vehicles from the database
-            $query = "SELECT * FROM `crud`";
-            $result = $connection->query($query);
+        <?php
+include 'config.php';
+session_start();
 
-            // Check if there are any vehicles
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<div class='box'>";
-                    echo "<div class='box-img'>";
-                    echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
-                    echo "</div>";
-                    echo "<h3>" . $row['vehiclename'] . "</h3>";
-                    echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
-                    echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
-                    echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
-                    echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
-                    echo "<a href='#' class='btn'>Rent Now</a>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>No vehicles available.</p>";
-            }
+if (!isset($_SESSION['users'])) {
+    header("Location: login.php");
+}
 
-            // Close the database connection
-            $connection->close();
-            ?>
+if (isset($_GET['vehicle_id'])) {
+    $vehicle_id = $_GET['vehicle_id'];
+    
+    // Retrieve the vehicle details from the database
+    $query = "SELECT * FROM `crud` WHERE vehicle_id = '$vehicle_id'";
+    $result = $connection->query($query);
+
+    if ($result->num_rows > 0) {
+        $vehicle = $result->fetch_assoc();
+        // Display the vehicle details and rental form
+        echo "<h1>Rent Vehicle</h1>";
+        echo "<h2>Vehicle Name: " . $vehicle['vehiclename'] . "</h2>";
+        // Add more details about the vehicle if necessary
+        echo "<form action='rent_process.php' method='POST'>";
+        echo "<input type='hidden' name='vehicle_id' value='" . $vehicle_id . "'>";
+        echo "<div class='input-box'>";
+        echo "<span>Pick-up Date</span>";
+        echo "<input type='date' name='pickup_date' id='' min='" . date("Y-m-d") . "'>";
+        echo "</div>";
+        echo "<div class='input-box'>";
+        echo "<span>Return Date</span>";
+        echo "<input type='date' name='return_date' id='' min='" . date("Y-m-d") . "'>";
+        echo "</div>";
+        echo "<input type='submit' name='' id='' class='btn' value='Rent Now'>";
+        echo "</form>";
+    } else {
+        echo "<p>Vehicle not found.</p>";
+    }
+
+    $connection->close();
+} else {
+    echo "<p>Invalid request.</p>";
+}
+?>
 
         </div>
     </section>

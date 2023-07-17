@@ -1,8 +1,7 @@
 <?php
 $validationMessage = "";
 
-if(isset($_POST['create']))
-{
+if (isset($_POST['create'])) {
     $vehiclename = $_POST['vehiclename'];
     $vehicleno = $_POST['vehicleno'];
     $vehicleavailability = $_POST['vehicleavailability'];
@@ -11,15 +10,12 @@ if(isset($_POST['create']))
     $seatcapacity = $_POST['seatcapacity'];
 
     // Database Path
-    $connection = new mysqli("localhost","root","","carrentalportal");
+    $connection = new mysqli("localhost", "root", "", "carrentalportal");
 
     // Checking of Connection
-    if($connection->connect_errno != 0)
-    {
+    if ($connection->connect_errno != 0) {
         die("<h1>404 Error Not Found</h1>");
-    }
-    else
-    {
+    } else {
         // Check if the vehicle already exists
         $existingVehicleQuery = "SELECT * FROM `crud` WHERE vehicleno = '$vehicleno'";
         $existingVehicleResult = $connection->query($existingVehicleQuery);
@@ -29,27 +25,34 @@ if(isset($_POST['create']))
             // Upload the image
             $targetDirectory = "C:/xampp/htdocs/carrentalportal/uploaded_img/";
             $targetFile = $targetDirectory . basename($_FILES["vehicleimages"]["name"]);
-            $imageFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
-            if (move_uploaded_file($_FILES["vehicleimages"]["tmp_name"], $targetFile)) {
-                $vehicleimages = basename($_FILES["vehicleimages"]["name"]);
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-                $sql = "INSERT INTO `crud`(vehiclename, vehicleno, vehicleimages, vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$vehicleno','$vehicleimages','$vehicleavailability','$priceperday','$mileage','$seatcapacity')";
-                if($result = $connection->query($sql))
-                {
-                    $validationMessage = "<h4 class='success-message'>Insertion Successful</h4>";
-                }
-                else
-                {
-                    $validationMessage = "Error";
-                }
+            // Validate the image
+            $validImageTypes = array('jpg', 'jpeg', 'png');
+            if (!in_array($imageFileType, $validImageTypes)) {
+                $validationMessage = "<h4 class='error-message'>Invalid image format. Only JPG, JPEG, and PNG files are allowed.</h4>";
+            } elseif ($_FILES["vehicleimages"]["size"] > 2000000) {
+                $validationMessage = "<h4 class='error-message'>File size is too large. Maximum allowed size is 2MB.</h4>";
             } else {
-                $validationMessage = "<h4 class='error-message'>Failed to upload the image</h4>";
+                if (move_uploaded_file($_FILES["vehicleimages"]["tmp_name"], $targetFile)) {
+                    $vehicleimages = basename($_FILES["vehicleimages"]["name"]);
+
+                    $sql = "INSERT INTO `crud`(vehiclename, vehicleno, vehicleimages, vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$vehicleno','$vehicleimages','$vehicleavailability','$priceperday','$mileage','$seatcapacity')";
+                    if ($result = $connection->query($sql)) {
+                        $validationMessage = "<h4 class='success-message'>Insertion Successful</h4>";
+                    } else {
+                        $validationMessage = "<h4 class='error-message'>Error</h4>";
+                    }
+                } else {
+                    $validationMessage = "<h4 class='error-message'>Failed to upload the image</h4>";
+                }
             }
         }
     }
     // Close the connection
     $connection->close();
 }
+
 ?>
 
 
@@ -146,7 +149,7 @@ if(isset($_POST['create']))
     </nav>
 
     <div class="home-content">
-      <form action="create.php" method="POST" enctype="multipart/form-data">
+    <form action="create.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
         <?php if (!empty($validationMessage)): ?>
           <div class="validation-message"><?php echo $validationMessage; ?></div>
         <?php endif; ?>
@@ -160,26 +163,27 @@ if(isset($_POST['create']))
                 <label for="vehicleno">
                   Vehicle Reg. Number:- <input type="text" name="vehicleno"  pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="vehicleno" size="50" required>
                 </label>
+                
+                <label for="vehicleimages">Vehicle Image:</label> 
+                  <div class="image-upload-box">
+                    <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" required>
+                  </div>
 
-                <label for="vi">Vehicle Image:-</label> 
-                   <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" required>
-                <br> <br>
-
-                <label for="vehicleavailability">
-                  Availability:-
-                    <select name="vehicleavailability">
-                      <option hidden>Choose</option>
-                      <option>Available</option>
-                      <option>Booked</option>
+                  <label for="vehicleavailability">
+                    Availability:-
+                    <select select name="vehicleavailability" id="vehicleavailability">
+                      <option value="" hidden>Choose</option>
+                      <option value="Available">Available</option>
+                      <option value="Booked">Booked</option>
                     </select>
                   </label>
 
                 <label for="priceperday">
-                  Price Per Day:- <input type="text" name="priceperday" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="priceperday" size="50" required>
+                  Price Per Day:- <input type="number" name="priceperday" id="priceperday" size="50" required>
                 </label>
 
                 <label for="mileage">
-                  Mileage:- <input type="text" name="mileage" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="mileage" size="50" required>
+                  Mileage:- <input type="number" name="mileage"  id="mileage" size="50" required>
                 </label>
 
                 <label for="seatcapacity">
@@ -205,6 +209,14 @@ sidebarBtn.onclick = function() {
 }else
   sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
 }
+
+function validateForm() {
+    var vehicleAvailability = document.getElementById("vehicleavailability").value;
+    if (vehicleAvailability === "") {
+      alert("Please select the availability.");
+      return false;
+    }
+  }
  </script>
 
 </body>

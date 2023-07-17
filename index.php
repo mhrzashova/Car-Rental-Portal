@@ -96,68 +96,38 @@
     <section class="services" id="services">
         <div class="heading">
             <span>Best Services</span>
-            <h1>Find The Best Car Suitable For you</h1>
+            <h1>Find The Best Car Suitable For You</h1>
         </div>
         <div class="services-container">
-            <div class="box">
-                <div class="box-img">
-                    <img src="img/car1.jpg" alt="">
-                </div>
-                <p>2017</p>
-                <h3>Hyundai i10</h3>
-                <h2>Rs.2000 <span>/day</span></h2>
-                <a href="#" class="btn">Rent Now</a>
-            </div>
+            <?php
+            include 'config.php';
+            // Fetch vehicles from the database
+            $query = "SELECT * FROM `crud`";
+            $result = $connection->query($query);
 
-                <div class="box">
-                    <div class="box-img">
-                        <img src="img/car2.jpg" alt="">
-                    </div>
-                    <p>2018</p>
-                    <h3>Suzuki Baleno</h3>
-                    <h2>Rs.2000 <span>/day</span></h2>
-                    <a href="#" class="btn">Rent Now</a>
-                </div>
+            // Check if there are any vehicles
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<div class='box'>";
+                    echo "<div class='box-img'>";
+                    echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
+                    echo "</div>";
+                    echo "<h3>" . $row['vehiclename'] . "</h3>";
+                    echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
+                    echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
+                    echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
+                    echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
+                    echo "<a href='#' class='btn'>Rent Now</a>";
+                    echo "</div>";
+                }
+            } else {
+                echo "<p>No vehicles available.</p>";
+            }
 
-                <div class="box">
-                    <div class="box-img">
-                        <img src="img/car3.jpg" alt="">
-                    </div>
-                    <p>2018</p>
-                    <h3>Toyota Yaris L</h3>
-                    <h2>Rs.2000 <span>/day</span></h2>
-                    <a href="#" class="btn">Rent Now</a>
-                </div>
+            // Close the database connection
+            $connection->close();
+            ?>
 
-                <div class="box">
-                    <div class="box-img">
-                        <img src="img/car4.jpg" alt="">
-                    </div>
-                    <p>2017</p>
-                    <h3>Hyundai Santro</h3>
-                    <h2>Rs.2000 <span>/day</span></h2>
-                    <a href="#" class="btn">Rent Now</a>
-                </div>
-
-                <div class="box">
-                    <div class="box-img">
-                       <img src="img/car5.jpg" alt="">
-                    </div>
-                    <p>2018</p>
-                    <h3>Maruti Suzuki Swift</h3>
-                    <h2>Rs.2000 <span>/day</span></h2>
-                    <a href="#" class="btn">Rent Now</a>
-                </div>
-
-                <div class="box">
-                    <div class="box-img">
-                        <img src="img/car6.jpg" alt="">
-                    </div>
-                    <p>2020</p>
-                    <h3>Hyundai Creta</h3>
-                    <h2>Rs.5000 <span>/day</span></h2>
-                    <a href="#" class="btn">Rent Now</a>
-                </div>
         </div>
     </section>
     <!-- About -->

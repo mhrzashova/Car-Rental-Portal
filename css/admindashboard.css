@@ -523,6 +523,9 @@ button {
   color: rgb(3, 85, 25);
   margin-top: 5px;
 }
+.validation-message {
+  color: rgb(171, 18, 18);
+}
 
 .home-content {
   margin-left: 50px;
@@ -568,5 +571,17 @@ button {
   margin-right: 5px;
   margin-top: 5px;
 }
+
+.image-upload-box {
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 18px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(204, 204, 204);
+  border-image: initial;
+  padding: 5px;
+  border-radius: 5px
+}
+
 
 

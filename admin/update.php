@@ -1,28 +1,62 @@
 <?php
-if(isset($_POST['vehicle_edit']))
-{
-    $connection= new mysqli("localhost","root","","carrentalportal");
-    if($connection->connect_errno!=0)
-    {
-        die("connection failed");
+$validationMessage = "";
+
+if (isset($_POST['vehicle_edit'])) {
+    $connection = new mysqli("localhost", "root", "", "carrentalportal");
+    if ($connection->connect_errno != 0) {
+        die("Connection failed");
     }
+
     $vehiclename = $_POST['vehiclename'];
     $vehicleno = $_POST['vehicleno'];
-    $vehicleimages = $_POST['vehicleimages'];
     $vehicleavailability = $_POST['vehicleavailability'];
     $priceperday = $_POST['priceperday'];
     $mileage = $_POST['mileage'];
     $seatcapacity = $_POST['seatcapacity'];
-    $vehicleid=$_POST['vehicleid']; 
-    
-    $sql="UPDATE `crud` SET `vehiclename`='$vehiclename',`vehicleno`='$vehicleno',`vehicleimages`='$vehicleimages',`vehicleavailability`='$vehicleavailability',`priceperday`='$priceperday',`mileage`='$mileage',`seatcapacity`='$seatcapacity' WHERE vehicleid='$vehicleid'";
-    if($result = $connection->query($sql))
-    { 
-        header("location:read.php");
+    $vehicleid = $_POST['vehicleid'];
+
+    // Handle uploaded image
+    $targetDirectory = "C:/xampp/htdocs/carrentalportal/uploaded_img/";
+    $imageFileType = strtolower(pathinfo($_FILES["vehicleimages"]["name"], PATHINFO_EXTENSION));
+    $imageFileName = $_FILES["vehicleimages"]["name"]; // Use the original image name
+
+    $uploadOk = 1;
+
+    // Check file size
+    if ($_FILES["vehicleimages"]["size"] > 2000000) {
+        $validationMessage = "File size is too large. Maximum allowed size is 2MB.";
+        $uploadOk = 0;
     }
-    else{
-        echo "Error";
+
+    // Allow only specific file formats
+    $validImageTypes = array('jpg', 'jpeg', 'png');
+    if (!in_array($imageFileType, $validImageTypes)) {
+        $validationMessage = "Invalid image format. Only JPG, JPEG, and PNG files are allowed.";
+        $uploadOk = 0;
     }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        $validationMessage = "Sorry, there was an error uploading your file.";
+    } else {
+        // Upload the file
+        if (move_uploaded_file($_FILES["vehicleimages"]["tmp_name"], $targetDirectory . $imageFileName)) {
+            // Update the database with the new image name
+            $vehicleimages = $imageFileName;
+            $sql = "UPDATE `crud` SET `vehiclename`='$vehiclename', `vehicleno`='$vehicleno', `vehicleimages`='$vehicleimages', `vehicleavailability`='$vehicleavailability', `priceperday`='$priceperday', `mileage`='$mileage', `seatcapacity`='$seatcapacity' WHERE `vehicleid`='$vehicleid'";
+
+            if ($result = $connection->query($sql)) {
+                $validationMessage = "Updated Successfully";
+            } else {
+                $validationMessage = "Error updating the record: " . $connection->error;
+            }
+        } else {
+            $validationMessage = "Sorry, there was an error uploading your file.";
+        }
+    }
+
+    // Close the connection
+    $connection->close();
 }
 ?>
 
@@ -118,27 +152,30 @@ if(isset($_POST['vehicle_edit']))
     </nav>
 
     <div class="home-content">
+    <?php if (!empty($validationMessage)): ?>
+        <div class="validation-message"><?php echo $validationMessage; ?></div>
+    <?php endif; ?>
     <?php
     if(isset($_POST['update']))
     {
         ?>
     
-    <form action="update.php" method="POST">
-    <?php
-     $connection= new mysqli("localhost","root","","carrentalportal");
-    if($connection->connect_errno!=0)
-    {
-        die("connection failed");
-    }
-    $vehicleid=$_POST['vehicle_update'];
-    $sql="SELECT * FROM crud where vehicleid='$vehicleid'";
-            if($result = $connection->query($sql))
-            { $row = $result->fetch_assoc();}
-       
+    <form action="update.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <?php
+         $connection = new mysqli("localhost", "root", "", "carrentalportal");
+        if($connection->connect_errno != 0)
+        {
+            die("Connection failed");
+        }
+        $vehicleid = $_POST['vehicle_update'];
+        $sql = "SELECT * FROM crud WHERE vehicleid='$vehicleid'";
+        if($result = $connection->query($sql))
+        {
+            $row = $result->fetch_assoc();
+        }
         ?>
         
         <fieldset> 
-
             <br> 
             <legend>Update Vehicle Details</legend>
 
@@ -150,25 +187,30 @@ if(isset($_POST['vehicle_edit']))
                   Vehicle Reg. Number:- <input type="text" name="vehicleno"  pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="vehicleno" size="50" value="<?php echo $row['vehicleno']?>" required>
                 </label>
 
-                <label for="vi">Vehicle Image:-</label> 
-                   <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" value="<?php echo $row['vehicleimages']?>" required>
-                <br> <br>
+                <label for="vehicleimages">Vehicle Image:</label> 
+                  <div class="image-upload-box">
+                    <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" required>
+                  </div>
 
-                <label for="vehicleavailability">
-                  Availability:-
-                    <select name="vehicleavailability">
-                      <option hidden>Choose</option>
-                      <option>Available</option>
-                      <option>Booked</option>
-                    </select>
-                </label>
+                  <label for="vehicleavailability">
+                        Availability:-
+                        <select name="vehicleavailability" id="vehicleavailability">
+                            <option value="" hidden>Choose</option>
+                            <option value="Available" <?php if ($row['vehicleavailability'] === 'Available') echo 'selected'; ?>>
+                                Available
+                            </option>
+                            <option value="Booked" <?php if ($row['vehicleavailability'] === 'Booked') echo 'selected'; ?>>
+                                Booked
+                            </option>
+                        </select>
+                    </label>
 
                   <label for="priceperday">
-                  Price Per Day:- <input type="text" name="priceperday" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="priceperday" size="50" value="<?php echo $row['priceperday']?>" required>
+                  Price Per Day:- <input type="number" name="priceperday" id="priceperday" size="50" value="<?php echo $row['priceperday']?>" required>
                 </label>
 
                 <label for="mileage">
-                  Mileage:- <input type="text" name="mileage" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="mileage" size="50" value="<?php echo $row['mileage']?>" required>
+                  Mileage:- <input type="number" name="mileage" id="mileage" size="50" value="<?php echo $row['mileage']?>" required>
                 </label>
 
                 <label for="seatcapacity">
@@ -197,6 +239,14 @@ sidebarBtn.onclick = function() {
 }else
   sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
 }
+
+function validateForm() {
+    var vehicleAvailability = document.getElementById("vehicleavailability").value;
+    if (vehicleAvailability === "") {
+      alert("Please select the availability.");
+      return false;
+    }
+  }
  </script>
 
 </body>
