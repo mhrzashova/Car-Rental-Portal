@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 11, 2023 at 11:59 AM
+-- Generation Time: Jul 17, 2023 at 03:56 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.28
 
@@ -39,6 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminid`, `email`, `password`) VALUES
+(1, 'mhrzashova12345@gmail.com', '94cb04d2daaa54fef37f72e5a1766815'),
 (2, 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3');
 
 -- --------------------------------------------------------
@@ -53,8 +54,8 @@ CREATE TABLE `crud` (
   `vehicleno` varchar(100) NOT NULL,
   `vehicleimages` text NOT NULL,
   `vehicleavailability` varchar(100) NOT NULL,
-  `priceperday` varchar(100) NOT NULL,
-  `mileage` varchar(100) NOT NULL,
+  `priceperday` int(100) NOT NULL,
+  `mileage` int(100) NOT NULL,
   `seatcapacity` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -63,9 +64,12 @@ CREATE TABLE `crud` (
 --
 
 INSERT INTO `crud` (`vehicleid`, `vehiclename`, `vehicleno`, `vehicleimages`, `vehicleavailability`, `priceperday`, `mileage`, `seatcapacity`) VALUES
-(9, 'Toyota', '120 Ba 1245', 'car4.jpg', 'Booked', 'Rs 5000', '22 kmpl', 5),
-(10, 'Creta', 'Ba 100 Pa 4567', 'car.png', 'Available', 'Rs 5000', '22 kmpl', 5),
-(11, 'Hyundai', 'Ba 101 Pa 1256', 'car5.jpg', 'Available', 'Rs 5000', '23 kmpl', 5);
+(17, 'Hyundai i10', 'B AA 6789', 'car1.jpg', 'Available', 5000, 20, 5),
+(18, 'Suzuki Baleno', 'B AA 1267', 'car2.jpg', 'Available', 4000, 23, 5),
+(19, 'Toyota Yaris L', 'B AA 2456', 'car3.jpg', 'Available', 5000, 17, 5),
+(20, 'Hyundai Santro', 'B AA 5678', 'car4.jpg', 'Available', 3000, 20, 5),
+(21, 'Maruti Suzuki Swift', 'B AA 1098', 'car5.jpg', 'Available', 5000, 22, 5),
+(22, 'Hyundai Creta', 'B AA 1234', 'car6.jpg', 'Available', 6000, 16, 5);
 
 -- --------------------------------------------------------
 
@@ -137,13 +141,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminid` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `adminid` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `crud`
 --
 ALTER TABLE `crud`
-  MODIFY `vehicleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `vehicleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
