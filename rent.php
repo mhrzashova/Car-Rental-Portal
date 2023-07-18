@@ -1,14 +1,3 @@
-<?php
-include 'config.php';
-session_start();
-if(!isset($_SESSION['users']))//databse ko table ko nam
-{
-  //yedi session xaina vane login ma pathaidine
-  header("Location:login.php");
-}
-$row = $_SESSION['users'];
-$user_id = $row['user_id'];// yo important way ho uesr_id collect garne
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

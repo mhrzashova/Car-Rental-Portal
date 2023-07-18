@@ -3,16 +3,17 @@ $validationMessage = "";
 
 if (isset($_POST['create'])) {
     $vehiclename = $_POST['vehiclename'];
+    $brandname = $_POST['brand'];
     $vehicleno = $_POST['vehicleno'];
     $vehicleavailability = $_POST['vehicleavailability'];
     $priceperday = $_POST['priceperday'];
     $mileage = $_POST['mileage'];
     $seatcapacity = $_POST['seatcapacity'];
 
-    // Database Path
+    // Database Connection
     $connection = new mysqli("localhost", "root", "", "carrentalportal");
 
-    // Checking of Connection
+    // Checking Connection
     if ($connection->connect_errno != 0) {
         die("<h1>404 Error Not Found</h1>");
     } else {
@@ -37,7 +38,20 @@ if (isset($_POST['create'])) {
                 if (move_uploaded_file($_FILES["vehicleimages"]["tmp_name"], $targetFile)) {
                     $vehicleimages = basename($_FILES["vehicleimages"]["name"]);
 
-                    $sql = "INSERT INTO `crud`(vehiclename, vehicleno, vehicleimages, vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$vehicleno','$vehicleimages','$vehicleavailability','$priceperday','$mileage','$seatcapacity')";
+                    // Retrieve brand information
+                    $brand_id = $_POST['brand'];
+                    $getBrandQuery = "SELECT brandname FROM brand WHERE brand_id = '$brand_id'";
+                    $brandResult = $connection->query($getBrandQuery);
+
+                    if ($brandResult && $brandResult->num_rows > 0) {
+                        $brand = $brandResult->fetch_object();
+                        $brandname = $brand->brandname;
+                    } else {
+                        // Handle the case when the brand information is not found
+                        $brandname = 'Unknown Brand';
+                    }
+
+                    $sql = "INSERT INTO `crud`(vehiclename, brandname, vehicleno, vehicleimages, vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$brandname','$vehicleno','$vehicleimages','$vehicleavailability','$priceperday','$mileage','$seatcapacity')";
                     if ($result = $connection->query($sql)) {
                         $validationMessage = "<h4 class='success-message'>Insertion Successful</h4>";
                     } else {
@@ -55,16 +69,12 @@ if (isset($_POST['create'])) {
 
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,6 +94,12 @@ if (isset($_POST['create'])) {
           </a>
         </li>
         <li>
+          <a href="createbrand.php" class="active">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Brand</span>
+          </a>
+        </li>
+        <li>
           <a href="create.php">
             <i class='bx bx-car'></i>
             <span class="links_name">Vehicles</span>
@@ -92,7 +108,7 @@ if (isset($_POST['create'])) {
         <li>
           <a href="customerlist.php">
             <i class='bx bx-list-ul' ></i>
-            <span class="links_name">Customer's List</span>
+            <span class="links_name">Registered Customer</span>
           </a>
         </li>
         <li>
@@ -159,6 +175,26 @@ if (isset($_POST['create'])) {
                 <label for="vehiclename">
                   Vehicles Name:- <input type="text" name="vehiclename" id="vehiclename" size="50" required>
                 </label> 
+
+                <label for="brand">Select Brand:</label>
+                <div class="brand">
+                  <select class="selectpicker" name="brand" required>
+                    <?php
+                      // Retrieve brand information
+                      $connection = new mysqli("localhost", "root", "", "carrentalportal");
+                      $getBrandQuery = "SELECT brand_id, brandname FROM brand";
+                      $brandResult = $connection->query($getBrandQuery);
+
+                      if ($brandResult && $brandResult->num_rows > 0) {
+                          echo "<option value='' hidden>Choose</option>"; // Move this line outside the while loop
+                          while ($brand = $brandResult->fetch_object()) {
+                              echo "<option value='" . $brand->brand_id . "'>" . $brand->brandname . "</option>";
+                          }
+                      }
+                    ?>
+                  </select>
+                </div>
+
 
                 <label for="vehicleno">
                   Vehicle Reg. Number:- <input type="text" name="vehicleno"  pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="vehicleno" size="50" required>

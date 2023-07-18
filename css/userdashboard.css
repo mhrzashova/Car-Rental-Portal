@@ -240,6 +240,14 @@ header {
     border-radius: 0.5rem;
     font-size: 1rem;
 }
+.input-box select{
+    padding: 7px;
+    outline: none;
+    border: none;
+    background: #eeeff1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
 .form-container form .btn {
     flex: 1 1 7rem;
     padding: 10px 34px;

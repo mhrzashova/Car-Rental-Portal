@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +23,12 @@
           </a>
         </li>
         <li>
+          <a href="createbrand.php" class="active">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Brand</span>
+          </a>
+        </li>
+        <li>
           <a href="create.php">
             <i class='bx bx-car'></i>
             <span class="links_name">Vehicles</span>
@@ -31,7 +37,7 @@
         <li>
           <a href="customerlist.php">
             <i class='bx bx-list-ul' ></i>
-            <span class="links_name">Customer's List</span>
+            <span class="links_name">Registered Customer</span>
           </a>
         </li>
         <li>
@@ -92,7 +98,7 @@
         <a href="create.php"><button>New</button></a>
         <table border='1' width="100%">
         <tr>
-            <th>VehicleId</th><th>Vehicle Name</th><th>Vehicle Reg. Number</th><th>Vehicle Images<th>Vehicle Availability</th><th>Price Per Day</th><th>Mileage</th><th>Seat Capacity</th><th>Action</th> 
+            <th>VehicleId</th><th>Vehicle Name</th><th>Brand Name</th><th>Vehicle Reg. Number</th><th>Vehicle Images<th>Vehicle Availability</th><th>Price Per Day</th><th>Mileage</th><th>Seat Capacity</th><th>Action</th> 
         </tr>
         <?php
             $connection= new mysqli("localhost","root","","carrentalportal");
@@ -108,6 +114,7 @@
                     <tr>
                     <td>".$row['vehicleid']."</td>
                     <td>".$row['vehiclename']."</td>
+                    <td>".$row['brandname']."</td>
                     <td>".$row['vehicleno']."</td>
                     <td>".$row['vehicleimages']."</td>
                     <td>".$row['vehicleavailability']."</td> 

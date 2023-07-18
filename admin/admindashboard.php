@@ -28,7 +28,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +47,12 @@
           </a>
         </li>
         <li>
+          <a href="createbrand.php" class="active">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Brand</span>
+          </a>
+        </li>
+        <li>
           <a href="create.php">
             <i class='bx bx-car'></i>
             <span class="links_name">Vehicles</span>
@@ -55,7 +61,7 @@
         <li>
           <a href="customerlist.php">
             <i class='bx bx-list-ul' ></i>
-            <span class="links_name">Customer's List</span>
+            <span class="links_name">Registered Customer</span>
           </a>
         </li>
         <li>

@@ -1,12 +1,44 @@
+<?php
+$validationMessage = "";
+
+if (isset($_POST['create'])) {
+    $brandname = $_POST['brandname'];
+
+    // Database Path
+    $connection = new mysqli("localhost", "root", "", "carrentalportal");
+
+    // Checking of Connection
+    if ($connection->connect_errno != 0) {
+        die("<h1>404 Error Not Found</h1>");
+    } else {
+        // Check if the Brand already exists
+        $existingBrandQuery = "SELECT * FROM `brand` WHERE brandname = '$brandname'";
+        $existingBrandResult = $connection->query($existingBrandQuery);
+        if ($existingBrandResult->num_rows > 0) {
+            $validationMessage = "<h4 class='error-message'>Brand already exists</h4>";
+        } 
+    }
+        $sql = "INSERT INTO `brand`(brandname) VALUES ('$brandname')";
+                    if ($result = $connection->query($sql)) {
+                        $validationMessage = "<h4 class='success-message'>Insertion Successful</h4>";
+                    } else {
+                        $validationMessage = "<h4 class='error-message'>Error</h4>";
+                    }
+    // Close the connection
+    $connection->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/customerlist.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
    </head>
 <body>
   <div class="sidebar">
@@ -76,8 +108,8 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="customerlist.php">
-      <?php 
+      <a href="createbrand.php">
+              <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
@@ -91,61 +123,25 @@
             </a>
       </div>
     </nav>
+
     <div class="home-content">
-    <legend>Customer's List</legend>
-        <table>
-            <tr>
-                <th>User Id</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Birth Date</th>
-                <th>Phone</th>
-                <th>City</th>
-                <th>Address</th>
-                <th>Register Date</th>
-                <th>Profile Picture</th>
-                <th>License</th>
-            </tr>
-            <?php
-            // Database connection
-            $connection = new mysqli("localhost", "root", "", "carrentalportal");
+    <form action="createbrand.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <?php if (!empty($validationMessage)): ?>
+          <div class="validation-message"><?php echo $validationMessage; ?></div>
+        <?php endif; ?>
+        <fieldset> 
+            <legend>Insert Brand</legend>
 
-            // Checking connection
-            if ($connection->connect_errno != 0) {
-                die("<h1>404 Error Not Found</h1>");
-            }
+                <label for="brandname">
+                  Brand Name:- <input type="text" name="brandname" id="brandname" size="50" required>
+                </label> 
 
-            // Fetch customers from the database
-            $query = "SELECT * FROM users";
-            $result = $connection->query($query);
-
-            // Check if there are any customers
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['full_name'] . "</td>";
-                    echo "<td>" . $row['email'] . "</td>";
-                    echo "<td>" . $row['gender'] . "</td>";
-                    echo "<td>" . $row['birth_date'] . "</td>";
-                    echo "<td>" . $row['phoneno'] . "</td>";
-                    echo "<td>" . $row['city'] . "</td>";
-                    echo "<td>" . $row['address'] . "</td>";
-                    echo "<td>" . $row['register_date'] . "</td>";
-                    echo "<td>" . $row['image'] . "</td>";
-                    echo "<td>" . $row['l_image'] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No customers found.</td></tr>";
-            }
-
-            // Close the database connection
-            $connection->close();
-            ?>
-        </table>
-      </div>
+                <input type="submit" value="Create" name="create">
+           
+        </fieldset>
+        
+      </form>
+      <a href="brandread.php"><button>Update and Delete</button></a>
     </div>
   </section>
 
@@ -159,9 +155,8 @@ sidebarBtn.onclick = function() {
 }else
   sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
 }
+
  </script>
 
 </body>
 </html>
-
-    

@@ -8,6 +8,7 @@ if (isset($_POST['vehicle_edit'])) {
     }
 
     $vehiclename = $_POST['vehiclename'];
+    $brandname = $_POST['brand'];
     $vehicleno = $_POST['vehicleno'];
     $vehicleavailability = $_POST['vehicleavailability'];
     $priceperday = $_POST['priceperday'];
@@ -41,9 +42,22 @@ if (isset($_POST['vehicle_edit'])) {
     } else {
         // Upload the file
         if (move_uploaded_file($_FILES["vehicleimages"]["tmp_name"], $targetDirectory . $imageFileName)) {
-            // Update the database with the new image name
-            $vehicleimages = $imageFileName;
-            $sql = "UPDATE `crud` SET `vehiclename`='$vehiclename', `vehicleno`='$vehicleno', `vehicleimages`='$vehicleimages', `vehicleavailability`='$vehicleavailability', `priceperday`='$priceperday', `mileage`='$mileage', `seatcapacity`='$seatcapacity' WHERE `vehicleid`='$vehicleid'";
+          // Update the database with the new image name
+          $vehicleimages = $imageFileName;
+          // Retrieve brand information
+          $brand_id = $_POST['brand'];
+          $getBrandQuery = "SELECT brandname FROM brand WHERE brand_id = '$brand_id'";
+          $brandResult = $connection->query($getBrandQuery);
+
+          if ($brandResult && $brandResult->num_rows > 0) {
+              $brand = $brandResult->fetch_object();
+              $brandname = $brand->brandname;
+          } else {
+              // Handle the case when the brand information is not found
+              $brandname = 'Unknown Brand';
+          }
+            
+            $sql = "UPDATE `crud` SET `vehiclename`='$vehiclename', `brandname`='$brandname',`vehicleno`='$vehicleno', `vehicleimages`='$vehicleimages', `vehicleavailability`='$vehicleavailability', `priceperday`='$priceperday', `mileage`='$mileage', `seatcapacity`='$seatcapacity' WHERE `vehicleid`='$vehicleid'";
 
             if ($result = $connection->query($sql)) {
                 $validationMessage = "Updated Successfully";
@@ -67,7 +81,7 @@ if (isset($_POST['vehicle_edit'])) {
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,6 +101,12 @@ if (isset($_POST['vehicle_edit'])) {
           </a>
         </li>
         <li>
+          <a href="createbrand.php" class="active">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Brand</span>
+          </a>
+        </li>
+        <li>
           <a href="create.php">
             <i class='bx bx-car'></i>
             <span class="links_name">Vehicles</span>
@@ -95,7 +115,7 @@ if (isset($_POST['vehicle_edit'])) {
         <li>
           <a href="customerlist.php">
             <i class='bx bx-list-ul' ></i>
-            <span class="links_name">Customer's List</span>
+            <span class="links_name">Registered Customer</span>
           </a>
         </li>
         <li>
@@ -135,7 +155,7 @@ if (isset($_POST['vehicle_edit'])) {
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="create.php">
+      <a href="update.php">
               <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
@@ -182,6 +202,25 @@ if (isset($_POST['vehicle_edit'])) {
                 <label for="vehiclename">
                   Vehicles Name:- <input type="text" name="vehiclename" id="vehiclename" size="50" value="<?php echo $row['vehiclename']?>" required>
                 </label> 
+
+                <label for="brand">Select Brand:</label>
+                <div class="brand">
+                  <select class="selectpicker" name="brand" required>
+                    <?php
+                      // Retrieve brand information
+                      $connection = new mysqli("localhost", "root", "", "carrentalportal");
+                      $getBrandQuery = "SELECT brand_id, brandname FROM brand";
+                      $brandResult = $connection->query($getBrandQuery);
+
+                      if ($brandResult && $brandResult->num_rows > 0) {
+                          echo "<option value='' hidden>Choose</option>"; // Move this line outside the while loop
+                          while ($brand = $brandResult->fetch_object()) {
+                              echo "<option value='" . $brand->brand_id . "'>" . $brand->brandname . "</option>";
+                          }
+                      }
+                    ?>
+                  </select>
+                </div>
 
                 <label for="vehicleno">
                   Vehicle Reg. Number:- <input type="text" name="vehicleno"  pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" id="vehicleno" size="50" value="<?php echo $row['vehicleno']?>" required>

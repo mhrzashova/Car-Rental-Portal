@@ -37,7 +37,7 @@
         </ul>
         
         <div class="search">
-            <input class="srch" type="search" name="" placeholder="Search for cars....">
+            <input class="srch" type="search" name="" id="brand-search" placeholder="Search for cars....">
             <a href="#services"><button class="btn" >Search</button></a>
         </div>
         
@@ -96,8 +96,12 @@
         <div class="form-container">
             <form action="">
                 <div class="input-box">
-                    <span>Location</span>
-                    <input type="search" name="" id="" placeholder="Search Places">
+                    <span>From</span>
+                    <input type="search" name="" id="" placeholder="Enter a location">
+                </div>
+                <div class="input-box">
+                    <span>To</span>
+                    <input type="search" name="" id="" placeholder="Enter a location">
                 </div>
                 <div class="input-box">
                     <span>Pick-up Date</span>
@@ -107,7 +111,19 @@
                     <span>Return Date</span>
                     <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
                 </div>
-                <input type="submit" name="" id="" class="btn">
+                <div class="input-box">
+                    <span>Trip Type</span>
+                    <select name="type">
+                        <option hidden>Choose</option>
+                        <option>Inside Valley</option>
+                        <option>Outside Valley</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <span>Brand Name</span>
+                    <input type="text" name="brand" id="brand-search" placeholder="Enter a brand name">
+                </div>
+                <input type="submit" value="Search" class="btn">
             </form>
         </div>
 
@@ -144,35 +160,46 @@
             <span>Best Services</span>
             <h1>Find The Best Car Suitable For You</h1>
         </div>
-        <div class="services-container">
+        <div class="services-container" id="vehicle-container">
             <?php
-            // Fetch vehicles from the database
-            $query = "SELECT * FROM `crud`";
-            $result = $connection->query($query);
+                include 'config.php';
 
-            // Check if there are any vehicles
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<div class='box'>";
-                    echo "<div class='box-img'>";
-                    echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
-                    echo "</div>";
-                    echo "<h3>" . $row['vehiclename'] . "</h3>";
-                    echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
-                    echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
-                    echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
-                    echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
-                    echo "<a href='#' class='btn'>Rent Now</a>";
-                    echo "</div>";
+                // Get the brand name from the search input
+                $brandname = isset($_GET['brand']) ? $_GET['brand'] : '';
+
+                // Fetch vehicles from the database based on brand name filter
+                $query = "SELECT * FROM `crud`";
+
+                // Apply brand name filter if provided
+                if (!empty($brandname)) {
+                    $query .= " WHERE brandname LIKE '%$brandname%'";
                 }
-            } else {
-                echo "<p>No vehicles available.</p>";
-            }
 
-            // Close the database connection
-            $connection->close();
+                $result = $connection->query($query);
+
+                // Check if there are any vehicles
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<div class='box'>";
+                        echo "<div class='box-img'>";
+                        echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
+                        echo "</div>";
+                        echo "<h3>" . $row['vehiclename'] . "</h3>";
+                        echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
+                        echo "<h4>Brand: " . $row['brandname'] . "</h4>";
+                        echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
+                        echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
+                        echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
+                        echo "<a href='#' class='btn'>Rent Now</a>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>No vehicles available.</p>";
+                }
+
+                // Close the database connection
+                $connection->close();
             ?>
-
         </div>
     </section>
 
@@ -270,19 +297,42 @@
     <script src="js/main.js"></script>
     <script>
         // JavaScript code
-document.addEventListener('DOMContentLoaded', function() {
-  const profileIcon = document.querySelector('.profile');
-  const menu = document.querySelector('.menu');
+        document.addEventListener('DOMContentLoaded', function() {
+        const profileIcon = document.querySelector('.profile');
+        const menu = document.querySelector('.menu');
 
-  profileIcon.addEventListener('click', function() {
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-  });
-});
+        profileIcon.addEventListener('click', function() {
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        });
+        });
 
-            function menuToggle(){
-            const toggleMenu = document.querySelector('.menu');
-            toggleMenu.classlist.toggle('active')
+        function menuToggle(){
+        const toggleMenu = document.querySelector('.menu');
+        toggleMenu.classlist.toggle('active')
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        var searchInput = document.getElementById("brand-search");
+        var vehicleContainer = document.getElementById("vehicle-container");
+        var boxes = vehicleContainer.getElementsByClassName("box");
+
+        searchInput.addEventListener("input", function() {
+        var searchValue = searchInput.value.toLowerCase();
+
+        // Loop through all the boxes and hide/show based on brand name filter
+         for (var i = 0; i < boxes.length; i++) {
+            var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
+
+            if (brandname.includes(searchValue)) {
+               boxes[i].style.display = "block";
+            } else {
+               boxes[i].style.display = "none";
+            }
+         }
+      });
+   });
+    </script>
+
 </body>
 </html>

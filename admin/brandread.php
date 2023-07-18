@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/customerlist.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
    </head>
 <body>
   <div class="sidebar">
@@ -76,8 +77,8 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="customerlist.php">
-      <?php 
+      <a href="brandread.php">
+              <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
@@ -91,61 +92,47 @@
             </a>
       </div>
     </nav>
+
     <div class="home-content">
-    <legend>Customer's List</legend>
-        <table>
-            <tr>
-                <th>User Id</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Birth Date</th>
-                <th>Phone</th>
-                <th>City</th>
-                <th>Address</th>
-                <th>Register Date</th>
-                <th>Profile Picture</th>
-                <th>License</th>
-            </tr>
-            <?php
-            // Database connection
-            $connection = new mysqli("localhost", "root", "", "carrentalportal");
-
-            // Checking connection
-            if ($connection->connect_errno != 0) {
-                die("<h1>404 Error Not Found</h1>");
+        <legend>Brand List</legend>
+        <a href="createbrand.php"><button>New</button></a>
+        <table border='1' width="100%">
+        <tr>
+            <th>BrandId</th><th>Brand Name</th><th>Action</th>
+        </tr>
+        <?php
+            $connection= new mysqli("localhost","root","","carrentalportal");
+            if($connection->connect_errno!=0){
+                die("connection failed");
             }
+            $sql="SELECT * FROM brand";
+            if($result = $connection->query($sql))
+            {
+                while($row = $result->fetch_assoc())
+            {
+                echo "
+                    <tr>
+                    <td>".$row['brand_id']."</td>
+                    <td>".$row['brandname']."</td> 
+                    <td>
+                        <form action='brandupdate.php' method='post'>
+                            <input type='hidden' value='".$row['brand_id']."' name='brand_update'>
+                            <input type='submit' value = 'update' name='update'>
+                        </form> 
 
-            // Fetch customers from the database
-            $query = "SELECT * FROM users";
-            $result = $connection->query($query);
+                        <form action='branddelete.php' method='post'>
+                            <input type='hidden' value='".$row['brand_id']."'name='brand_delete'>
+                            <input type='submit'value = 'Delete' name='delete'>
+                        </form> 
 
-            // Check if there are any customers
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['full_name'] . "</td>";
-                    echo "<td>" . $row['email'] . "</td>";
-                    echo "<td>" . $row['gender'] . "</td>";
-                    echo "<td>" . $row['birth_date'] . "</td>";
-                    echo "<td>" . $row['phoneno'] . "</td>";
-                    echo "<td>" . $row['city'] . "</td>";
-                    echo "<td>" . $row['address'] . "</td>";
-                    echo "<td>" . $row['register_date'] . "</td>";
-                    echo "<td>" . $row['image'] . "</td>";
-                    echo "<td>" . $row['l_image'] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No customers found.</td></tr>";
+                </td>           
+                </tr>
+                ";
             }
+        }
 
-            // Close the database connection
-            $connection->close();
-            ?>
-        </table>
-      </div>
+        ?>
+    </table>
     </div>
   </section>
 
@@ -164,4 +151,3 @@ sidebarBtn.onclick = function() {
 </body>
 </html>
 
-    

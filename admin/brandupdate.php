@@ -1,12 +1,40 @@
+<?php
+$validationMessage = "";
+
+if (isset($_POST['brand_edit'])) {
+    $connection = new mysqli("localhost", "root", "", "carrentalportal");
+    if ($connection->connect_errno != 0) {
+        die("Connection failed");
+    }
+
+    $brandname = $_POST['brandname'];
+    $brand_id = $_POST['brand_id'];
+
+            $sql = "UPDATE `brand` SET `brandname`='$brandname' WHERE `brand_id`='$brand_id'";
+
+            if ($result = $connection->query($sql)) {
+                $validationMessage = "Updated Successfully";
+            } else {
+                $validationMessage = "Error updating the record: " . $connection->error;
+            }
+
+    // Close the connection
+    $connection->close();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/customerlist.css">
+    <link rel="stylesheet" href="css/admindashboard.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
    </head>
 <body>
   <div class="sidebar">
@@ -76,8 +104,8 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="customerlist.php">
-      <?php 
+      <a href="brandupdate.php">
+              <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
@@ -91,61 +119,48 @@
             </a>
       </div>
     </nav>
+
     <div class="home-content">
-    <legend>Customer's List</legend>
-        <table>
-            <tr>
-                <th>User Id</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Birth Date</th>
-                <th>Phone</th>
-                <th>City</th>
-                <th>Address</th>
-                <th>Register Date</th>
-                <th>Profile Picture</th>
-                <th>License</th>
-            </tr>
-            <?php
-            // Database connection
-            $connection = new mysqli("localhost", "root", "", "carrentalportal");
+    <?php if (!empty($validationMessage)): ?>
+        <div class="validation-message"><?php echo $validationMessage; ?></div>
+    <?php endif; ?>
+    <?php
+    if(isset($_POST['update']))
+    {
+        ?>
+    
+    <form action="brandupdate.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <?php
+         $connection = new mysqli("localhost", "root", "", "carrentalportal");
+        if($connection->connect_errno != 0)
+        {
+            die("Connection failed");
+        }
+        $brand_id = $_POST['brand_update'];
+        $sql = "SELECT * FROM brand WHERE brand_id='$brand_id'";
+        if($result = $connection->query($sql))
+        {
+            $row = $result->fetch_assoc();
+        }
+        ?>
+        
+        <fieldset> 
+            <br> 
+            <legend>Update Brand</legend>
 
-            // Checking connection
-            if ($connection->connect_errno != 0) {
-                die("<h1>404 Error Not Found</h1>");
-            }
+                <label for="brandname">
+                  Brand Name:- <input type="text" name="brandname" id="brandname" size="50" required>
+                </label> 
 
-            // Fetch customers from the database
-            $query = "SELECT * FROM users";
-            $result = $connection->query($query);
-
-            // Check if there are any customers
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['full_name'] . "</td>";
-                    echo "<td>" . $row['email'] . "</td>";
-                    echo "<td>" . $row['gender'] . "</td>";
-                    echo "<td>" . $row['birth_date'] . "</td>";
-                    echo "<td>" . $row['phoneno'] . "</td>";
-                    echo "<td>" . $row['city'] . "</td>";
-                    echo "<td>" . $row['address'] . "</td>";
-                    echo "<td>" . $row['register_date'] . "</td>";
-                    echo "<td>" . $row['image'] . "</td>";
-                    echo "<td>" . $row['l_image'] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No customers found.</td></tr>";
-            }
-
-            // Close the database connection
-            $connection->close();
-            ?>
-        </table>
-      </div>
+                <input type="submit" value="Update" name="brand_edit">
+                <input type="hidden" name="brand_id" value="<?php echo $brand_id?>">
+                <br> <br>
+           
+        </fieldset>
+    </form>
+    <?php
+    }
+    ?>
     </div>
   </section>
 
@@ -163,5 +178,3 @@ sidebarBtn.onclick = function() {
 
 </body>
 </html>
-
-    
