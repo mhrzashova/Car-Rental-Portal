@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 17, 2023 at 03:56 AM
+-- Generation Time: Jul 18, 2023 at 12:22 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.28
 
@@ -45,31 +45,56 @@ INSERT INTO `admin` (`adminid`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `brand`
+--
+
+CREATE TABLE `brand` (
+  `brand_id` int(11) NOT NULL,
+  `brandname` varchar(100) NOT NULL,
+  `creationdate` date NOT NULL DEFAULT current_timestamp(),
+  `updationdate` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`brand_id`, `brandname`, `creationdate`, `updationdate`) VALUES
+(3, 'Hyundai', '2023-07-17', '2023-07-17'),
+(4, 'Maruti Suzuki', '2023-07-17', '2023-07-17'),
+(5, 'Toyota', '2023-07-17', '2023-07-17');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `crud`
 --
 
 CREATE TABLE `crud` (
   `vehicleid` int(11) NOT NULL,
   `vehiclename` varchar(100) NOT NULL,
+  `brandname` varchar(100) NOT NULL,
   `vehicleno` varchar(100) NOT NULL,
   `vehicleimages` text NOT NULL,
   `vehicleavailability` varchar(100) NOT NULL,
   `priceperday` int(100) NOT NULL,
   `mileage` int(100) NOT NULL,
-  `seatcapacity` int(100) NOT NULL
+  `seatcapacity` int(100) NOT NULL,
+  `creationdate` date NOT NULL DEFAULT current_timestamp(),
+  `updationdate` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `crud`
 --
 
-INSERT INTO `crud` (`vehicleid`, `vehiclename`, `vehicleno`, `vehicleimages`, `vehicleavailability`, `priceperday`, `mileage`, `seatcapacity`) VALUES
-(17, 'Hyundai i10', 'B AA 6789', 'car1.jpg', 'Available', 5000, 20, 5),
-(18, 'Suzuki Baleno', 'B AA 1267', 'car2.jpg', 'Available', 4000, 23, 5),
-(19, 'Toyota Yaris L', 'B AA 2456', 'car3.jpg', 'Available', 5000, 17, 5),
-(20, 'Hyundai Santro', 'B AA 5678', 'car4.jpg', 'Available', 3000, 20, 5),
-(21, 'Maruti Suzuki Swift', 'B AA 1098', 'car5.jpg', 'Available', 5000, 22, 5),
-(22, 'Hyundai Creta', 'B AA 1234', 'car6.jpg', 'Available', 6000, 16, 5);
+INSERT INTO `crud` (`vehicleid`, `vehiclename`, `brandname`, `vehicleno`, `vehicleimages`, `vehicleavailability`, `priceperday`, `mileage`, `seatcapacity`, `creationdate`, `updationdate`) VALUES
+(17, 'Hyundai i10', 'Hyundai', 'B AA 6789', 'car1.jpg', 'Available', 5000, 20, 5, '2023-07-17', '2023-07-17'),
+(18, 'Suzuki Baleno', 'Maruti Suzuki', 'B AA 1267', 'car2.jpg', 'Available', 4000, 23, 5, '2023-07-17', '2023-07-17'),
+(19, 'Toyota Yaris L', 'Toyota', 'B AA 2456', 'car3.jpg', 'Available', 5000, 17, 5, '2023-07-17', '2023-07-17'),
+(20, 'Hyundai Santro', 'Hyundai', 'B AA 5678', 'car4.jpg', 'Available', 3000, 20, 5, '2023-07-17', '2023-07-17'),
+(21, 'Maruti Suzuki Swift', 'Maruti Suzuki', 'B AA 1098', 'car5.jpg', 'Available', 5000, 22, 5, '2023-07-17', '2023-07-17'),
+(22, 'Hyundai Creta', 'Hyundai', 'B AA 1234', 'car6.jpg', 'Available', 6000, 16, 5, '2023-07-17', '2023-07-17');
 
 -- --------------------------------------------------------
 
@@ -97,7 +122,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `gender`, `birth_date`, `phoneno`, `city`, `address`, `register_date`, `image`, `l_image`) VALUES
-(17, 'shrinkhala@gmail.com', 'adf8656dbde4d3f9a2524610cd48a1c3', 'Shrinkhala Joshi', 'female', '2001-12-28', '9845652123', 'Bhaktapur', 'Radhe Radhe', '2023-07-05', '2.jpeg', 'license.png'),
+(17, 'shrinkhala@gmail.com', 'adf8656dbde4d3f9a2524610cd48a1c3', 'Shrinkhala Joshi', 'female', '2001-12-28', '9845652123', 'Bhaktapur', 'Radhe Radhe', '2023-07-05', '11.jpeg', 'license.jpg'),
 (18, 'sanchita@gmail.com', '1428df5c7afe28f422c03da0834bebe5', 'Sanchita Shakya', 'female', '1998-08-27', '9812365412', 'Kathmandu', 'Kalanki', '2023-07-05', '4.jpeg', ''),
 (22, 'sapana@gmail.com', '51c75fa2657936166e56d2029b9685c7', 'Sapana Chaudhary', 'female', '2001-12-23', '9842517548', 'Kathmandu', 'Shatinagar', '2023-07-05', 'user.png', ''),
 (23, 'lajana@gmail.com', 'ab93037105f9728d0d1f7085263149cf', 'Lajana Singh Thakuri', 'female', '2000-07-07', '9852634145', 'Kathmandu', 'Shantinagar', '2023-07-05', 'profile-pic.jpg', 'license.jpg'),
@@ -118,6 +143,12 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `gender`, `bir
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`adminid`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`brand_id`);
 
 --
 -- Indexes for table `crud`
@@ -144,10 +175,16 @@ ALTER TABLE `admin`
   MODIFY `adminid` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `crud`
 --
 ALTER TABLE `crud`
-  MODIFY `vehicleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `vehicleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `users`
