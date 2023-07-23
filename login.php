@@ -29,7 +29,7 @@ if(isset($_POST['login'])) // isset is click, submit vako ho ki haina check garx
         $_SESSION['users']=$row;
 
         //redirecting to user dashboard page after login is successful with session
-        header("Location:home.php"); 
+        header("Location:userdashboard.php"); 
       echo
         ("<script>
           alert(' Success ');

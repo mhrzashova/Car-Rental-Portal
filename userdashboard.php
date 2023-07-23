@@ -21,6 +21,14 @@
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css"/>
+    <style>
+        #no-results-message {
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -121,8 +129,26 @@
                 </div>
                 <div class="input-box">
                     <span>Brand Name</span>
-                    <input type="text" name="brand" id="brand-search" placeholder="Enter a brand name">
+
+                    <div class="brand">
+                    <select class="selectpicker" name="brand" required>
+                        <?php
+                        // Retrieve brand information
+                        $connection = new mysqli("localhost", "root", "", "carrentalportal");
+                        $getBrandQuery = "SELECT brand_id, brandname FROM brand";
+                        $brandResult = $connection->query($getBrandQuery);
+
+                        if ($brandResult && $brandResult->num_rows > 0) {
+                            echo "<option value='' hidden>Choose</option>"; // Move this line outside the while loop
+                            while ($brand = $brandResult->fetch_object()) {
+                                echo "<option value='" . $brand->brand_id . "'>" . $brand->brandname . "</option>";
+                            }
+                        }
+                        ?>
+                        </select>
+                    </div>
                 </div>
+                <!-- <a href="#services"><button class="btn" >Search</button></a> -->
                 <input type="submit" value="Search" class="btn">
             </form>
         </div>
@@ -161,6 +187,7 @@
             <h1>Find The Best Car Suitable For You</h1>
         </div>
         <div class="services-container" id="vehicle-container">
+        <p id="no-results-message" style="display: none;">No results found.</p>
             <?php
                 include 'config.php';
 
@@ -180,6 +207,7 @@
                 // Check if there are any vehicles
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
+                        $vehicleid=$row['vehicleid'];
                         echo "<div class='box'>";
                         echo "<div class='box-img'>";
                         echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
@@ -190,7 +218,7 @@
                         echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
                         echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
                         echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
-                        echo "<a href='#' class='btn'>Rent Now</a>";
+                        echo "<a href='rent.php?vehicleid=$vehicleid' class='btn'>Rent Now</a>";
                         echo "</div>";
                     }
                 } else {
@@ -312,27 +340,37 @@
         }
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        var searchInput = document.getElementById("brand-search");
-        var vehicleContainer = document.getElementById("vehicle-container");
-        var boxes = vehicleContainer.getElementsByClassName("box");
+   document.addEventListener("DOMContentLoaded", function() {
+   var searchInput = document.getElementById("brand-search");
+   var vehicleContainer = document.getElementById("vehicle-container");
+   var boxes = vehicleContainer.getElementsByClassName("box");
+   var noResultsMessage = document.getElementById("no-results-message");
 
-        searchInput.addEventListener("input", function() {
-        var searchValue = searchInput.value.toLowerCase();
+   searchInput.addEventListener("input", function() {
+      var searchValue = searchInput.value.toLowerCase();
+      var resultsFound = false;
 
-        // Loop through all the boxes and hide/show based on brand name filter
-         for (var i = 0; i < boxes.length; i++) {
-            var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
+      // Loop through all the boxes and hide/show based on brand name filter
+      for (var i = 0; i < boxes.length; i++) {
+         var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
 
-            if (brandname.includes(searchValue)) {
-               boxes[i].style.display = "block";
-            } else {
-               boxes[i].style.display = "none";
-            }
+         if (brandname.includes(searchValue)) {
+            boxes[i].style.display = "block";
+            resultsFound = true;
+         } else {
+            boxes[i].style.display = "none";
          }
-      });
+      }
+
+      if (resultsFound) {
+         noResultsMessage.style.display = "none";
+      } else {
+         noResultsMessage.style.display = "block";
+      }
    });
-    </script>
+});
+
+</script>
 
 </body>
 </html>

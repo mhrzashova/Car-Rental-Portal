@@ -2,12 +2,12 @@
 include 'config.php';
 session_start();
 
-if (!isset($_SESSION['users'])) {
+if (!isset($_SESSION['booking'])) {
     header("Location: login.php");
 }
 
-if (isset($_POST['vehicle_id'], $_POST['pickup_date'], $_POST['return_date'])) {
-    $vehicle_id = $_POST['vehicle_id'];
+if (isset($_POST['vehicleid'], $_POST['pickup_date'], $_POST['return_date'])) {
+    $vehicle_id = $_POST['vehicleid'];
     $pickup_date = $_POST['pickup_date'];
     $return_date = $_POST['return_date'];
     

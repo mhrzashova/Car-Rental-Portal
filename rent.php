@@ -1,3 +1,14 @@
+<?php
+session_start();
+include 'config.php';
+
+if (!isset($_SESSION['users'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['users']['user_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +21,14 @@
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css"/>
+    <style>
+        #no-results-message {
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -18,15 +37,15 @@
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#ride">Ride</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="userdashboard.php">Home</a></li>
+            <li><a href="userdashboard.php">Ride</a></li>
+            <li><a href="userdashboard.php">Services</a></li>
+            <li><a href="userdashboard.php">About</a></li>
+            <li><a href="userdashboard.php">Reviews</a></li>
         </ul>
         
         <div class="search">
-            <input class="srch" type="search" name="" placeholder="Search for cars....">
+            <input class="srch" type="search" name="" id="brand-search" placeholder="Search for cars....">
             <a href="#services"><button class="btn" >Search</button></a>
         </div>
         
@@ -74,188 +93,96 @@
         </div>
     </header>
 
-    <!-- Home -->
-    <section class="home" id="home">
-        <div class="text">
-            
-            <h1><span>Looking</span> to <br>rent a car</h1>
-            <p>Connecting you to the biggest brands in car rental.<br>Rent it out.</p>
-        </div>
-
-        <div class="form-container">
-            <form action="">
-                <div class="input-box">
-                    <span>Location</span>
-                    <input type="search" name="" id="" placeholder="Search Places">
-                </div>
-                <div class="input-box">
-                    <span>Pick-up Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="input-box">
-                    <span>Return Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <input type="submit" name="" id="" class="btn">
-            </form>
-        </div>
-
-    </section>
-    <!-- Ride -->
-    <section class="ride" id="ride">
-        <div class="heading">
-            <span>How It Work</span>
-            <h1>Rent With 3 Easy Steps</h1>
-            <div class="ride-container">
-                <div class="box">
-                    <i class='bx bxs-map'></i>
-                    <h2>Choose A Location</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
-                </div>
-
-                <div class="box">
-                    <i class='bx bxs-calendar-check'></i>
-                    <h2>Pick-Up Date</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
-                </div>
-
-                <div class="box">
-                    <i class='bx bxs-calendar-star'></i>
-                    <h2>Book A Car</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    
     <!-- Services -->
     <section class="services" id="services">
-        
-        <div class="services-container">
+        <div class="heading">
+            <span>Rent</span>
+            <h1>Rent The Best Car Suitable For You</h1>
+        </div>
+
+        <div class="services-container" id="vehicle-container">
+
         <?php
 include 'config.php';
-session_start();
 
 if (!isset($_SESSION['users'])) {
     header("Location: login.php");
+    exit();
 }
 
-if (isset($_GET['vehicle_id'])) {
-    $vehicle_id = $_GET['vehicle_id'];
-    
-    // Retrieve the vehicle details from the database
-    $query = "SELECT * FROM `crud` WHERE vehicle_id = '$vehicle_id'";
-    $result = $connection->query($query);
+$user_id = $_SESSION['users']['user_id'];
 
-    if ($result->num_rows > 0) {
-        $vehicle = $result->fetch_assoc();
-        // Display the vehicle details and rental form
-        echo "<h1>Rent Vehicle</h1>";
-        echo "<h2>Vehicle Name: " . $vehicle['vehiclename'] . "</h2>";
-        // Add more details about the vehicle if necessary
-        echo "<form action='rent_process.php' method='POST'>";
-        echo "<input type='hidden' name='vehicle_id' value='" . $vehicle_id . "'>";
-        echo "<div class='input-box'>";
-        echo "<span>Pick-up Date</span>";
-        echo "<input type='date' name='pickup_date' id='' min='" . date("Y-m-d") . "'>";
-        echo "</div>";
-        echo "<div class='input-box'>";
-        echo "<span>Return Date</span>";
-        echo "<input type='date' name='return_date' id='' min='" . date("Y-m-d") . "'>";
-        echo "</div>";
-        echo "<input type='submit' name='' id='' class='btn' value='Rent Now'>";
-        echo "</form>";
+// Step 1: Check if the vehicleid is provided in the URL
+if (isset($_GET['vehicleid'])) {
+    $vehicleid = $_GET['vehicleid'];
+
+    // Step 2: Fetch the vehicle details from the database
+    $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
+    $result = mysqli_query($connection, $query);
+
+if ($result === false) {
+    // Display the specific error message returned by the database
+    echo "Error: " . mysqli_error($connection);
+    exit; // Stop the script execution to prevent further issues
+}
+
+        // You can access various vehicle details using $vehicle array like $vehicle['name'], $vehicle['description'], $vehicle['image'], etc.
+
+        // Step 3: Check if the form has been submitted
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Step 4: Validate and sanitize form data
+            $pickup_date = isset($_POST['pickup_date']) ? $_POST['pickup_date'] : '';
+            $return_date = isset($_POST['return_date']) ? $_POST['return_date'] : '';
+            $useremail = isset($_SESSION['users']['email']) ? $_SESSION['users']['email'] : '';
+            $status = 0;
+
+            // Additional validation if needed
+            // Example: Check if pickup_date and return_date are valid dates, not in the past, etc.
+
+            // Step 5: Insert the booking details into the "booking" table
+            $bookingnumber = mt_rand(100000000, 999999999);
+            $insert_query = "INSERT INTO booking(bookingnumber, useremail, vehicleid, pickup_date, return_date, status) VALUES ('$bookingnumber', '$useremail', '$vehicleid', '$pickup_date', '$return_date', '$status')";
+
+            if (mysqli_query($connection, $insert_query)) {
+                // Booking successfully added to the database
+                echo "<h2>Vehicle Details</h2>";
+                echo "<p>Vehicle Name: " . $vehicle['vehiclename'] . "</p>";
+                echo "<p>Vehicle Description: " . $vehicle['description'] . "</p>";
+                echo "<img src='path/to/vehicleimages/" . $vehicle['vehicleimages'] . "' alt='" . $vehicle['vehiclename'] . "' width='200'>";
+                echo "<h1>Rental Details</h1>";
+                echo "<p>Pick-up Date: " . $pickup_date . "</p>";
+                echo "<p>Return Date: " . $return_date . "</p>";
+                
+            } else {
+                // Error occurred while inserting data
+                echo "Error: " . mysqli_error($connection);
+            }
+
+            // Step 6: Close the database connection
+            mysqli_close($connection);
+        }
     } else {
-        echo "<p>Vehicle not found.</p>";
+        // Vehicle not found in the database, show an error message or redirect to an error page
+        exit("Error: Vehicle not found.");
     }
-
-    $connection->close();
-} else {
-    echo "<p>Invalid request.</p>";
-}
 ?>
 
+
+    <form action="rent.php" method="POST">
+        <label for="pickup_date">Pick-up Date:</label>
+        <input type="date" name="pickup_date" required>
+        
+        <label for="return_date">Return Date:</label>
+        <input type="date" name="return_date" required>
+
+        <input type="submit" value="Rent Now">
+    </form>
         </div>
     </section>
 
-    <!-- About -->
-    <section class="about" id="about">
-        <div class="heading">
-            <span>About Us</span>
-            <h1>Best Customer Experience</h1>
-        </div>
-        <div class="about-container">
-            <div class="about-img">
-                <img src="img/car_br.png" alt="">
-            </div>
-            <div class="about-text">
-                <span>About Us</span>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe eligendi perferendis et repellat ratione quasi facere nihil. Numquam impedit voluptatibus omnis expedita? Quaerat molestias molestiae rem sunt doloribus ipsa iure voluptatum et accusantium. Suscipit!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, modi quas necessitatibus obcaecati impedit a hic iusto rem.</p>
-                <a href="#" class="btn">Learn More</a>
-            </div>
-        </div>
-    </section>
-    <!-- Reviews -->
-    <section class="reviews" id="reviews">
-        <div class="heading">
-            <span>Reviews</span>
-            <h1>What Our Customer Say</h1>
-        </div>
-        <div class="reviews-container">
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev1.jpg" alt="">
-                </div>
-                <h2>Harry</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Impedit, tenetur ut illum id vel alias molestias dolorum nihil.</p>
-            </div>
-
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev2.jpg" alt="">
-                </div>
-                <h2>Peter</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita explicabo ad tempore consectetur mollitia aperiam, alias qui voluptatibus.</p>
-            </div>
-
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev3.jpg" alt="">
-                </div>
-                <h2>Anya</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione commodi ab neque dicta suscipit dolorem perspiciatis dolorum quas.</p>
-            </div>
-        </div>
-    </section>
-    <!-- NewsLetter -->
-    <section class="newsletter">
-        <h2>Subscribe To Newsletter</h2>
-        <div class="box">
-            <input type="text" placeholder="Enter Your Email...">
-            <a href="#" class="btn">Subscribe</a>
-        </div>
-    </section>
+    
+    <section class="footer">
     <div class="copyright">
         <p>Copyright © 2023 - CRP | All Rights Reserved</p>
         <div class="social">
@@ -264,26 +191,49 @@ if (isset($_GET['vehicle_id'])) {
             <a href="#"><i class='bx bxl-instagram'></i></a>
         </div>
     </div>
+    </section>
     
     <!-- ScrollReveal -->
     <script src="https://unpkg.com/scrollreveal"></script>
     <!-- Link To JS -->
     <script src="js/main.js"></script>
     <script>
-        // JavaScript code
-document.addEventListener('DOMContentLoaded', function() {
-  const profileIcon = document.querySelector('.profile');
-  const menu = document.querySelector('.menu');
+        // JavaScript code to toggle the profile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileIcon = document.querySelector('.profile');
+            const menu = document.querySelector('.menu');
 
-  profileIcon.addEventListener('click', function() {
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-  });
-});
+            profileIcon.addEventListener('click', function() {
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            });
+        });
 
-            function menuToggle(){
-            const toggleMenu = document.querySelector('.menu');
-            toggleMenu.classlist.toggle('active')
-        }
+        // JavaScript code for filtering the services based on search input
+        document.addEventListener("DOMContentLoaded", function() {
+            var searchInput = document.getElementById("brand-search");
+            var vehicleContainer = document.getElementById("vehicle-container");
+            var boxes = vehicleContainer.getElementsByClassName("box");
+            var noResultsMessage = document.getElementById("no-results-message");
+
+            searchInput.addEventListener("input", function() {
+                var searchValue = searchInput.value.toLowerCase();
+                var resultsFound = false;
+
+                for (var i = 0; i < boxes.length; i++) {
+                    var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
+
+                    if (brandname.includes(searchValue)) {
+                        boxes[i].style.display = "block";
+                        resultsFound = true;
+                    } else {
+                        boxes[i].style.display = "none";
+                    }
+                }
+
+                noResultsMessage.style.display = resultsFound ? "none" : "block";
+            });
+        });
     </script>
+
 </body>
 </html>

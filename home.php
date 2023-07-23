@@ -53,7 +53,7 @@ if (isset($_GET['logout'])) {
          }
       ?>
       <!-- <label><h5>User Created!</h5></label> -->
-      <a href="update_profile.php" class="btn">Edit Profile</a>
+      <a href="userdashboard.php" class="btn">Edit Profile</a>
       <a href="home.php?logout=<?php echo $user_id; ?>" class="delete-btn">Logout</a>
       <p>New <a href="login.php">Login</a> or <a href="register.php">Register</a></p>
    </div>
