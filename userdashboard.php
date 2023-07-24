@@ -65,7 +65,7 @@
             </div>
 
             <div class="p">
-            <h5><span>Profile</span></h5>
+                <h5><span>Profile</span></h5>
             </div>
             <div class="menu">
                 <ul>
@@ -84,12 +84,11 @@
                         <a href="#"><?php echo ''.$fetch['full_name'].''; ?></a>
                     </li>
                     <li><img src="images/user.png"><a href="update_profile.php">Edit Profile</a></li>
-                    <!-- <li><img src="images/kyc.png"><a href="kyc.php">Update KYC</a></li> -->
                     <li><img src="images/padlock.png"><a href="password.php">Change Password</a></li>
+                    <li><img src="images/car.png"><a href="mybooking.php">My Booking</a></li>
                     <li><img src="images/log-out.png"><a href="index.php">Logout</a></li>
                 </ul>
             </div>
-        </div>
         </div>
     </header>
 
@@ -100,58 +99,6 @@
             <h1><span>Looking</span> to <br>rent a car</h1>
             <p>Connecting you to the biggest brands in car rental.<br>Rent it out.</p>
         </div>
-
-        <!-- <div class="form-container">
-            <form action="">
-                <div class="input-box">
-                    <span>From</span>
-                    <input type="search" name="" id="" placeholder="Enter a location">
-                </div>
-                <div class="input-box">
-                    <span>To</span>
-                    <input type="search" name="" id="" placeholder="Enter a location">
-                </div>
-                <div class="input-box">
-                    <span>Pick-up Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="input-box">
-                    <span>Return Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="input-box">
-                    <span>Trip Type</span>
-                    <select name="type">
-                        <option hidden>Choose</option>
-                        <option>Inside Valley</option>
-                        <option>Outside Valley</option>
-                    </select>
-                </div>
-                <div class="input-box">
-                    <span>Brand Name</span>
-
-                    <div class="brand">
-                    <select class="selectpicker" name="brand" required>
-                        <?php
-                        // Retrieve brand information
-                        // $connection = new mysqli("localhost", "root", "", "carrentalportal");
-                        // $getBrandQuery = "SELECT brand_id, brandname FROM brand";
-                        // $brandResult = $connection->query($getBrandQuery);
-
-                        // if ($brandResult && $brandResult->num_rows > 0) {
-                        //     echo "<option value='' hidden>Choose</option>"; // Move this line outside the while loop
-                        //     while ($brand = $brandResult->fetch_object()) {
-                        //         echo "<option value='" . $brand->brand_id . "'>" . $brand->brandname . "</option>";
-                        //     }
-                        // }
-                        ?>
-                        </select>
-                    </div>
-                </div>
-                <a href="#services"><button class="btn" >Search</button></a>
-                <input type="submit" value="Search" class="btn">
-            </form>
-        </div> -->
     </section>
 
     <!-- Ride -->
@@ -180,6 +127,7 @@
             </div>
         </div>
     </section>
+
     <!-- Services -->
     <section class="services" id="services">
         <div class="heading">
@@ -249,6 +197,7 @@
             </div>
         </div>
     </section>
+    
     <!-- Reviews -->
     <section class="reviews" id="reviews">
         <div class="heading">
@@ -302,6 +251,7 @@
             </div>
         </div>
     </section>
+
     <!-- NewsLetter -->
     <section class="newsletter">
         <h2>Subscribe To Newsletter</h2>
@@ -340,37 +290,35 @@
         }
     </script>
     <script>
-   document.addEventListener("DOMContentLoaded", function() {
-   var searchInput = document.getElementById("brand-search");
-   var vehicleContainer = document.getElementById("vehicle-container");
-   var boxes = vehicleContainer.getElementsByClassName("box");
-   var noResultsMessage = document.getElementById("no-results-message");
+        document.addEventListener("DOMContentLoaded", function() {
+        var searchInput = document.getElementById("brand-search");
+        var vehicleContainer = document.getElementById("vehicle-container");
+        var boxes = vehicleContainer.getElementsByClassName("box");
+        var noResultsMessage = document.getElementById("no-results-message");
 
-   searchInput.addEventListener("input", function() {
-      var searchValue = searchInput.value.toLowerCase();
-      var resultsFound = false;
+        searchInput.addEventListener("input", function() {
+            var searchValue = searchInput.value.toLowerCase();
+            var resultsFound = false;
 
-      // Loop through all the boxes and hide/show based on brand name filter
-      for (var i = 0; i < boxes.length; i++) {
-         var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
+            // Loop through all the boxes and hide/show based on brand name filter
+            for (var i = 0; i < boxes.length; i++) {
+                var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
 
-         if (brandname.includes(searchValue)) {
-            boxes[i].style.display = "block";
-            resultsFound = true;
-         } else {
-            boxes[i].style.display = "none";
-         }
-      }
+                if (brandname.includes(searchValue)) {
+                    boxes[i].style.display = "block";
+                    resultsFound = true;
+                } else {
+                    boxes[i].style.display = "none";
+                }
+            }
 
-      if (resultsFound) {
-         noResultsMessage.style.display = "none";
-      } else {
-         noResultsMessage.style.display = "block";
-      }
-   });
-});
-
-</script>
-
+            if (resultsFound) {
+                noResultsMessage.style.display = "none";
+            } else {
+                noResultsMessage.style.display = "block";
+            }
+        });
+        });
+    </script>
 </body>
 </html>

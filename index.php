@@ -47,11 +47,6 @@
             
             <h1><span>Looking</span> to <br>rent a car</h1>
             <p>Connecting you to the biggest brands in car rental.<br>Rent it out.</p>
-            
-            <!-- <div class="app-stores">
-                <img src="img/ios.png" alt="">
-                <img src="img/512x512.png" alt="">
-            </div> -->
         </div>
 
         <!-- <div class="form-container">
@@ -273,37 +268,36 @@
     <!-- Link To JS -->
     <script src="js/main.js"></script>
     <script>
-   document.addEventListener("DOMContentLoaded", function() {
-   var searchInput = document.getElementById("brand-search");
-   var vehicleContainer = document.getElementById("vehicle-container");
-   var boxes = vehicleContainer.getElementsByClassName("box");
-   var noResultsMessage = document.getElementById("no-results-message");
+        document.addEventListener("DOMContentLoaded", function() {
+        var searchInput = document.getElementById("brand-search");
+        var vehicleContainer = document.getElementById("vehicle-container");
+        var boxes = vehicleContainer.getElementsByClassName("box");
+        var noResultsMessage = document.getElementById("no-results-message");
 
-   searchInput.addEventListener("input", function() {
-      var searchValue = searchInput.value.toLowerCase();
-      var resultsFound = false;
+        searchInput.addEventListener("input", function() {
+            var searchValue = searchInput.value.toLowerCase();
+            var resultsFound = false;
 
-      // Loop through all the boxes and hide/show based on brand name filter
-      for (var i = 0; i < boxes.length; i++) {
-         var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
+            // Loop through all the boxes and hide/show based on brand name filter
+            for (var i = 0; i < boxes.length; i++) {
+                var brandname = boxes[i].querySelector("h4").textContent.toLowerCase();
 
-         if (brandname.includes(searchValue)) {
-            boxes[i].style.display = "block";
-            resultsFound = true;
-         } else {
-            boxes[i].style.display = "none";
-         }
-      }
+                if (brandname.includes(searchValue)) {
+                    boxes[i].style.display = "block";
+                    resultsFound = true;
+                } else {
+                    boxes[i].style.display = "none";
+                }
+            }
 
-      if (resultsFound) {
-         noResultsMessage.style.display = "none";
-      } else {
-         noResultsMessage.style.display = "block";
-      }
-   });
-});
-
-</script>
+            if (resultsFound) {
+                noResultsMessage.style.display = "none";
+            } else {
+                noResultsMessage.style.display = "block";
+            }
+        });
+        });
+    </script>
 
 </body>
 </html>

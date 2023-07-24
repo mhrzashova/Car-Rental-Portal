@@ -70,6 +70,49 @@ $user_id = $_SESSION['users']['user_id'];
             font-size: 24px;
             margin-right: 5px;
         }
+
+        .services .heading span {
+            font-size: 24px;
+            color: #007bff;
+        }
+
+        .services .heading h1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .input-box span {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .input-box input,
+        .input-box select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btns {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            background-color: #474fa0;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btns:hover {
+            background-color: #ff7200;
+        }     
     </style>
 </head>
 <body>
@@ -128,6 +171,7 @@ $user_id = $_SESSION['users']['user_id'];
                     <li><img src="images/user.png"><a href="update_profile.php">Edit Profile</a></li>
                     <!-- <li><img src="images/kyc.png"><a href="kyc.php">Update KYC</a></li> -->
                     <li><img src="images/padlock.png"><a href="password.php">Change Password</a></li>
+                    <li><img src="images/car.png"><a href="mybooking.php">My Booking</a></li>
                     <li><img src="images/log-out.png"><a href="index.php">Logout</a></li>
                 </ul>
             </div>
@@ -137,136 +181,131 @@ $user_id = $_SESSION['users']['user_id'];
 
     
     <!-- Services -->
-<section class="services" id="services">
-    <div class="heading">
-        <span>Rent</span>
-        <h1>Rent The Best Car Suitable For You</h1>
-    </div>
+    <section class="services" id="services">
+        <div class="heading">
+            <span>Rent</span>
+            <h1>Rent The Best Car Suitable For You</h1>
+        </div>
 
-    <div class="services-container" id="vehicle-container">
+        <div class="services-container" id="vehicle-container">
+            <?php
+            include 'config.php';
+
+            // Step 1: Check if the vehicleid is provided in the URL
+            if (isset($_GET['vehicleid'])) {
+                $vehicleid = $_GET['vehicleid'];
+
+                // Step 2: Fetch the vehicle details from the database
+                $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
+                $result = mysqli_query($connection, $query);
+
+            if ($result === false) {
+                // Display the specific error message returned by the database
+                echo "Error: " . mysqli_error($connection);
+                exit; // Stop the script execution to prevent further issues
+            }
+
+            // Check if a vehicle was found with the given ID
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                // Display the vehicle image, name, and price per day
+                echo "<div class='box'>";
+                echo "<div class='box-img'>";
+                echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
+                echo "</div>";
+                echo "<h3>" . $row['vehiclename'] . "</h3>";
+                echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
+                echo "<h4>Brand: " . $row['brandname'] . "</h4>";
+                echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
+                echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
+                echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
+                echo "</div>";
+            } else {
+                // Vehicle not found in the database, show an error message or redirect to an error page
+                exit("Error: Vehicle not found.");
+            }
+        }
+        ?>
+
         <?php
         include 'config.php';
 
-        // Step 1: Check if the vehicleid is provided in the URL
-if (isset($_GET['vehicleid'])) {
-    $vehicleid = $_GET['vehicleid'];
+        if (!isset($_SESSION['users']) || !is_array($_SESSION['users'])) {
+            header("Location: login.php");
+            exit();
+        }
 
-    // Step 2: Fetch the vehicle details from the database
-    $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
-    $result = mysqli_query($connection, $query);
+        $user_id = $_SESSION['users']['user_id'];
 
-    if ($result === false) {
-        // Display the specific error message returned by the database
-        echo "Error: " . mysqli_error($connection);
-        exit; // Stop the script execution to prevent further issues
-    }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Retrieve form data
+            $fromlocation = $_POST['fromlocation'];
+            $tolocation = $_POST['tolocation'];
+            $pickup_date = $_POST['pickup_date'];
+            $return_date = $_POST['return_date'];
+            $triptype = $_POST['triptype'];
+            $bookingnumber = mt_rand(100000000, 999999999);
+            $status = 0;
+            // Retrieve the vehicleid from the hidden field in the form
+            $vehicleid = $_POST['vehicleid'];
 
-    // Check if a vehicle was found with the given ID
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        // Display the vehicle image, name, and price per day
-        echo "<div class='box'>";
-        echo "<div class='box-img'>";
-        echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
-        echo "</div>";
-        echo "<h3>" . $row['vehiclename'] . "</h3>";
-        echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
-        echo "<h4>Brand: " . $row['brandname'] . "</h4>";
-        echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
-        echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
-        echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
-        echo "</div>";
-    } else {
-        // Vehicle not found in the database, show an error message or redirect to an error page
-        exit("Error: Vehicle not found.");
-    }
-}
+            // Insert data into the booking table
+            $insert_query = "INSERT INTO booking (bookingnumber, user_id, vehicleid, fromlocation, tolocation, pickup_date, return_date, triptype, status) 
+                            VALUES ('$bookingnumber', '$user_id', '$vehicleid', '$fromlocation', '$tolocation', '$pickup_date', '$return_date', '$triptype', $status)";
+
+            if (mysqli_query($connection, $insert_query)) {
+                // Booking successfully inserted into the database
+                echo "Booking successful!";
+            } else {
+                // If there was an error with the database query
+                echo "Error: " . mysqli_error($connection);
+            }
+        }
         ?>
 
-<?php
-include 'config.php';
-
-if (!isset($_SESSION['users']) || !is_array($_SESSION['users'])) {
-    header("Location: login.php");
-    exit();
-}
-
-$user_id = $_SESSION['users']['user_id'];
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $fromlocation = $_POST['fromlocation'];
-    $tolocation = $_POST['tolocation'];
-    $pickup_date = $_POST['pickup_date'];
-    $return_date = $_POST['return_date'];
-    $triptype = $_POST['triptype'];
-    $bookingnumber = mt_rand(100000000, 999999999);
-    $status = 0;
-    $email = $_POST['email']; // Retrieve the email from the hidden input field
-
-    // Insert data into the booking table
-    $insert_query = "INSERT INTO booking (bookingnumber, user_id, vehicleid, fromlocation, tolocation, pickup_date, return_date, triptype) 
-                     VALUES ('$bookingnumber', '$user_id', '$vehicleid', '$fromlocation', '$tolocation', '$pickup_date', '$return_date', '$triptype')";
-
-    if (mysqli_query($connection, $insert_query)) {
-        // Booking successfully inserted into the database
-        echo "Booking successful!";
-        // You may add a redirect here or display a success message to the user
-    } else {
-        // If there was an error with the database query
-        echo "Error: " . mysqli_error($connection);
-        // You may redirect to an error page or display an error message to the user
-    }
-}
-?>
-
-    <form action="rent.php" method="POST">
-    <input type="hidden" name="email" value="<?php echo $_SESSION['users']['email']; ?>">
-        <div class="input-box">
-            <span>From</span>
-            <input type="search" name="fromlocation" placeholder="Enter a location">
-        </div>
-        <div class="input-box">
-            <span>To</span>
-            <input type="search" name="tolocation" placeholder="Enter a location">
-        </div>
-        <div class="input-box">
-            <span>Pick-up Date</span>
-            <input type="date" name="pickup_date" min="<?php echo date("Y-m-d"); ?>">
-        </div>
-        <div class="input-box">
-            <span>Return Date</span>
-            <input type="date" name="return_date" min="<?php echo date("Y-m-d"); ?>">
-        </div>
-        <div class="input-box">
-            <span>Trip Type</span>
-            <select name="triptype">
-                <option hidden>Choose</option>
-                <option>Inside Valley</option>
-                <option>Outside Valley</option>
-            </select>
-        </div>
-        <a href="#"><button class="btn" >Rent Now</button></a>
-        <!-- <input type="submit" value="Rent Now"> -->
-    </form>
+            <form action="rent.php" method="POST" id="rentForm">
+            <input type="hidden" name="vehicleid" value="<?php echo $vehicleid; ?>">
+                <div class="input-box">
+                    <span>From</span>
+                    <input type="search" name="fromlocation" placeholder="Enter a location" required>
+                </div>
+                <div class="input-box">
+                    <span>To</span>
+                    <input type="search" name="tolocation" placeholder="Enter a location" required>
+                </div>
+                <div class="input-box">
+                    <span>Pick-up Date</span>
+                    <input type="date" name="pickup_date" min="<?php echo date("Y-m-d"); ?>" required>
+                </div>
+                <div class="input-box">
+                    <span>Return Date</span>
+                    <input type="date" name="return_date" min="<?php echo date("Y-m-d"); ?>" required>
+                </div>
+                <div class="input-box">
+                    <label for="tripTypeSelect">Trip Type</label>
+                    <select name="triptype" id="tripTypeSelect" required>
+                        <option value="" disabled selected hidden>Select Trip Type</option>
+                        <option value="Inside Valley">Inside Valley</option>
+                        <option value="Outside Valley">Outside Valley</option>
+                    </select>
+                </div>
+                <a href="#"><button class="btns" onclick="validateForm()">Rent Now</button></a>
+            </form>
         </div>
     </section>
 
     
     <section class="footer">
-    <div class="copyright">
-        <p>Copyright © 2023 - CRP | All Rights Reserved</p>
-        <div class="social">
-            <a href="#"><i class='bx bxl-facebook'></i></a>
-            <a href="#"><i class='bx bxl-twitter'></i></a>
-            <a href="#"><i class='bx bxl-instagram'></i></a>
+        <div class="copyright">
+            <p>Copyright © 2023 - CRP | All Rights Reserved</p>
+            <div class="social">
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter'></i></a>
+                <a href="#"><i class='bx bxl-instagram'></i></a>
+            </div>
         </div>
-    </div>
     </section>
-    
-    <!-- ScrollReveal -->
-    <!-- <script src="https://unpkg.com/scrollreveal"></script> -->
-    <!-- Link To JS -->
+
     <script src="js/main.js"></script>
     <script>
         // JavaScript code to toggle the profile menu
@@ -304,8 +343,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 noResultsMessage.style.display = resultsFound ? "none" : "block";
             });
         });
+        function validateForm() {
+        const form = document.getElementById("rentForm");
+        if (form.checkValidity()) {
+            // If the form is valid, submit it
+            form.submit();
+        } else {
+            // If the form is invalid, display validation messages
+            form.reportValidity();
+        }
+    }
     </script>
-    
 
 </body>
 </html>
