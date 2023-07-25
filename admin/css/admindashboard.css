@@ -582,6 +582,42 @@ button {
   padding: 5px;
   border-radius: 5px
 }
+/* Add this CSS code to your existing CSS file or create a new one */
+.nav-links .sub-menu {
+  display: none;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links .sub-menu.active {
+  display: block;
+  position: absolute;
+  background-color: #0A2558;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.nav-links .sub-menu.active li {
+  padding: 10px;
+}
+
+.nav-links .sub-menu.active li a {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+.nav-links .sub-menu.active li a:hover {
+  background-color: #081D45;
+}
+.sub-menu-item {
+  transition: transform 0.3s ease;
+}
+
 
 
 

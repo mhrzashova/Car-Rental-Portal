@@ -41,21 +41,39 @@
           </a>
         </li>
         <li>
+          <a href="#" id="bookingsMenu">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Bookings</span>
+            <i class='bx bxs-chevron-down arrow'></i>
+          </a>
+          <ul class="sub-menu" id="bookingsSubMenu">
+            <li>
+              <a href="#">
+                <span class="links_name">New</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="links_name">Confirmed</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="links_name">Cancelled</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu-item" id="analyticsItem">
           <a href="#">
-            <i class='bx bx-pie-chart-alt-2' ></i>
+            <i class='bx bx-pie-chart-alt-2'></i>
             <span class="links_name">Analytics</span>
           </a>
         </li>
-        <li>
+        <li class="sub-menu-item" id="stockItem">
           <a href="#">
-            <i class='bx bx-coin-stack' ></i>
+            <i class='bx bx-coin-stack'></i>
             <span class="links_name">Stock</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Total order</span>
           </a>
         </li>
         <li class="log_out">
@@ -144,16 +162,40 @@
   </section>
 
   <script>
-   let sidebar = document.querySelector(".sidebar");
-let sidebarBtn = document.querySelector(".sidebarBtn");
-sidebarBtn.onclick = function() {
-  sidebar.classList.toggle("active");
-  if(sidebar.classList.contains("active")){
-  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
-}else
-  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-}
- </script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+      sidebar.classList.toggle("active");
+      if(sidebar.classList.contains("active")){
+      sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    // Get the "Analytics" and "Stock" menu elements
+    const analyticsItem = document.getElementById("analyticsItem");
+    const stockItem = document.getElementById("stockItem");
+    const bookingsSubMenu = document.getElementById("bookingsSubMenu");
+
+    // Function to toggle the visibility of "Analytics" and "Stock" items
+    function toggleSubItems() {
+      bookingsSubMenu.classList.toggle("active");
+
+      // Calculate the height of the sub-menu
+      const subMenuHeight = bookingsSubMenu.offsetHeight;
+
+      // Adjust the position of the "Analytics" and "Stock" items
+      if (bookingsSubMenu.classList.contains("active")) {
+        analyticsItem.style.transform = `translateY(${subMenuHeight}px)`;
+        stockItem.style.transform = `translateY(${subMenuHeight}px)`;
+      } else {
+        analyticsItem.style.transform = "translateY(0)";
+        stockItem.style.transform = "translateY(0)";
+      }
+    }
+
+    // Attach a click event listener to the "Bookings" menu
+    bookingsMenu.addEventListener("click", toggleSubItems);
+  </script>
 
 </body>
 </html>

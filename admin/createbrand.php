@@ -72,21 +72,39 @@ if (isset($_POST['create'])) {
           </a>
         </li>
         <li>
+          <a href="#" id="bookingsMenu">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Bookings</span>
+            <i class='bx bxs-chevron-down arrow'></i>
+          </a>
+          <ul class="sub-menu" id="bookingsSubMenu">
+            <li>
+              <a href="#">
+                <span class="links_name">New</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="links_name">Confirmed</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="links_name">Cancelled</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu-item" id="analyticsItem">
           <a href="#">
-            <i class='bx bx-pie-chart-alt-2' ></i>
+            <i class='bx bx-pie-chart-alt-2'></i>
             <span class="links_name">Analytics</span>
           </a>
         </li>
-        <li>
+        <li class="sub-menu-item" id="stockItem">
           <a href="#">
-            <i class='bx bx-coin-stack' ></i>
+            <i class='bx bx-coin-stack'></i>
             <span class="links_name">Stock</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Total order</span>
           </a>
         </li>
         <li class="log_out">
@@ -145,18 +163,8 @@ if (isset($_POST['create'])) {
     </div>
   </section>
 
-  <script>
-   let sidebar = document.querySelector(".sidebar");
-let sidebarBtn = document.querySelector(".sidebarBtn");
-sidebarBtn.onclick = function() {
-  sidebar.classList.toggle("active");
-  if(sidebar.classList.contains("active")){
-  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
-}else
-  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-}
-
- </script>
+<!-- Link To JS -->
+<script src="js/all.js"></script>
 
 </body>
 </html>
