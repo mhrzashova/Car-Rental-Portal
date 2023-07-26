@@ -48,57 +48,6 @@
             <h1><span>Looking</span> to <br>rent a car</h1>
             <p>Connecting you to the biggest brands in car rental.<br>Rent it out.</p>
         </div>
-
-        <!-- <div class="form-container">
-            <form action="">
-                <div class="input-box">
-                    <span>From</span>
-                    <input type="search" name="" id="" placeholder="Enter a location">
-                </div>
-                <div class="input-box">
-                    <span>To</span>
-                    <input type="search" name="" id="" placeholder="Enter a location">
-                </div>
-                <div class="input-box">
-                    <span>Pick-up Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="input-box">
-                    <span>Return Date</span>
-                    <input type="date" name="" id="" min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="input-box">
-                    <span>Trip Type</span>
-                    <select name="type">
-                        <option hidden>Choose</option>
-                        <option>Inside Valley</option>
-                        <option>Outside Valley</option>
-                    </select>
-                </div>
-                <div class="input-box">
-                    <span>Brand Name</span>
-
-                    <div class="brand">
-                    <select class="selectpicker" name="brand" required>
-                        <?php
-                        // $connection = new mysqli("localhost", "root", "", "carrentalportal");
-                        // $getBrandQuery = "SELECT brand_id, brandname FROM brand";
-                        // $brandResult = $connection->query($getBrandQuery);
-
-                        // if ($brandResult && $brandResult->num_rows > 0) {
-                        //     echo "<option value='' hidden>Choose</option>"; // Move this line outside the while loop
-                        //     while ($brand = $brandResult->fetch_object()) {
-                        //         echo "<option value='" . $brand->brand_id . "'>" . $brand->brandname . "</option>";
-                        //     }
-                        // }
-                        ?>
-                        </select>
-                    </div>
-                </div>
-                <input type="submit" value="Search" class="btn">
-            </form>
-        </div> -->
-
     </section>
     <!-- Ride -->
     <section class="ride" id="ride">
