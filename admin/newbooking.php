@@ -64,7 +64,7 @@
             }
 
             // Fetch customers from the database
-            $query = "SELECT * FROM booking";
+            $query = "SELECT * FROM booking where status='0'";
             $result = $connection->query($query);
 
             // Check if there are any customers

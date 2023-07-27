@@ -24,6 +24,7 @@
       <a href="viewbooking.php">
       <?php 
               session_start();
+             
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
                 //yedi session xaina vane login ma pathaidine
@@ -95,11 +96,11 @@
         </table>
         <br>
         <form action="confirmbooking.php" method="post" style="display: inline;">
-          <!-- <input type="hidden" value="<?= $row['book_id'] ?>" name="confirm_booking"> -->
+          <input type="hidden" value="<?php echo $row['book_id'] ?>" name="confirm_booking">
           <input type="submit" value="Confirm Booking" name="confirm">
         </form>
         <form action="cancelbooking.php" method="post" style="display: inline;">
-          <!-- <input type="hidden" value="<?= $row['book_id'] ?>" name="cancel_booking"> -->
+          <input type="hidden" value="<?php echo $row['book_id'] ?>" name="cancel_booking">
           <input type="submit" value="Cancel Booking" name="cancel">
         </form>
         <?php

@@ -36,19 +36,22 @@
           </a>
           <ul class="sub-menu" id="bookingsSubMenu">
             <li>
-              <a href="newbooking.php">
+              <!-- <a href="newbooking.php">
                 <span class="links_name">New</span>
-              </a>
+              </a> -->
+              <form action="newbooking.php" method="post">
+                <input type="submit" value="New" name="new">
+              </form>
             </li>
             <li>
-              <a href="confirmbooking.php">
-                <span class="links_name">Confirmed</span>
-              </a>
+              <form action="confirmbooking.php" method="post">
+                <input type="submit" value="Confirmed" name="confirm_booking">
+              </form>
             </li>
             <li>
-              <a href="cancelbooking.php">
-                <span class="links_name">Cancelled</span>
-              </a>
+              <form action="cancelbooking.php" method="post">
+                <input type="submit" value="Cancelled" name="cancel_booking">
+              </form>
             </li>
           </ul>
         </li>

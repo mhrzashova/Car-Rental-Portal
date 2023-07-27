@@ -23,7 +23,25 @@
       </div>
       <div class="profile-details">
       <a href="confirmbooking.php">
-      <?php 
+     
+      <?php
+        
+              if(isset($_POST['confirm'])){
+                $confirm_booking=$_POST['confirm_booking'];
+                
+                $connection = new mysqli("localhost", "root", "", "carrentalportal");
+                if ($connection->connect_errno != 0) {
+                  die("<h1>404 Error Not Found</h1>");
+                  }
+                  $query = "update booking set status='1' WHERE book_id='$confirm_booking'";
+                  $result = $connection->query($query);
+                  if($result)
+                  {
+                    echo "
+                    <script>alert('Confirmed Successfully.');</script>
+                    ";
+                  }
+              }
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
@@ -66,7 +84,7 @@
 
            // Fetch booking details using the provided book_id
             $book_id = $_POST['confirm_booking'];
-            $query = "SELECT * FROM booking WHERE book_id = '$book_id'";
+            $query = "SELECT * FROM booking WHERE status = '1'";
             $result = $connection->query($query);
 
             // Check if there are any customers
@@ -86,7 +104,7 @@
                     <td>".$row['status']."</td>
                     <td>".$row['creationdate']."</td>
                     <td>
-                        <form action='viewconfirm.php' method='post'>
+                        <form action='bookingdetails.php' method='post'>
                             <input type='hidden' value='".$row['book_id']."' name='viewconfirm_booking'>
                             <input type='submit' value = 'View' name='view'>
                         </form> 
@@ -95,7 +113,7 @@
                 ";
                 }
             } else {
-                echo "<tr><td colspan='3'>No booking found.</td></tr>";
+                echo "<tr><td colspan='3'>No confirmed booking found.</td></tr>";
             }
 
             // Close the database connection

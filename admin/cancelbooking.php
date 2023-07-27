@@ -24,6 +24,22 @@
       <div class="profile-details">
       <a href="cancelbooking.php">
       <?php 
+              if(isset($_POST['cancel'])){
+                $cancel_booking=$_POST['cancel_booking'];
+                
+                $connection = new mysqli("localhost", "root", "", "carrentalportal");
+                if ($connection->connect_errno != 0) {
+                  die("<h1>404 Error Not Found</h1>");
+                  }
+                  $query = "update booking set status='-1' WHERE book_id='$cancel_booking'";
+                  $result = $connection->query($query);
+                  if($result)
+                  {
+                    echo "
+                    <script>alert('Cancelled Successfully.');</script>
+                    ";
+                  }
+              }
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
               {
@@ -52,6 +68,7 @@
                 <th>Trip Type</th>
                 <th>Status</th>
                 <th>Creation Date</th>
+                <th>Action</th>
             </tr>
             <?php
             if (isset($_POST['cancel_booking'])) {
@@ -65,29 +82,37 @@
 
             // Fetch booking details using the provided book_id
             $book_id = $_POST['cancel_booking'];
-            $query = "SELECT * FROM booking WHERE book_id = '$book_id'";
+            $query = "SELECT * FROM booking WHERE status = '-1'";
             $result = $connection->query($query);
 
             // Check if there are any customers
             if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['bookingnumber'] . "</td>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['vehicleid'] . "</td>";
-                    echo "<td>" . $row['fromlocation'] . "</td>";
-                    echo "<td>" . $row['tolocation'] . "</td>";
-                    echo "<td>" . $row['pickup_date'] . "</td>";
-                    echo "<td>" . $row['return_date'] . "</td>";
-                    echo "<td>" . $row['triptype'] . "</td>";
-                    echo "<td>" . $row['status'] . "</td>";
-                    echo "<td>" . $row['creationdate'] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No cancelled vehicle found.</td></tr>";
-            }
+              while ($row = $result->fetch_assoc()) {
+                  echo "
+                  <tr>
+                  <td>".$row['book_id']."</td>
+                  <td>".$row['bookingnumber']."</td>
+                  <td>".$row['user_id']."</td>
+                  <td>".$row['vehicleid']."</td>
+                  <td>".$row['fromlocation']."</td>
+                  <td>".$row['tolocation']."</td> 
+                  <td>".$row['pickup_date']."</td> 
+                  <td>".$row['return_date']."</td> 
+                  <td>".$row['triptype']."</td> 
+                  <td>".$row['status']."</td>
+                  <td>".$row['creationdate']."</td>
+                  <td>
+                      <form action='bookingdetails.php' method='post'>
+                          <input type='hidden' value='".$row['book_id']."' name='viewcancel_booking'>
+                          <input type='submit' value = 'View' name='view'>
+                      </form> 
+              </td>           
+              </tr>
+              ";
+              }
+          } else {
+              echo "<tr><td colspan='3'>No cancelled booking found.</td></tr>";
+          }
 
             // Close the database connection
             $connection->close();
