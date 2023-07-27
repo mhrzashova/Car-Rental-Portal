@@ -660,9 +660,9 @@ header {
     }  
     .error-message {
         color: red;
-        font-weight: bold;
-        text-align: center;
+        font-size: 18px;
         margin-top: 20px;
+        text-align: center;
     }
 
     .success-message {

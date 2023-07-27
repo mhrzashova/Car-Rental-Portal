@@ -10,6 +10,8 @@ if(!isset($_SESSION['users']))//databse ko table ko nam
 $row = $_SESSION['users'];
 $user_id = $row['user_id'];// yo important way ho uesr_id collect garne
 
+$message = array();
+
 if(isset($_POST['update_profile'])){
    
    $update_image = $_FILES['update_image']['name'];
@@ -31,7 +33,7 @@ if(isset($_POST['update_profile'])){
          if ($width > $allowed_width || $height > $allowed_height) {
             $message[] = 'Image dimensions exceed the maximum allowed size (350px x 350px).';
          } elseif ($update_image_size > 2000000) {
-       $message[] = 'Image file size is too large (maximum allowed: 2MB).';
+            $message[] = 'Image file size is too large (maximum allowed: 2MB).';
          } else {
             $image_update_query = mysqli_query($connection, "UPDATE `users` SET image = '$update_image' WHERE user_id = '$user_id'") or die('Query failed');
             if ($image_update_query) {
@@ -57,7 +59,12 @@ if(isset($_POST['update_profile'])){
                $message[] = 'License Updated  successfully!';
             }
          }
-      }
+         if (!empty($message)) {
+            $error_message = implode('<br>', $message);
+            header("Location: update_profile.php?message=$error_message");
+            exit();
+        }
+    }
 
 ?>
 
@@ -78,6 +85,7 @@ if(isset($_POST['update_profile'])){
 <div class="update-profile">
 
    <?php
+   
       $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('query failed');
       if(mysqli_num_rows($select) > 0){
          $fetch = mysqli_fetch_assoc($select);
@@ -90,6 +98,9 @@ if(isset($_POST['update_profile'])){
   
 
 <div class="flex">
+<?php if (isset($_GET['message'])): ?>
+      <p class="error-message"><?php echo $_GET['message']; ?></p>
+   <?php endif; ?>
       <?php 
          if($fetch['image'] == ''){
             echo '<img src="images/default-avatar.png">';
@@ -119,6 +130,7 @@ if(isset($_POST['update_profile'])){
       <input type="submit" value="Update Profile" name="update_profile" class="btn">
       <a href="userdashboard.php" class="delete-btn">Go To Dashboard</a>
    </form>
+   
 
 </div>
 

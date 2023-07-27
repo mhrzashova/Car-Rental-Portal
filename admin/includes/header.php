@@ -36,17 +36,17 @@
           </a>
           <ul class="sub-menu" id="bookingsSubMenu">
             <li>
-              <a href="new.php">
+              <a href="newbooking.php">
                 <span class="links_name">New</span>
               </a>
             </li>
             <li>
-              <a href="confirm.php">
+              <a href="confirmbooking.php">
                 <span class="links_name">Confirmed</span>
               </a>
             </li>
             <li>
-              <a href="cancel.php">
+              <a href="cancelbooking.php">
                 <span class="links_name">Cancelled</span>
               </a>
             </li>

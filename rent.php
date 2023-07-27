@@ -97,98 +97,98 @@ $user_id = $_SESSION['users']['user_id'];
 
         <div class="services-container" id="vehicle-container">
         <?php
-        include 'config.php';
+include 'config.php';
 
-        if (!isset($_SESSION['users']) || !is_array($_SESSION['users'])) {
-            header("Location: login.php");
-            exit();
-        }
+if (!isset($_SESSION['users']) || !is_array($_SESSION['users'])) {
+    header("Location: login.php");
+    exit();
+}
 
-        $user_id = $_SESSION['users']['user_id'];
+$user_id = $_SESSION['users']['user_id'];
 
-        // Step 1: Check if the vehicleid is provided in the URL
-        if (isset($_GET['vehicleid'])) {
-            $vehicleid = $_GET['vehicleid'];
+// Step 1: Check if the vehicleid is provided in the URL
+if (isset($_GET['vehicleid'])) {
+    $vehicleid = $_GET['vehicleid'];
 
-            // Step 2: Fetch the vehicle details from the database
-            $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
-            $result = mysqli_query($connection, $query);
+    // Step 2: Fetch the vehicle details from the database
+    $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
+    $result = mysqli_query($connection, $query);
 
-            if ($result === false) {
-                // Display the specific error message returned by the database
-                die( "Error: " . mysqli_error($connection));
-                // Stop the script execution to prevent further issues
+    if ($result === false) {
+        // Display the specific error message returned by the database
+        die( "Error: " . mysqli_error($connection));
+         // Stop the script execution to prevent further issues
+    }
+
+    // Check if a vehicle was found with the given ID
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        // Display the vehicle image, name, and price per day
+        echo "<div class='box'>";
+        echo "<div class='box-img'>";
+        echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
+        echo "</div>";
+        echo "<h3>" . $row['vehiclename'] . "</h3>";
+        echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
+        echo "<h4>Brand: " . $row['brandname'] . "</h4>";
+        echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
+        echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
+        echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
+        echo "</div>";
+          
+        $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid";
+        $result = mysqli_query($connection, $query);
+        $ustatus=0;
+        while($row=mysqli_fetch_assoc($result))
+        {
+            if($row['user_id']==$user_id && $row['vehicleid']==$vehicleid)
+            {
+                $ustatus=1;
             }
 
-            // Check if a vehicle was found with the given ID
-            if (mysqli_num_rows($result) > 0) {
-                $row = mysqli_fetch_assoc($result);
-                // Display the vehicle image, name, and price per day
-                echo "<div class='box'>";
-                echo "<div class='box-img'>";
-                echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
-                echo "</div>";
-                echo "<h3>" . $row['vehiclename'] . "</h3>";
-                echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
-                echo "<h4>Brand: " . $row['brandname'] . "</h4>";
-                echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
-                echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
-                echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
-                echo "</div>";
-                
-                $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid";
-                $result = mysqli_query($connection, $query);
-                $ustatus=0;
-                while($row=mysqli_fetch_assoc($result))
-                {
-                    if($row['user_id']==$user_id && $row['vehicleid']==$vehicleid)
-                    {
-                        $ustatus=1;
-                    }
-
-                }
-
-                // Check if the vehicle is available for booking
-                if ($ustatus==1) {
-                    echo "<p class='error-message'>The vehicle is already booked. You cannot proceed with the booking.</p>";
-                } else {
-                    // Vehicle is available, show the booking form
-                    echo "
-                        <form action='rent.php' method='POST' id='rentForm'>
-                            <input type='hidden' name='vehicleid' value='$vehicleid'>
-                            <div class='input-box'>
-                                <span>From</span>
-                                <input type='search' name='fromlocation' placeholder='Enter a location' required>
-                            </div>
-                            <div class='input-box'>
-                                <span>To</span>
-                                <input type='search' name='tolocation' placeholder='Enter a location' required>
-                            </div>
-                            <div class='input-box'>
-                                <span>Pick-up Date</span>
-                                <input type='date' name='pickup_date' min='" . date("Y-m-d") . "' required>
-                            </div>
-                            <div class='input-box'>
-                                <span>Return Date</span>
-                                <input type='date' name='return_date' min='" . date("Y-m-d") . "' required>
-                            </div>
-                            <div class='input-box'>
-                                <label for='tripTypeSelect'>Trip Type</label>
-                                <select name='triptype' id='tripTypeSelect' required>
-                                    <option value='' disabled selected hidden>Select Trip Type</option>
-                                    <option value='Inside Valley'>Inside Valley</option>
-                                    <option value='Outside Valley'>Outside Valley</option>
-                                </select>
-                            </div>
-                            <button type='button' class='btns' onclick='validateForm()'>Rent Now</button>
-                        </form>
-                    ";
-                }
-            } else {
-                // Vehicle not found in the database, show an error message or redirect to an error page
-                exit("Error: Vehicle not found.");
-            }
         }
+
+        // Check if the vehicle is available for booking
+        if ($ustatus==1) {
+            echo "<p class='error-message'>The vehicle is already booked. You cannot proceed with the booking.</p>";
+        } else {
+            // Vehicle is available, show the booking form
+            echo "
+                <form action='rent.php' method='POST' id='rentForm'>
+                    <input type='hidden' name='vehicleid' value='$vehicleid'>
+                    <div class='input-box'>
+                        <span>From</span>
+                        <input type='search' name='fromlocation' placeholder='Enter a location' required>
+                    </div>
+                    <div class='input-box'>
+                        <span>To</span>
+                        <input type='search' name='tolocation' placeholder='Enter a location' required>
+                    </div>
+                    <div class='input-box'>
+                        <span>Pick-up Date</span>
+                        <input type='date' name='pickup_date' min='" . date("Y-m-d") . "' required>
+                    </div>
+                    <div class='input-box'>
+                        <span>Return Date</span>
+                        <input type='date' name='return_date' min='" . date("Y-m-d") . "' required>
+                    </div>
+                    <div class='input-box'>
+                        <label for='tripTypeSelect'>Trip Type</label>
+                        <select name='triptype' id='tripTypeSelect' required>
+                            <option value='' disabled selected hidden>Select Trip Type</option>
+                            <option value='Inside Valley'>Inside Valley</option>
+                            <option value='Outside Valley'>Outside Valley</option>
+                        </select>
+                    </div>
+                    <button type='button' class='btns' onclick='validateForm()'>Rent Now</button>
+                </form>
+            ";
+        }
+    } else {
+        // Vehicle not found in the database, show an error message or redirect to an error page
+        exit("Error: Vehicle not found.");
+    }
+}
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Retrieve form data
             $fromlocation = $_POST['fromlocation'];
@@ -201,6 +201,18 @@ $user_id = $_SESSION['users']['user_id'];
             // Retrieve the vehicleid from the hidden field in the form
             $vehicleid = $_POST['vehicleid'];
 
+            // Step 1: Check if the user has uploaded their license image
+            $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
+            if (mysqli_num_rows($select) > 0) {
+                $fetch = mysqli_fetch_assoc($select);
+                if (empty($fetch['l_image'])) {
+                    // Step 2: Redirect the user to the "update_profile.php" page with a message
+                    header("Location: update_profile.php?message=Please upload your license image before proceeding with the booking.");
+                    exit();
+                }
+            }
+
+            // Step 3: If the user has uploaded the license image, proceed with the booking process
             // Insert data into the booking table
             $insert_query = "INSERT INTO booking (bookingnumber, user_id, vehicleid, fromlocation, tolocation, pickup_date, return_date, triptype, status) 
                             VALUES ('$bookingnumber', '$user_id', '$vehicleid', '$fromlocation', '$tolocation', '$pickup_date', '$return_date', '$triptype', $status)";
@@ -214,6 +226,7 @@ $user_id = $_SESSION['users']['user_id'];
             }
         }
         ?>
+
         </div>
     </section>
 
@@ -280,3 +293,4 @@ $user_id = $_SESSION['users']['user_id'];
 
 </body>
 </html>
+

@@ -22,7 +22,7 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="customerlist.php">
+      <a href="confirmbooking.php">
       <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
@@ -38,10 +38,10 @@
       </div>
     </nav>
     <div class="home-content">
-    <legend>Cancelled Booking</legend>
+    <legend>Confirmed Booking</legend>
         <table>
             <tr>
-            <th>Book Id</th>
+                <th>Book Id</th>
                 <th>Booking Number</th>
                 <th>User Id</th>
                 <th>Vehicle Id</th>
@@ -52,10 +52,11 @@
                 <th>Trip Type</th>
                 <th>Status</th>
                 <th>Creation Date</th>
+                <th>Action</th>
             </tr>
             <?php
-            if (isset($_POST['view_booking'])) {
             // Database connection
+            if (isset($_POST['confirm_booking'])) {
             $connection = new mysqli("localhost", "root", "", "carrentalportal");
 
             // Checking connection
@@ -63,30 +64,38 @@
                 die("<h1>404 Error Not Found</h1>");
             }
 
-            // Fetch booking details using the provided book_id
-            $book_id = $_POST['cancel_booking'];
+           // Fetch booking details using the provided book_id
+            $book_id = $_POST['confirm_booking'];
             $query = "SELECT * FROM booking WHERE book_id = '$book_id'";
             $result = $connection->query($query);
 
             // Check if there are any customers
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['bookingnumber'] . "</td>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>" . $row['vehicleid'] . "</td>";
-                    echo "<td>" . $row['fromlocation'] . "</td>";
-                    echo "<td>" . $row['tolocation'] . "</td>";
-                    echo "<td>" . $row['pickup_date'] . "</td>";
-                    echo "<td>" . $row['return_date'] . "</td>";
-                    echo "<td>" . $row['triptype'] . "</td>";
-                    echo "<td>" . $row['status'] . "</td>";
-                    echo "<td>" . $row['creationdate'] . "</td>";
-                    echo "</tr>";
+                    echo "
+                    <tr>
+                    <td>".$row['book_id']."</td>
+                    <td>".$row['bookingnumber']."</td>
+                    <td>".$row['user_id']."</td>
+                    <td>".$row['vehicleid']."</td>
+                    <td>".$row['fromlocation']."</td>
+                    <td>".$row['tolocation']."</td> 
+                    <td>".$row['pickup_date']."</td> 
+                    <td>".$row['return_date']."</td> 
+                    <td>".$row['triptype']."</td> 
+                    <td>".$row['status']."</td>
+                    <td>".$row['creationdate']."</td>
+                    <td>
+                        <form action='viewconfirm.php' method='post'>
+                            <input type='hidden' value='".$row['book_id']."' name='viewconfirm_booking'>
+                            <input type='submit' value = 'View' name='view'>
+                        </form> 
+                </td>           
+                </tr>
+                ";
                 }
             } else {
-                echo "<tr><td colspan='3'>No cancelled vehicle found.</td></tr>";
+                echo "<tr><td colspan='3'>No booking found.</td></tr>";
             }
 
             // Close the database connection

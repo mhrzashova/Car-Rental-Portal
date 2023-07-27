@@ -4,15 +4,40 @@
   <meta charset="UTF-8">
   <title>Booking Details</title>
   <link rel="stylesheet" href="css/customerlist.css">
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <?php include('includes/header.php');?>
 
 <section class="home-section">
+<nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard"></span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+      <a href="viewbooking.php">
+      <?php 
+              session_start();
+              if(!isset($_SESSION['admin']))//databse ko table ko nam
+              {
+                //yedi session xaina vane login ma pathaidine
+                header("Location:index.php");
+              }
+              $row = $_SESSION['admin'];
+              $adminid = $row['adminid'];
+              echo ($row['email']); 
+              ?>
+            </a>
+      </div>
+    </nav>
   <div class="home-content">
     <?php
-    session_start();
     // Check if user is logged in as admin
     if(!isset($_SESSION['admin'])) {
       // Redirect to login page if not logged in
@@ -69,12 +94,12 @@
           </tr>
         </table>
         <br>
-        <form action="confirm.php" method="post" style="display: inline;">
-          <input type="hidden" value="<?= $row['book_id'] ?>" name="confirm_booking">
+        <form action="confirmbooking.php" method="post" style="display: inline;">
+          <!-- <input type="hidden" value="<?= $row['book_id'] ?>" name="confirm_booking"> -->
           <input type="submit" value="Confirm Booking" name="confirm">
         </form>
-        <form action="cancel.php" method="post" style="display: inline;">
-          <input type="hidden" value="<?= $row['book_id'] ?>" name="cancel_booking">
+        <form action="cancelbooking.php" method="post" style="display: inline;">
+          <!-- <input type="hidden" value="<?= $row['book_id'] ?>" name="cancel_booking"> -->
           <input type="submit" value="Cancel Booking" name="cancel">
         </form>
         <?php

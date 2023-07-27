@@ -22,7 +22,7 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-      <a href="new.php">
+      <a href="newbooking.php">
       <?php 
               session_start();
               if(!isset($_SESSION['admin']))//databse ko table ko nam
@@ -84,7 +84,7 @@
                     <td>".$row['status']."</td>
                     <td>".$row['creationdate']."</td>
                     <td>
-                        <form action='view.php' method='post'>
+                        <form action='viewbooking.php' method='post'>
                             <input type='hidden' value='".$row['book_id']."' name='view_booking'>
                             <input type='submit' value = 'View' name='view'>
                         </form> 
