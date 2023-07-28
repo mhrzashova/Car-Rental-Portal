@@ -201,6 +201,12 @@ $user_id = $_SESSION['users']['user_id'];
             // Retrieve the vehicleid from the hidden field in the form
             $vehicleid = $_POST['vehicleid'];
 
+            // Validate pickup_date and return_date
+            if (strtotime($pickup_date) >= strtotime($return_date)) {
+                echo "<p class='error-message'>Return date should be after the pickup date.</p>";
+                exit();
+            }
+
             // Step 1: Check if the user has uploaded their license image
             $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
             if (mysqli_num_rows($select) > 0) {
