@@ -206,6 +206,17 @@ $user_id = $_SESSION['users']['user_id'];
                 echo "<p class='error-message'>Return date should be after the pickup date.</p>";
                 exit();
             }
+            // Check vehicle availability
+            $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid";
+            $result = mysqli_query($connection, $query);
+            $ustatus = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                if (($row['pickup_date'] <= $return_date && $row['return_date'] >= $pickup_date) ||
+                    ($pickup_date <= $row['return_date'] && $return_date >= $row['pickup_date'])) {
+                    $ustatus = 1; // Overlapping dates, vehicle is not available
+                    break; // No need to check further, exit the loop
+                }
+            }
 
             // Step 1: Check if the user has uploaded their license image
             $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');

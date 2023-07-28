@@ -84,7 +84,72 @@ while ($row = mysqli_fetch_assoc($result)) {
     .my-bookings h3 {
         text-align: center;
     }
-    
+
+    /* New CSS for the updated layout */
+    .my-bookings .vehicle-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .my-bookings .vehicle-card h3 {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .my-bookings .vehicle-bookings {
+        margin-top: 20px;
+    }
+
+    .my-bookings .vehicle-bookings table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .my-bookings .vehicle-bookings th,
+    .my-bookings .vehicle-bookings td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .my-bookings .vehicle-bookings th {
+        background-color: #f2f2f2;
+    }
+
+    .my-bookings .vehicle-bookings tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    .my-bookings .invoice-details {
+        margin-top: 20px;
+    }
+
+    .my-bookings .invoice-details table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .my-bookings .invoice-details th,
+    .my-bookings .invoice-details td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .my-bookings .invoice-details th {
+        background-color: #f2f2f2;
+    }
+
+    .my-bookings .invoice-details tr:hover {
+        background-color: #f2f2f2;
+    }
+
     /* CSS to center and enlarge the vehicle image */
     .vehicle-image-container {
         display: flex;
@@ -185,70 +250,76 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
 
         <?php
-        // Check if any bookings found for the user
-        if (!empty($bookings_by_vehicle)) {
-            foreach ($bookings_by_vehicle as $vehicle_id => $vehicle_data) {
-                // Display vehicle image and name as a heading
+// Check if any bookings found for the user
+if (!empty($bookings_by_vehicle)) {
+    foreach ($bookings_by_vehicle as $vehicle_id => $vehicle_data) {
+        // Display vehicle card
+        echo '<div class="vehicle-card">';
+        echo '<div class="vehicle-image-container">';
+        echo '<img src="uploaded_img/' . $vehicle_data['vehicleimages'] . '" alt="Vehicle Image">';
+        echo '</div>';
+        // Display vehicle name as a heading
+        echo '<h3>' . $vehicle_data['vehiclename'] . '</h3>';
+        // Display bookings for the current vehicle
+        echo '<div class="vehicle-bookings">';
+        echo '<h4>My bookings</h4>';
+        echo '<table>';
+        echo '<tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Booking Status</th>
+            </tr>';
 
-                echo '<div class="vehicle-image-container">';
-                echo '<img src="uploaded_img/' . $vehicle_data['vehicleimages'] . '" alt="Vehicle Image">';
-                echo '</div>';
-                // Display bookings for the current vehicle
-                echo '<h3>My bookings</h3>';
-                echo '<table>';
-                echo '<tr>
-                        <th>Vehicle Name</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Booking Status</th>
-                    </tr>';
+        foreach ($vehicle_data['bookings'] as $booking) {
+            // Display booked vehicle details in the bookings table
+            echo "<tr>";
+            echo "<td>" . $booking['pickup_date'] . "</td>";
+            echo "<td>" . $booking['return_date'] . "</td>";
+            // Add a class based on the booking status (completed, cancelled, or pending)
+            $statusClass = ($booking['status'] == 1 ? 'completed' : ($booking['status'] == -1 ? 'cancelled' : 'pending'));
+            echo "<td class='booking-status'><span class='" . $statusClass . "'>" . ($booking['status'] == 1 ? 'Completed' : ($booking['status'] == -1 ? 'Cancelled' : 'Pending')) . "</span></td>";
+            echo "</tr>";
+        }
 
-                    foreach ($vehicle_data['bookings'] as $booking) {
-                        // Display booked vehicle details in the bookings table
-                        echo "<tr>";
-                        echo "<td>" . $booking['vehiclename'] . "</td>";
-                        echo "<td>" . $booking['pickup_date'] . "</td>";
-                        echo "<td>" . $booking['return_date'] . "</td>";
-                        // Add a class based on the booking status (completed, cancelled, or pending)
-                        $statusClass = ($booking['status'] == 1 ? 'completed' : ($booking['status'] == -1 ? 'cancelled' : 'pending'));
-                        echo "<td class='booking-status'><span class='" . $statusClass . "'>" . ($booking['status'] == 1 ? 'Completed' : ($booking['status'] == -1 ? 'Cancelled' : 'Pending')) . "</span></td>";
-                        echo "</tr>";
-                }
+        echo '</table>';
+        echo '</div>'; // Close vehicle-bookings container
 
-                echo '</table>';
+        // Display invoice details for the current vehicle
+        echo '<div class="invoice-details">';
+        echo '<h4>Invoice</h4>';
+        echo '<table>';
+        echo '<tr>
+                <th>Booking Number</th>
+                <th>Pick-up Date</th>
+                <th>Return Date</th>
+                <th>Total Days</th>
+                <th>Price per Day</th>
+                <th>Total Price</th>
+            </tr>';
 
-                // Display invoice details for the current vehicle
-                echo '<h3>Invoice</h3>';
-                echo '<table>';
-                echo '<tr>
-                        <th>Booking Number</th>
-                        <th>Pick-up Date</th>
-                        <th>Return Date</th>
-                        <th>Total Days</th>
-                        <th>Price per Day</th>
-                        <th>Total Price</th>
-                    </tr>';
+        foreach ($vehicle_data['bookings'] as $booking) {
+            // Calculate total days and total price for invoice
+            $pickup_date = new DateTime($booking['pickup_date']);
+            $return_date = new DateTime($booking['return_date']);
+            $total_days = $pickup_date->diff($return_date)->format("%a");
+            $total_price = $total_days * $vehicle_data['priceperday'];
 
-                foreach ($vehicle_data['bookings'] as $booking) {
-                    // Calculate total days and total price for invoice
-                    $pickup_date = new DateTime($booking['pickup_date']);
-                    $return_date = new DateTime($booking['return_date']);
-                    $total_days = $pickup_date->diff($return_date)->format("%a");
-                    $total_price = $total_days * $vehicle_data['priceperday'];
+            // Display invoice details in the invoice table
+            echo "<tr>";
+            echo "<td>" . $booking['bookingnumber'] . "</td>";
+            echo "<td>" . $booking['pickup_date'] . "</td>";
+            echo "<td>" . $booking['return_date'] . "</td>";
+            echo "<td>" . $total_days . "</td>";
+            echo "<td>Rs. " . $vehicle_data['priceperday'] . "</td>";
+            echo "<td>Rs. " . $total_price . "</td>";
+            echo "</tr>";
+        }
 
-                    // Display invoice details in the invoice table
-                    echo "<tr>";
-                    echo "<td>" . $booking['bookingnumber'] . "</td>";
-                    echo "<td>" . $booking['pickup_date'] . "</td>";
-                    echo "<td>" . $booking['return_date'] . "</td>";
-                    echo "<td>" . $total_days . "</td>";
-                    echo "<td>Rs. " . $vehicle_data['priceperday'] . "</td>";
-                    echo "<td>Rs. " . $total_price . "</td>";
-                    echo "</tr>";
-                }
+        echo '</table>';
+        echo '</div>'; // Close invoice-details container
 
-                echo '</table>';
-            }
+        echo '</div>'; // Close vehicle-card
+        }
         } else {
             // No bookings found for the user
             echo "<p>No bookings found.</p>";
