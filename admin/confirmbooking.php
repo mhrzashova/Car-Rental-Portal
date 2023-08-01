@@ -25,7 +25,6 @@
       <a href="confirmbooking.php">
      
       <?php
-        
               if(isset($_POST['confirm'])){
                 $confirm_booking=$_POST['confirm_booking'];
                 

@@ -178,70 +178,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <a href="#" class="logo"><img src="img/logo.png"></a>
-        <div class="bx bx-menu" id="menu-icon"></div>
+    <?php include('includes/header.php');?>
 
-        <ul class="navbar">
-            <li><a href="userdashboard.php">Home</a></li>
-            <li><a href="userdashboard.php">Ride</a></li>
-            <li><a href="userdashboard.php">Services</a></li>
-            <li><a href="userdashboard.php">About</a></li>
-            <li><a href="userdashboard.php">Reviews</a></li>
-        </ul>
-        
-        <div class="search">
-            <input class="srch" type="search" name="" id="brand-search" placeholder="Search for cars....">
-            <a href="#services"><button class="btn" >Search</button></a>
-        </div>
-        
-        <div class="action">
-            <div class="profile">
-                <?php
-                    $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
-                    if(mysqli_num_rows($select) > 0){
-                        $fetch = mysqli_fetch_assoc($select);
-                        if($fetch['image'] == ''){
-                            echo '<img src="images/avatar.png" alt="Profile Picture" width="40" height="40">';
-                        }else{
-                            echo '<img class="profile_pic" src="uploaded_img/'.$fetch['image'].'" alt="Profile Picture" width="40" height="40">';
-                        }
-                    }
-                ?>
-            </div>
-
-            <div class="p">
-            <h5><span>Profile</span></h5>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li>
-                        <?php
-                            $select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
-                            if(mysqli_num_rows($select) > 0){
-                            $fetch = mysqli_fetch_assoc($select);
-                            if($fetch['image'] == ''){
-                            echo '<img src="images/avatar.png">';
-                            }else{
-                            echo '<img src="uploaded_img/'.$fetch['image'].'">';
-                            }
-                            }
-                        ?>
-                        <a href="#"><?php echo ''.$fetch['full_name'].''; ?></a>
-                    </li>
-                    <li><img src="images/user.png"><a href="update_profile.php">Edit Profile</a></li>
-                    <!-- <li><img src="images/kyc.png"><a href="kyc.php">Update KYC</a></li> -->
-                    <li><img src="images/padlock.png"><a href="password.php">Change Password</a></li>
-                    <li><img src="images/car.png"><a href="mybooking.php">My Booking</a></li>
-                    <li><img src="images/log-out.png"><a href="index.php">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-        </div>
-    </header>
-
-    
     <!-- Services -->
     <section class="my-bookings">
         <div class="heading">
@@ -250,76 +188,76 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
 
         <?php
-// Check if any bookings found for the user
-if (!empty($bookings_by_vehicle)) {
-    foreach ($bookings_by_vehicle as $vehicle_id => $vehicle_data) {
-        // Display vehicle card
-        echo '<div class="vehicle-card">';
-        echo '<div class="vehicle-image-container">';
-        echo '<img src="uploaded_img/' . $vehicle_data['vehicleimages'] . '" alt="Vehicle Image">';
-        echo '</div>';
-        // Display vehicle name as a heading
-        echo '<h3>' . $vehicle_data['vehiclename'] . '</h3>';
-        // Display bookings for the current vehicle
-        echo '<div class="vehicle-bookings">';
-        echo '<h4>My bookings</h4>';
-        echo '<table>';
-        echo '<tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Booking Status</th>
-            </tr>';
+        // Check if any bookings found for the user
+        if (!empty($bookings_by_vehicle)) {
+            foreach ($bookings_by_vehicle as $vehicle_id => $vehicle_data) {
+                // Display vehicle card
+                echo '<div class="vehicle-card">';
+                echo '<div class="vehicle-image-container">';
+                echo '<img src="uploaded_img/' . $vehicle_data['vehicleimages'] . '" alt="Vehicle Image">';
+                echo '</div>';
+                // Display vehicle name as a heading
+                echo '<h3>' . $vehicle_data['vehiclename'] . '</h3>';
+                // Display bookings for the current vehicle
+                echo '<div class="vehicle-bookings">';
+                echo '<h4>My bookings</h4>';
+                echo '<table>';
+                echo '<tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Booking Status</th>
+                    </tr>';
 
-        foreach ($vehicle_data['bookings'] as $booking) {
-            // Display booked vehicle details in the bookings table
-            echo "<tr>";
-            echo "<td>" . $booking['pickup_date'] . "</td>";
-            echo "<td>" . $booking['return_date'] . "</td>";
-            // Add a class based on the booking status (completed, cancelled, or pending)
-            $statusClass = ($booking['status'] == 1 ? 'completed' : ($booking['status'] == -1 ? 'cancelled' : 'pending'));
-            echo "<td class='booking-status'><span class='" . $statusClass . "'>" . ($booking['status'] == 1 ? 'Completed' : ($booking['status'] == -1 ? 'Cancelled' : 'Pending')) . "</span></td>";
-            echo "</tr>";
-        }
+                foreach ($vehicle_data['bookings'] as $booking) {
+                    // Display booked vehicle details in the bookings table
+                    echo "<tr>";
+                    echo "<td>" . $booking['pickup_date'] . "</td>";
+                    echo "<td>" . $booking['return_date'] . "</td>";
+                    // Add a class based on the booking status (completed, cancelled, or pending)
+                    $statusClass = ($booking['status'] == 1 ? 'completed' : ($booking['status'] == -1 ? 'cancelled' : 'pending'));
+                    echo "<td class='booking-status'><span class='" . $statusClass . "'>" . ($booking['status'] == 1 ? 'Completed' : ($booking['status'] == -1 ? 'Cancelled' : 'Pending')) . "</span></td>";
+                    echo "</tr>";
+                }
 
-        echo '</table>';
-        echo '</div>'; // Close vehicle-bookings container
+                echo '</table>';
+                echo '</div>'; // Close vehicle-bookings container
 
-        // Display invoice details for the current vehicle
-        echo '<div class="invoice-details">';
-        echo '<h4>Invoice</h4>';
-        echo '<table>';
-        echo '<tr>
-                <th>Booking Number</th>
-                <th>Pick-up Date</th>
-                <th>Return Date</th>
-                <th>Total Days</th>
-                <th>Price per Day</th>
-                <th>Total Price</th>
-            </tr>';
+                // Display invoice details for the current vehicle
+                echo '<div class="invoice-details">';
+                echo '<h4>Invoice</h4>';
+                echo '<table>';
+                echo '<tr>
+                        <th>Booking Number</th>
+                        <th>Pick-up Date</th>
+                        <th>Return Date</th>
+                        <th>Total Days</th>
+                        <th>Price per Day</th>
+                        <th>Total Price</th>
+                    </tr>';
 
-        foreach ($vehicle_data['bookings'] as $booking) {
-            // Calculate total days and total price for invoice
-            $pickup_date = new DateTime($booking['pickup_date']);
-            $return_date = new DateTime($booking['return_date']);
-            $total_days = $pickup_date->diff($return_date)->format("%a");
-            $total_price = $total_days * $vehicle_data['priceperday'];
+                foreach ($vehicle_data['bookings'] as $booking) {
+                    // Calculate total days and total price for invoice
+                    $pickup_date = new DateTime($booking['pickup_date']);
+                    $return_date = new DateTime($booking['return_date']);
+                    $total_days = $pickup_date->diff($return_date)->format("%a");
+                    $total_price = $total_days * $vehicle_data['priceperday'];
 
-            // Display invoice details in the invoice table
-            echo "<tr>";
-            echo "<td>" . $booking['bookingnumber'] . "</td>";
-            echo "<td>" . $booking['pickup_date'] . "</td>";
-            echo "<td>" . $booking['return_date'] . "</td>";
-            echo "<td>" . $total_days . "</td>";
-            echo "<td>Rs. " . $vehicle_data['priceperday'] . "</td>";
-            echo "<td>Rs. " . $total_price . "</td>";
-            echo "</tr>";
-        }
+                    // Display invoice details in the invoice table
+                    echo "<tr>";
+                    echo "<td>" . $booking['bookingnumber'] . "</td>";
+                    echo "<td>" . $booking['pickup_date'] . "</td>";
+                    echo "<td>" . $booking['return_date'] . "</td>";
+                    echo "<td>" . $total_days . "</td>";
+                    echo "<td>Rs. " . $vehicle_data['priceperday'] . "</td>";
+                    echo "<td>Rs. " . $total_price . "</td>";
+                    echo "</tr>";
+                }
 
-        echo '</table>';
-        echo '</div>'; // Close invoice-details container
+                echo '</table>';
+                echo '</div>'; // Close invoice-details container
 
-        echo '</div>'; // Close vehicle-card
-        }
+                echo '</div>'; // Close vehicle-card
+            }
         } else {
             // No bookings found for the user
             echo "<p>No bookings found.</p>";
@@ -327,17 +265,7 @@ if (!empty($bookings_by_vehicle)) {
         ?>
     </section>
 
-
-    <section class="footer">
-        <div class="copyright">
-            <p>Copyright © 2023 - CRP | All Rights Reserved</p>
-            <div class="social">
-                <a href="#"><i class='bx bxl-facebook'></i></a>
-                <a href="#"><i class='bx bxl-twitter'></i></a>
-                <a href="#"><i class='bx bxl-instagram'></i></a>
-            </div>
-        </div>
-    </section>
+    <?php include('includes/footer.php');?>
 
     <script src="js/main.js"></script>
     <script>

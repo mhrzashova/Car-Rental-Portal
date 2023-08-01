@@ -86,6 +86,8 @@
                     <li><img src="images/user.png"><a href="update_profile.php">Edit Profile</a></li>
                     <li><img src="images/padlock.png"><a href="password.php">Change Password</a></li>
                     <li><img src="images/car.png"><a href="mybooking.php">My Booking</a></li>
+                    <li><img src="images/review.png"><a href="post_testimonial.php">Post a Testimonial</a></li>
+                    <li><img src="images/reviews.png"><a href="my_testimonial.php">My Testimonial</a></li>
                     <li><img src="images/log-out.png"><a href="index.php">Logout</a></li>
                 </ul>
             </div>

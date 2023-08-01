@@ -148,7 +148,7 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
               </select>
             </div>
             <input type="text" placeholder="Enter your address" value="<?php if(isset($_POST['register'])) {echo $address;} ?>"
-            name="address" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s]+$" required />
+            name="address" required />
 
           </div>
           </div>

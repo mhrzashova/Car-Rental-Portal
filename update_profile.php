@@ -78,6 +78,9 @@ if(isset($_POST['update_profile'])){
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/update_profile.css">
+   <!-- Box Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css"/>
 
 </head>
 <body> 

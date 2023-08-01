@@ -36,9 +36,6 @@
           </a>
           <ul class="sub-menu" id="bookingsSubMenu">
             <li>
-              <!-- <a href="newbooking.php">
-                <span class="links_name">New</span>
-              </a> -->
               <form action="newbooking.php" method="post">
                 <input type="submit" value="New" name="new">
               </form>
@@ -56,9 +53,9 @@
           </ul>
         </li>
         <li class="sub-menu-item" id="analyticsItem">
-          <a href="#">
+          <a href="manage_testimonial.php">
             <i class='bx bx-pie-chart-alt-2'></i>
-            <span class="links_name">Analytics</span>
+            <span class="links_name">Manage Testimonials</span>
           </a>
         </li>
         <li class="sub-menu-item" id="stockItem">
