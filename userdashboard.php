@@ -28,6 +28,59 @@
             text-align: center;
             margin-top: 20px;
         }
+        .testimonial-box {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden; /* Hide any overflow content */
+            height: 150px;
+            width: 400px; /* Set the desired height for the boxes */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds the box height */
+        }
+        .testimonial-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            white-space: nowrap; /* Prevent long names from breaking into multiple lines */
+            overflow: hidden; /* Hide any overflow content */
+            text-overflow: ellipsis; /* Display ellipsis (...) for long names */
+        }
+        .testimonial-box p {
+            font-size: 14px;
+            color: #555;
+            white-space: nowrap; /* Prevent long testimonials from breaking into multiple lines */
+            overflow: hidden; /* Hide any overflow content */
+            text-overflow: ellipsis; /* Display ellipsis (...) for long testimonials */
+        }
+        .reviews-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling if the content overflows */
+        }
+        .testimonial-box {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden; /* Hide any overflow content */
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .nav-buttons button {
+            padding: 8px 16px;
+            background-color: #474fa0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -206,51 +259,53 @@
             <span>Reviews</span>
             <h1>What Our Customer Say</h1>
         </div>
-        <div class="reviews-container">
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev1.jpg" alt="">
-                </div>
-                <h2>Harry</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Impedit, tenetur ut illum id vel alias molestias dolorum nihil.</p>
-            </div>
+        <div class="reviews-container" id="reviews-container">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Function to fetch testimonials using AJAX
+                    function fetchTestimonials() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', 'fetch_testimonials.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                var testimonials = JSON.parse(xhr.responseText);
+                                var reviewsContainer = document.getElementById('reviews-container');
+                                reviewsContainer.innerHTML = ''; // Clear existing content
 
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev2.jpg" alt="">
-                </div>
-                <h2>Peter</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita explicabo ad tempore consectetur mollitia aperiam, alias qui voluptatibus.</p>
-            </div>
+                                if (testimonials.length > 0) {
+                                    testimonials.forEach(function (testimonial) {
+                                        var testimonialBox = document.createElement('div');
+                                        testimonialBox.classList.add('testimonial-box');
 
-            <div class="box">
-                <div class="rev-img">
-                    <img src="img/rev3.jpg" alt="">
-                </div>
-                <h2>Anya</h2>
-                <div class="stars">
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star'></i> 
-                    <i class='bx bxs-star'></i>
-                    <i class='bx bxs-star-half' ></i>
-                </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione commodi ab neque dicta suscipit dolorem perspiciatis dolorum quas.</p>
-            </div>
+                                        var fullName = document.createElement('h3');
+                                        fullName.textContent = testimonial.full_name;
+
+                                        var testimonialMessage = document.createElement('p');
+                                        testimonialMessage.textContent = testimonial.testimonial;
+
+                                        testimonialBox.appendChild(fullName);
+                                        testimonialBox.appendChild(testimonialMessage);
+                                        reviewsContainer.appendChild(testimonialBox);
+                                    });
+                                } else {
+                                    var noTestimonialsMessage = document.createElement('p');
+                                    noTestimonialsMessage.textContent = 'No testimonials available.';
+                                    reviewsContainer.appendChild(noTestimonialsMessage);
+                                }
+                            }
+                        };
+                        xhr.send();
+                    }
+
+                    // Fetch and display testimonials when the page loads
+                    fetchTestimonials();
+                });
+            </script>
+        </div>
+        <div class="nav-buttons">
+            <button id="left-button">&larr;</button>
+            <button id="right-button">&rarr;</button>
         </div>
     </section>
 
@@ -320,6 +375,55 @@
                 noResultsMessage.style.display = "block";
             }
         });
+        // JavaScript code for left and right navigation
+        const reviewsContainer = document.querySelector(".reviews-container");
+        const leftButton = document.getElementById("left-button");
+        const rightButton = document.getElementById("right-button");
+
+        // Set the initial position and the number of testimonials to display at a time
+        let position = 0;
+        const testimonialsPerPage = 4;
+
+        // Function to update the display of testimonials based on the current position
+        function updatePosition() {
+            const testimonialBoxes = document.querySelectorAll(".testimonial-box");
+            const numTestimonials = testimonialBoxes.length;
+            const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
+
+            // Hide all testimonials
+            testimonialBoxes.forEach((box) => {
+            box.style.display = "none";
+            });
+
+            // Show the testimonials for the current position
+            const startIdx = position * testimonialsPerPage;
+            const endIdx = Math.min(startIdx + testimonialsPerPage, numTestimonials);
+
+            for (let i = startIdx; i < endIdx; i++) {
+            testimonialBoxes[i].style.display = "block";
+            }
+        }
+
+        // Move the testimonials to the left
+        leftButton.addEventListener("click", () => {
+            if (position > 0) {
+            position--;
+            updatePosition();
+            }
+        });
+
+        // Move the testimonials to the right
+        rightButton.addEventListener("click", () => {
+            const numTestimonials = document.querySelectorAll(".testimonial-box").length;
+            const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
+            if (position < maxPosition) {
+            position++;
+            updatePosition();
+            }
+        });
+
+        // Show the initial set of testimonial boxes
+        updatePosition();
         });
     </script>
 </body>

@@ -17,52 +17,53 @@
             margin-top: 20px;
         }
         .testimonial-box {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    overflow: hidden; /* Hide any overflow content */
-    height: 150px;
-    width: 400px; /* Set the desired height for the boxes */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds the box height */
-}
-
-    .testimonial-box h3 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        white-space: nowrap; /* Prevent long names from breaking into multiple lines */
-        overflow: hidden; /* Hide any overflow content */
-        text-overflow: ellipsis; /* Display ellipsis (...) for long names */
-    }
-
-    .testimonial-box p {
-        font-size: 14px;
-        color: #555;
-        white-space: nowrap; /* Prevent long testimonials from breaking into multiple lines */
-        overflow: hidden; /* Hide any overflow content */
-        text-overflow: ellipsis; /* Display ellipsis (...) for long testimonials */
-    }
-    .reviews-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling if the content overflows */
-}
-
-.testimonial-box {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    overflow: hidden; /* Hide any overflow content */
-}
-
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden; /* Hide any overflow content */
+            height: 150px;
+            width: 400px; /* Set the desired height for the boxes */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds the box height */
+        }
+        .testimonial-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            white-space: nowrap; /* Prevent long names from breaking into multiple lines */
+            overflow: hidden; /* Hide any overflow content */
+            text-overflow: ellipsis; /* Display ellipsis (...) for long names */
+        }
+        .testimonial-box p {
+            font-size: 14px;
+            color: #555;
+            white-space: nowrap; /* Prevent long testimonials from breaking into multiple lines */
+            overflow: hidden; /* Hide any overflow content */
+            text-overflow: ellipsis; /* Display ellipsis (...) for long testimonials */
+        }
+        .reviews-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling if the content overflows */
+        }
+        .testimonial-box {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden; /* Hide any overflow content */
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
         .nav-buttons button {
             padding: 8px 16px;
-            background-color: #007bff;
+            background-color: #474fa0;
             color: white;
             border: none;
             border-radius: 4px;
@@ -245,8 +246,8 @@
             </script>
         </div>
         <div class="nav-buttons">
-            <button id="left-button">&larr; Left</button>
-            <button id="right-button">Right &rarr;</button>
+            <button id="left-button">&larr;</button>
+            <button id="right-button">&rarr;</button>
         </div>
         
     </section>
@@ -307,50 +308,50 @@
         const rightButton = document.getElementById("right-button");
 
         // Set the initial position and the number of testimonials to display at a time
-  let position = 0;
-  const testimonialsPerPage = 4;
+        let position = 0;
+        const testimonialsPerPage = 4;
 
-  // Function to update the display of testimonials based on the current position
-  function updatePosition() {
-    const testimonialBoxes = document.querySelectorAll(".testimonial-box");
-    const numTestimonials = testimonialBoxes.length;
-    const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
+        // Function to update the display of testimonials based on the current position
+        function updatePosition() {
+            const testimonialBoxes = document.querySelectorAll(".testimonial-box");
+            const numTestimonials = testimonialBoxes.length;
+            const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
 
-    // Hide all testimonials
-    testimonialBoxes.forEach((box) => {
-      box.style.display = "none";
-    });
+            // Hide all testimonials
+            testimonialBoxes.forEach((box) => {
+            box.style.display = "none";
+            });
 
-    // Show the testimonials for the current position
-    const startIdx = position * testimonialsPerPage;
-    const endIdx = Math.min(startIdx + testimonialsPerPage, numTestimonials);
+            // Show the testimonials for the current position
+            const startIdx = position * testimonialsPerPage;
+            const endIdx = Math.min(startIdx + testimonialsPerPage, numTestimonials);
 
-    for (let i = startIdx; i < endIdx; i++) {
-      testimonialBoxes[i].style.display = "block";
-    }
-  }
+            for (let i = startIdx; i < endIdx; i++) {
+            testimonialBoxes[i].style.display = "block";
+            }
+        }
 
-  // Move the testimonials to the left
-  leftButton.addEventListener("click", () => {
-    if (position > 0) {
-      position--;
-      updatePosition();
-    }
-  });
+        // Move the testimonials to the left
+        leftButton.addEventListener("click", () => {
+            if (position > 0) {
+            position--;
+            updatePosition();
+            }
+        });
 
-  // Move the testimonials to the right
-  rightButton.addEventListener("click", () => {
-    const numTestimonials = document.querySelectorAll(".testimonial-box").length;
-    const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
-    if (position < maxPosition) {
-      position++;
-      updatePosition();
-    }
-  });
+        // Move the testimonials to the right
+        rightButton.addEventListener("click", () => {
+            const numTestimonials = document.querySelectorAll(".testimonial-box").length;
+            const maxPosition = Math.ceil(numTestimonials / testimonialsPerPage) - 1;
+            if (position < maxPosition) {
+            position++;
+            updatePosition();
+            }
+        });
 
-  // Show the initial set of testimonial boxes
-  updatePosition();
-    });
+        // Show the initial set of testimonial boxes
+        updatePosition();
+        });
     </script>
 
 </body>
