@@ -202,6 +202,7 @@
                     $query .= " WHERE brandname LIKE '%$brandname%'";
                 }
 
+                $query .= " ORDER BY priceperday ASC";
                 $result = $connection->query($query);
 
                 // Check if there are any vehicles
