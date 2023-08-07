@@ -17,10 +17,6 @@
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="search-box">
-        <input type="text" placeholder="Search...">
-        <i class='bx bx-search' ></i>
-      </div>
       <div class="profile-details">
       <a href="manage_testimonial.php">
           <?php 

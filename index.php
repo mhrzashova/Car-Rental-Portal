@@ -23,9 +23,7 @@
             margin-bottom: 20px;
             border-radius: 5px;
             overflow: hidden; /* Hide any overflow content */
-            height: 150px;
-            width: 400px; /* Set the desired height for the boxes */
-            overflow-y: auto; /* Enable vertical scrolling if content exceeds the box height */
+            width: 400px; /* Set the desired width for the boxes */
         }
         .testimonial-box h3 {
             font-size: 18px;
@@ -37,7 +35,6 @@
         .testimonial-box p {
             font-size: 14px;
             color: #555;
-            white-space: nowrap; /* Prevent long testimonials from breaking into multiple lines */
             overflow: hidden; /* Hide any overflow content */
             text-overflow: ellipsis; /* Display ellipsis (...) for long testimonials */
         }

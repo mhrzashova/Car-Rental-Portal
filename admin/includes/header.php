@@ -58,12 +58,12 @@
             <span class="links_name">Manage Testimonials</span>
           </a>
         </li>
-        <li class="sub-menu-item" id="stockItem">
+        <!-- <li class="sub-menu-item" id="stockItem">
           <a href="#">
             <i class='bx bx-coin-stack'></i>
             <span class="links_name">Stock</span>
           </a>
-        </li>
+        </li> -->
         <li class="log_out">
           <a href="index.php">
             <i class='bx bx-log-out'></i>
