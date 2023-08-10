@@ -24,13 +24,16 @@
             border-radius: 5px;
             overflow: hidden; /* Hide any overflow content */
             width: 400px; /* Set the desired width for the boxes */
+            text-align: center;
         }
         .testimonial-box h3 {
-            font-size: 18px;
+            font-size: 1.2rem;
             margin-bottom: 10px;
             white-space: nowrap; /* Prevent long names from breaking into multiple lines */
             overflow: hidden; /* Hide any overflow content */
+            color: var(--main-color);
             text-overflow: ellipsis; /* Display ellipsis (...) for long names */
+            text-align: center;
         }
         .testimonial-box p {
             font-size: 14px;
@@ -58,6 +61,7 @@
             justify-content: center;
             margin-top: 20px;
         }
+
         .nav-buttons button {
             padding: 8px 16px;
             background-color: #474fa0;
@@ -65,6 +69,12 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .nav-buttons button:hover {
+            background-color: var(--main-color);
         }
     </style>
 </head>
