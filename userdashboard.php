@@ -230,8 +230,8 @@
                         echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
                         echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
                         echo "<a href='rent.php?vehicleid=$vehicleid' class='btn'>Rent Now</a>";
-                        echo "<br>";
-                        echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
+                        // echo "<br>";
+                        // echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
                         echo "</div>";
                     }
                 } else {

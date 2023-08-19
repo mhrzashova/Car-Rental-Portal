@@ -62,6 +62,7 @@ $user_id = $_SESSION['users']['user_id'];
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
                 // Display the vehicle image, name, and price per day
+                $selectedPrice = $row['priceperday'];
                 echo "<div class='box'>";
                 echo "<div class='box-img'>";
                 echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
@@ -197,6 +198,31 @@ $user_id = $_SESSION['users']['user_id'];
         }
         ?>
 
+        </div>
+        <div class="recommended-vehicles">
+            <h2>Recommended Vehicles</h2>
+            <?php
+            $priceThreshold = 0.1; // 10% threshold
+            $minPrice = $selectedPrice - ($selectedPrice * $priceThreshold);
+            $maxPrice = $selectedPrice + ($selectedPrice * $priceThreshold);
+
+            $similarVehiclesQuery = "SELECT * FROM crud WHERE priceperday >= $minPrice AND priceperday <= $maxPrice AND vehicleid != $vehicleid LIMIT 4";
+            $similarVehiclesResult = mysqli_query($connection, $similarVehiclesQuery);
+
+            while ($similarRow = mysqli_fetch_assoc($similarVehiclesResult)) {
+                echo "<div class='box'>";
+                echo "<div class='box-img'>";
+                echo "<img src='uploaded_img/" . $similarRow['vehicleimages'] . "' alt=''>";
+                echo "</div>";
+                echo "<h3>" . $similarRow['vehiclename'] . "</h3>";
+                echo "<h2>Rs." . $similarRow['priceperday'] . "<span>/day</span></h2>";
+                echo "<h4>Brand: " . $similarRow['brandname'] . "</h4>";
+                echo "<h4>Availability: " . $similarRow['vehicleavailability'] . "</h4>";
+                echo "<h4>Mileage: " . $similarRow['mileage'] . "<span> kmpl</span></h4>";
+                echo "<h4>Seat Capacity: " . $similarRow['seatcapacity'] . "</h4>";
+                echo "</div>";
+            }
+            ?>
         </div>
     </section>
 

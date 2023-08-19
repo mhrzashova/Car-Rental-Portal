@@ -671,6 +671,48 @@ header {
         text-align: center;
         margin-top: 20px;
     }
+
+    .recommended-vehicles {
+        margin-top: 40px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .recommended-vehicles .box {
+        display: inline-block;
+        margin-right: 15px;
+        width: 220px;
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .recommended-vehicles .box-img img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    .recommended-vehicles .box h3 {
+        font-weight: 500;
+        margin-top: 10px;
+    }
+    
+    .recommended-vehicles .box h2 {
+        font-size: 1rem; 
+        font-weight: 600;
+        color: var(--main-color);
+        margin: 0.2rem 0 0.5rem;
+    }
+    
+    .recommended-vehicles .box h2 span {
+        font-size: 0.7rem; 
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    
+    
     
 
 
