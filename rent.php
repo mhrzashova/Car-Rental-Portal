@@ -192,7 +192,11 @@ $user_id = $_SESSION['users']['user_id'];
             }
             else
             {
-                echo "<script>alert('The vehicle is already booked.')</script>";
+                echo "<script>
+                if (confirm('This vehicle is already booked.')) {
+                    window.location.href = 'userdashboard.php';
+                }
+                </script>";
             }
             
         }
