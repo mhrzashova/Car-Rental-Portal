@@ -99,7 +99,7 @@
         <ul class="navbar">
             <li><a href="#home">Home</a></li>
             <li><a href="#ride">Ride</a></li>
-            <li><a href="#services">Services</a></li>
+            <li><a href="services.php">Services</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#reviews">Reviews</a></li>
         </ul>

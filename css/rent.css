@@ -697,8 +697,11 @@ header {
     .recommended-vehicles .box h3 {
         font-weight: 500;
         margin-top: 10px;
+        color: black;
     }
-    
+    .recommended-vehicles .box h4 {
+        color: black;
+    }
     .recommended-vehicles .box h2 {
         font-size: 1rem; 
         font-weight: 600;

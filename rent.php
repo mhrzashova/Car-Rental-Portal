@@ -62,11 +62,11 @@ $user_id = $_SESSION['users']['user_id'];
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
                 // Display the vehicle image, name, and price per day
-                $selectedPrice = $row['priceperday'];
                 echo "<div class='box'>";
                 echo "<div class='box-img'>";
                 echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
                 echo "</div>";
+                $selectedPrice = $row['priceperday'];
                 echo "<h3>" . $row['vehiclename'] . "</h3>";
                 echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
                 echo "<h4>Brand: " . $row['brandname'] . "</h4>";
@@ -210,6 +210,7 @@ $user_id = $_SESSION['users']['user_id'];
             $similarVehiclesResult = mysqli_query($connection, $similarVehiclesQuery);
 
             while ($similarRow = mysqli_fetch_assoc($similarVehiclesResult)) {
+                echo "<a href='rent.php?vehicleid=" . $similarRow['vehicleid'] . "'>";
                 echo "<div class='box'>";
                 echo "<div class='box-img'>";
                 echo "<img src='uploaded_img/" . $similarRow['vehicleimages'] . "' alt=''>";
@@ -279,4 +280,3 @@ $user_id = $_SESSION['users']['user_id'];
 
 </body>
 </html>
-

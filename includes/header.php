@@ -6,7 +6,7 @@
         <ul class="navbar">
             <li><a href="userdashboard.php#home">Home</a></li>
             <li><a href="userdashboard.php#ride">Ride</a></li>
-            <li><a href="userdashboard.php#services">Services</a></li>
+            <li><a href="userdashboard.phpservices.php">Services</a></li>
             <li><a href="userdashboard.php#about">About</a></li>
             <li><a href="userdashboard.php#reviews">Reviews</a></li>
         </ul>
