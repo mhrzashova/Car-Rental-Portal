@@ -47,6 +47,8 @@ $user_id = $_SESSION['users']['user_id'];
         // Step 1: Check if the vehicleid is provided in the URL
         if (isset($_GET['vehicleid'])) {
             $vehicleid = $_GET['vehicleid'];
+            $pickup_date = "";
+            $return_date = "";
 
             // Step 2: Fetch the vehicle details from the database
             $query = "SELECT * FROM crud WHERE vehicleid = $vehicleid";
@@ -78,13 +80,14 @@ $user_id = $_SESSION['users']['user_id'];
                 $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid";
                 $result = mysqli_query($connection, $query);
                 $ustatus=0;
-                while($row=mysqli_fetch_assoc($result))
-                {
-                    if($row['user_id']==$user_id && $row['vehicleid']==$vehicleid)
-                    {
-                        $ustatus=1;
+                if (!empty($pickup_date) && !empty($return_date)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        if (($row['pickup_date'] <= $return_date && $row['return_date'] >= $pickup_date) ||
+                            ($pickup_date <= $row['return_date'] && $return_date >= $row['pickup_date'])) {
+                            $ustatus = 1; // Overlapping dates, vehicle is not available
+                            break; // No need to check further, exit the loop
+                        }
                     }
-
                 }
 
                 // Check if the vehicle is available for booking
@@ -146,15 +149,13 @@ $user_id = $_SESSION['users']['user_id'];
                 exit();
             }
             // Check vehicle availability
-            $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid";
+            $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid AND user_id = $user_id AND return_date > NOW()";
             $result = mysqli_query($connection, $query);
-            $ustatus = 0;
-            while ($row = mysqli_fetch_assoc($result)) {
-                if (($row['pickup_date'] <= $return_date && $row['return_date'] >= $pickup_date) ||
-                    ($pickup_date <= $row['return_date'] && $return_date >= $row['pickup_date'])) {
-                    $ustatus = 1; // Overlapping dates, vehicle is not available
-                    break; // No need to check further, exit the loop
-                }
+            if (mysqli_num_rows($result) > 0) {
+                // The vehicle is already booked, and the return date is in the future
+                $ustatus = 1;
+            } else {
+                $ustatus = 0; // Vehicle is available for booking
             }
 
             // Step 1: Check if the user has uploaded their license image
