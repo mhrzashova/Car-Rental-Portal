@@ -194,7 +194,7 @@ $user_id = $_SESSION['users']['user_id'];
             else
             {
                 echo "<script>
-                if (confirm('This vehicle is already booked.')) {
+                if (confirm('This vehicle is already booked for selected dates.')) {
                     window.location.href = 'userdashboard.php';
                 }
                 </script>";

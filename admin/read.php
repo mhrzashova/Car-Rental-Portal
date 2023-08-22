@@ -52,6 +52,28 @@
             {
                 while($row = $result->fetch_assoc())
             {
+              $vehicleId = $row['vehicleid'];
+              $vehicleavailability = "Available"; // Default availability
+
+              // Fetch booking records for the current vehicle
+              $bookingSql = "SELECT * FROM booking WHERE vehicleid = $vehicleId";
+              if ($bookingResult = $connection->query($bookingSql)) {
+                  while ($bookingRow = $bookingResult->fetch_assoc()) {
+                      $pickupDate = strtotime($bookingRow['pickup_date']);
+                      $returnDate = strtotime($bookingRow['return_date']);
+                      $currentDate = time();
+
+                      if ($currentDate >= $pickupDate && $currentDate <= $returnDate) {
+                          // If current date falls within booking range, set availability to "Booked"
+                          $vehicleavailability = "Booked";
+                          break; // No need to check further, as it's already booked
+                      }
+                  }
+              }
+              // Update the vehicleavailability column in the database
+              $updateAvailabilityQuery = "UPDATE crud SET vehicleavailability = '$vehicleavailability' WHERE vehicleid = $vehicleId";
+              $connection->query($updateAvailabilityQuery);
+
                 echo "
                     <tr>
                     <td>".$row['vehicleid']."</td>
@@ -59,7 +81,7 @@
                     <td>".$row['brandname']."</td>
                     <td>".$row['vehicleno']."</td>
                     <td>".$row['vehicleimages']."</td>
-                    <td>".$row['vehicleavailability']."</td> 
+                    <td>$vehicleavailability</td> 
                     <td>".$row['priceperday']."</td> 
                     <td>".$row['mileage']."</td> 
                     <td>".$row['seatcapacity']."</td> 

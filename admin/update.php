@@ -10,7 +10,7 @@ if (isset($_POST['vehicle_edit'])) {
     $vehiclename = $_POST['vehiclename'];
     $brandname = $_POST['brand'];
     $vehicleno = $_POST['vehicleno'];
-    $vehicleavailability = $_POST['vehicleavailability'];
+    //$vehicleavailability = $_POST['vehicleavailability'];
     $priceperday = $_POST['priceperday'];
     $mileage = $_POST['mileage'];
     $seatcapacity = $_POST['seatcapacity'];
@@ -57,7 +57,7 @@ if (isset($_POST['vehicle_edit'])) {
               $brandname = 'Unknown Brand';
           }
             
-            $sql = "UPDATE `crud` SET `vehiclename`='$vehiclename', `brandname`='$brandname',`vehicleno`='$vehicleno', `vehicleimages`='$vehicleimages', `vehicleavailability`='$vehicleavailability', `priceperday`='$priceperday', `mileage`='$mileage', `seatcapacity`='$seatcapacity' WHERE `vehicleid`='$vehicleid'";
+            $sql = "UPDATE `crud` SET `vehiclename`='$vehiclename', `brandname`='$brandname',`vehicleno`='$vehicleno', `vehicleimages`='$vehicleimages', `priceperday`='$priceperday', `mileage`='$mileage', `seatcapacity`='$seatcapacity' WHERE `vehicleid`='$vehicleid'";
 
             if ($result = $connection->query($sql)) {
                 $validationMessage = "Updated Successfully";
@@ -172,19 +172,6 @@ if (isset($_POST['vehicle_edit'])) {
                   <div class="image-upload-box">
                     <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" required>
                   </div>
-
-                  <label for="vehicleavailability">
-                        Availability:-
-                        <select name="vehicleavailability" id="vehicleavailability">
-                            <option value="" hidden>Choose</option>
-                            <option value="Available" <?php if ($row['vehicleavailability'] === 'Available') echo 'selected'; ?>>
-                                Available
-                            </option>
-                            <option value="Booked" <?php if ($row['vehicleavailability'] === 'Booked') echo 'selected'; ?>>
-                                Booked
-                            </option>
-                        </select>
-                    </label>
 
                   <label for="priceperday">
                   Price Per Day:- <input type="number" name="priceperday" id="priceperday" size="50" value="<?php echo $row['priceperday']?>" required>

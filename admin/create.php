@@ -5,7 +5,6 @@ if (isset($_POST['create'])) {
     $vehiclename = $_POST['vehiclename'];
     $brandname = $_POST['brand'];
     $vehicleno = $_POST['vehicleno'];
-    $vehicleavailability = $_POST['vehicleavailability'];
     $priceperday = $_POST['priceperday'];
     $mileage = $_POST['mileage'];
     $seatcapacity = $_POST['seatcapacity'];
@@ -51,7 +50,7 @@ if (isset($_POST['create'])) {
                         $brandname = 'Unknown Brand';
                     }
 
-                    $sql = "INSERT INTO `crud`(vehiclename, brandname, vehicleno, vehicleimages, vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$brandname','$vehicleno','$vehicleimages','$vehicleavailability','$priceperday','$mileage','$seatcapacity')";
+                    $sql = "INSERT INTO `crud`(vehiclename, brandname, vehicleno, vehicleimages,vehicleavailability, priceperday, mileage, seatcapacity) VALUES ('$vehiclename','$brandname','$vehicleno','$vehicleimages','Available','$priceperday','$mileage','$seatcapacity')";
                     if ($result = $connection->query($sql)) {
                         $validationMessage = "<h4 class='success-message'>Insertion Successful</h4>";
                     } else {
@@ -146,15 +145,6 @@ if (isset($_POST['create'])) {
                   <div class="image-upload-box">
                     <input type="file" name="vehicleimages" accept="image/jpg, image/jpeg, image/png" required>
                   </div>
-
-                  <label for="vehicleavailability">
-                    Availability:-
-                    <select select name="vehicleavailability" id="vehicleavailability">
-                      <option value="" hidden>Choose</option>
-                      <option value="Available">Available</option>
-                      <option value="Booked">Booked</option>
-                    </select>
-                  </label>
 
                 <label for="priceperday">
                   Price Per Day:- <input type="number" name="priceperday" id="priceperday" size="50" required>
