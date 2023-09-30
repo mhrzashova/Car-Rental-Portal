@@ -40,7 +40,7 @@
         <a href="create.php"><button>New</button></a>
         <table border='1' width="100%">
         <tr>
-            <th>VehicleId</th><th>Vehicle Name</th><th>Brand Name</th><th>Vehicle Reg. Number</th><th>Vehicle Images<th>Vehicle Availability</th><th>Price Per Day</th><th>Mileage</th><th>Seat Capacity</th><th>Action</th> 
+            <th>VehicleId</th><th>Vehicle Name</th><th>Brand Name</th><th>Vehicle Reg. Number</th><th>Vehicle Images<th>Vehicle Availability</th><th>Price Per Day</th><th>Mileage</th><th>Seat Capacity</th><th>Rating</th><th>Total Ratings</th><th>Action</th> 
         </tr>
         <?php
             $connection= new mysqli("localhost","root","","carrentalportal");
@@ -85,6 +85,8 @@
                     <td>".$row['priceperday']."</td> 
                     <td>".$row['mileage']."</td> 
                     <td>".$row['seatcapacity']."</td> 
+                    <td>".$row['rating']."</td>
+                    <td>".$row['total_ratings']."</td>
                     <td>
                         <form action='update.php' method='post'>
                             <input type='hidden' value='".$row['vehicleid']."' name='vehicle_update'>
