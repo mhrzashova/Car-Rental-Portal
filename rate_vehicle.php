@@ -7,6 +7,11 @@
         exit();
     }
     
+    if (isset($_GET['message'])) {
+        $message = $_GET['message'];
+        echo "<script>alert('$message');</script>";
+    }
+    
     $user_id = $_SESSION['users']['user_id'];
 
     // Get the vehicle ID from the URL parameter
@@ -29,26 +34,6 @@
         echo "Vehicle ID not provided.";
         exit();
     }
-
-    // Handle form submission
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $rating = $_POST['rating'];
-        // Insert the rating into the ratings table
-        $insert_query = "INSERT INTO ratings (user_id, vehicleid, rating) VALUES ('$user_id', '$vehicleid', '$rating')";
-        if ($connection->query($insert_query) === TRUE) {
-            // Rating inserted successfully
-            // Update the average rating for the vehicle in the crud table
-            $update_query = "UPDATE crud SET average_rating = (SELECT AVG(rating) FROM ratings WHERE vehicleid = '$vehicleid') WHERE vehicleid = '$vehicleid'";
-            if ($connection->query($update_query) === TRUE) {
-                header("Location: userdashboard.php#services"); // Redirect to the vehicle details page
-                exit;
-            } else {
-                echo "Error updating average rating: " . $connection->error;
-            }
-        } else {
-            echo "Error inserting rating: " . $connection->error;
-        }
-    }
     ?>
 
 <!DOCTYPE html>
@@ -62,27 +47,91 @@
     <link rel="stylesheet" href="css/rent.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css"/> 
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .box {
+            text-align: center;
+        }
+
+        .box-img img {
+            max-width: 100%;
+            max-height: 350px;
+        }
+
+        .rating-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .rating-form label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .rating-form select {
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .rating-form input[type="submit"] {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .rating-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 <?php include('includes/header.php');?>
 <!-- Services -->
 <section class="rate-vehicle">
+        <div class="center-container">
+            <div class="box">
+                <div class="box-img">
+                    <img src='uploaded_img/<?php echo $vehicleInfo['vehicleimages']; ?>' alt=''>
+                </div>
+                <h3><?php echo $vehicleInfo['vehiclename']; ?></h3>
+            </div>
+            <br><br>
         <div class="heading">
-            <span>Rate This Vehicle</span>
-            <h1>Rate <?php echo $vehicleInfo['vehiclename']; ?></h1>
+            <h1>Rate This Vehicle</h1>
         </div>
         <div class="rating-form">
-            <form method="POST">
-                <label for="rating">Select your rating:</label>
-                <select name="rating" id="rating">
-                    <option value="1">1 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Star</option>
-                </select>
-                <button type="submit">Submit Rating</button>
-            </form>
+        <form method="post" action="process_rating.php">
+            <label for="rating">Rate this vehicle:</label>
+            <select id="rating" name="rating">
+                <option value="1">1 star</option>
+                <option value="2">2 stars</option>
+                <option value="3">3 stars</option>
+                <option value="4">4 stars</option>
+                <option value="5">5 stars</option>
+            </select>
+            <input type="hidden" name="vehicleid" value="<?php echo $vehicleid; ?>">
+            <input type="submit" value="Submit Rating">
+        </form>
+        </div>
         </div>
     </section>
 

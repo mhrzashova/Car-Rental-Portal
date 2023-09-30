@@ -25,96 +25,122 @@ $user_id = $_SESSION['users']['user_id'];
 
     <style>
         /* Style for Recommended Vehicles (Left Side) */
-.recommended-vehicles {
-    float: left;
-    width: 30%;
-    padding: 20px;
-}
+        .recommended-vehicles {
+            position: fixed;
+            top: 40px; /* Adjust the top position according to your layout */
+            left: 10px; /* Adjust the left position according to your layout */
+            width: 250px; /* Set a fixed width for the section */
+            padding: 20px;
+            background: #c3c0c0;
+            z-index: 1; /* Ensure it appears above other elements */
+        }
 
-.recommended-vehicles h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
+        .recommended-vehicles h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
 
-.recommended-vehicles ul {
-    list-style: none;
-    padding: 0;
-}
+        .recommended-vehicles ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.recommended-vehicles li {
-    margin-bottom: 10px;
-}
+        .recommended-vehicles li {
+            margin-bottom: 10px;
+        }
 
-.recommended-vehicles img {
-    width: 80px;
-    height: auto;
-    margin-right: 10px;
-}
+        .recommended-vehicles img {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+        }
 
-/* Style for Vehicle Listings (Right Side) */
-.services {
-    float: right;
-    width: 70%;
-}
+        /* Style for Vehicle Listings (Right Side) */
+        .services {
+            margin-left: 270px; /* Adjust the margin to leave space for the fixed section */
+            width: calc(70% - 270px); /* Adjust the width accordingly */
+            margin-top: 70px; /* Adjust the top margin to avoid overlap with the fixed section */
+        }
 
-.services-container {
-    display: flex;
-    flex-direction: column;
-}
+        .services-container {
+            /* display: flex; */
+            margin-left:100px;
+            margin-top:-20px;
+            margin-right:-100px;
+            flex-direction: column;
+        }
 
-.box {
-    /* Your existing box styling */
-    margin-bottom: 20px;
-}
+        .box {
+            /* Your existing box styling */
+            margin-bottom: 20px;
+        }
 
-/* Adjust the media query as needed for responsiveness */
-@media (max-width: 768px) {
-    .recommended-vehicles,
-    .services {
-        float: none;
-        width: 100%;
-    }
+        /* Adjust the media query as needed for responsiveness */
+        @media (max-width: 768px) {
+            .recommended-vehicles,
+            .services {
+                float: none;
+                width: 100%;
+            }
 
-    .recommended-vehicles img {
-        width: 60px;
-        margin-right: 5px;
-    }
-}
+            .recommended-vehicles img {
+                width: 60px;
+                margin-right: 5px;
+            }
+        }
+        .rating-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+        .rating-container .btn {
+            margin-left: 10px; /* Adjust margin between rating and button */
+        }
+
+        .rating-container span {
+            font-weight: bold; /* Make the average rating bold */
+        }
+
 
     </style>
+
 </head>
 <body>
     <?php include('includes/header.php');?>
-    <aside class="recommended-vehicles">
-        <h2>Recently Added Cars</h2>
-        <ul>
-            <?php
-                include 'config.php';
-
-                $recentlyAddedQuery = "SELECT * FROM `crud` ORDER BY creationdate DESC LIMIT 4";
-                $recentlyAddedResult = $connection->query($recentlyAddedQuery);
-
-                if ($recentlyAddedResult->num_rows > 0) {
-                    while ($row = $recentlyAddedResult->fetch_assoc()) {
-                        echo "<li><a href='rent.php?vehicleid=" . $row['vehicleid'] . "'>";
-                        echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
-                        echo $row['vehiclename'] . " <br>Rs." . $row['priceperday'] . "/day";
-                        echo "</a></li>";
-                    }
-                }
-
-                $connection->close();
-            ?>
-        </ul>
-    </aside>
-
+    
     <section class="services" id="services">
-        <div class="heading">
-            <span>Car Services</span>
-            <h1>Find The Best Car Suitable For You</h1>
+    <div class="recommended-vehicles">
+            <h2>Recently Added Cars</h2>
+            <ul>
+                <?php
+                // Fetch recently added vehicles
+                $recentQuery = "SELECT * FROM `crud` ORDER BY creationdate DESC LIMIT 5";
+                $recentResult = $connection->query($recentQuery);
+
+                if ($recentResult) {
+                    if ($recentResult->num_rows > 0) {
+                        while ($recentRow = $recentResult->fetch_assoc()) {
+                            //echo "<a href='rent.php?vehicleid=" . $recentRow['vehicleid'] . "'>";
+                            echo "<li>";
+                            echo "<img src='uploaded_img/" . $recentRow['vehicleimages'] . "' alt=''>";
+                            echo "<h4>" . $recentRow['vehiclename'] . "</h4>";
+                            echo "</li>";
+                        }
+                    } else {
+                        echo "<p>No recently added cars found.</p>";
+                    }
+                } else {
+                    // Handle the query error
+                    echo "Error: " . $connection->error;
+                }
+                ?>
+            </ul>
         </div>
+        
         <div class="services-container" id="vehicle-container">
         <p id="no-results-message" style="display: none;">No results found.</p>
+        <h1>Find The Best Car Suitable For You</h1>
             <?php
                 include 'config.php';
 
@@ -148,8 +174,13 @@ $user_id = $_SESSION['users']['user_id'];
                         echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
                         echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
                         echo "<a href='rent.php?vehicleid=$vehicleid' class='btn'>Rent Now</a>";
-                        // echo "<br>";
-                        // echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
+                        // Inside your while loop for displaying vehicles
+                        echo "<br>";
+                        echo "<div class='rating-container'>";
+                        $averageRating = $row['total_ratings'] > 0 ? $row['rating'] / $row['total_ratings'] : 0;
+                        echo "<span>Average Rating: " . number_format($averageRating, 1) . "</span>";
+                        echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
+                        echo "</div>";
                         echo "</div>";
                     }
                 } else {

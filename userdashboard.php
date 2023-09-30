@@ -88,6 +88,21 @@
         .nav-buttons button:hover {
             background-color: var(--main-color);
         }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+        .rating-container .btn {
+            margin-left: 10px; /* Adjust margin between rating and button */
+        }
+
+        .rating-container span {
+            font-weight: bold; /* Make the average rating bold */
+        }
+
     </style>
 </head>
 <body>
@@ -230,8 +245,13 @@
                         echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";
                         echo "<h4>Seat Capacity: " . $row['seatcapacity'] . "</h4>";
                         echo "<a href='rent.php?vehicleid=$vehicleid' class='btn'>Rent Now</a>";
-                        // echo "<br>";
-                        // echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
+                        // Inside your while loop for displaying vehicles
+                        echo "<br>";
+                        echo "<div class='rating-container'>";
+                        $averageRating = $row['total_ratings'] > 0 ? $row['rating'] / $row['total_ratings'] : 0;
+                        echo "<span>Average Rating: " . number_format($averageRating, 1) . "</span>";
+                        echo "<a href='rate_vehicle.php?vehicleid=$vehicleid' class='btn'>Rate This Vehicle</a>";
+                        echo "</div>";
                         echo "</div>";
                     }
                 } else {

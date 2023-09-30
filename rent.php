@@ -207,12 +207,8 @@ $user_id = $_SESSION['users']['user_id'];
         <div class="recommended-vehicles">
             <h2>Recommended Vehicles</h2>
             <?php
-            $priceThreshold = 0.1; // 10% threshold
-            $minPrice = $selectedPrice - ($selectedPrice * $priceThreshold);
-            $maxPrice = $selectedPrice + ($selectedPrice * $priceThreshold);
-
-            $similarVehiclesQuery = "SELECT * FROM crud WHERE priceperday >= $minPrice AND priceperday <= $maxPrice AND vehicleid != $vehicleid LIMIT 4";
-            $similarVehiclesResult = mysqli_query($connection, $similarVehiclesQuery);
+            $similarVehiclesQuery = "SELECT * FROM crud ORDER BY rating DESC LIMIT 4";
+            $similarVehiclesResult = mysqli_query($connection, $similarVehiclesQuery);            
 
             while ($similarRow = mysqli_fetch_assoc($similarVehiclesResult)) {
                 echo "<a href='rent.php?vehicleid=" . $similarRow['vehicleid'] . "'>";
@@ -226,8 +222,9 @@ $user_id = $_SESSION['users']['user_id'];
                 echo "<h4>Availability: " . $similarRow['vehicleavailability'] . "</h4>";
                 echo "<h4>Mileage: " . $similarRow['mileage'] . "<span> kmpl</span></h4>";
                 echo "<h4>Seat Capacity: " . $similarRow['seatcapacity'] . "</h4>";
+                echo "<h4>Rating: " . $similarRow['rating'] . "</h4>"; // Displaying the rating
                 echo "</div>";
-            }
+            }            
             ?>
         </div>
     </section>
