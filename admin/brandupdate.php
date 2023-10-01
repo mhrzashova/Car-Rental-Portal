@@ -44,7 +44,7 @@ if (isset($_POST['brand_edit'])) {
       <div class="sidebar-button">
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
-      <div class="profile-details">
+      <!-- <div class="profile-details">
       <a href="brandupdate.php">
               <?php 
               session_start();
@@ -58,7 +58,7 @@ if (isset($_POST['brand_edit'])) {
               echo ($row['email']); 
               ?>
             </a>
-      </div>
+      </div> -->
     </nav>
 
     <div class="home-content">

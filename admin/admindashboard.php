@@ -136,14 +136,14 @@
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
+      <!-- <div class="profile-details">
       <a href="admindashboard.php">
               <?php 
               //admin ko email display gareko
               echo($email);
               ?>
             </a>
-      </div>
+      </div> -->
     </nav>
     <div class="home-content">
     <legend>Welcome To Admin Dashboard</legend>

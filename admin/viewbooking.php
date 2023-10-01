@@ -16,7 +16,7 @@
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
+      <!-- <div class="profile-details">
       <a href="viewbooking.php">
       <?php 
               session_start();
@@ -31,7 +31,7 @@
               echo ($row['email']); 
               ?>
             </a>
-      </div>
+      </div> -->
     </nav>
   <div class="home-content">
     <?php

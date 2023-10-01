@@ -17,8 +17,8 @@
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
-      <a href="confirmbooking.php">
+      <!-- <div class="profile-details">
+      <a href="confirmbooking.php"> -->
      
       <?php
               if(isset($_POST['confirm'])){
@@ -38,17 +38,17 @@
                   }
               }
               session_start();
-              if(!isset($_SESSION['admin']))//databse ko table ko nam
-              {
-                //yedi session xaina vane login ma pathaidine
-                header("Location:index.php");
-              }
-              $row = $_SESSION['admin'];
-              $adminid = $row['adminid'];
-              echo ($row['email']); 
+              // if(!isset($_SESSION['admin']))//databse ko table ko nam
+              // {
+              //   //yedi session xaina vane login ma pathaidine
+              //   header("Location:index.php");
+              // }
+              // $row = $_SESSION['admin'];
+              // $adminid = $row['adminid'];
+              // echo ($row['email']); 
               ?>
-            </a>
-      </div>
+            <!-- </a>
+      </div> -->
     </nav>
     <div class="home-content">
     <legend>Confirmed Booking</legend>

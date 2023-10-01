@@ -96,7 +96,7 @@ if (isset($_POST['vehicle_edit'])) {
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
+      <!-- <div class="profile-details">
       <a href="update.php">
               <?php 
               session_start();
@@ -110,7 +110,7 @@ if (isset($_POST['vehicle_edit'])) {
               echo ($row['email']); 
               ?>
             </a>
-      </div>
+      </div> -->
     </nav>
 
     <div class="home-content">

@@ -17,8 +17,8 @@
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
-      <a href="cancelbooking.php">
+      <!-- <div class="profile-details">
+      <a href="cancelbooking.php"> -->
       <?php 
               if(isset($_POST['cancel'])){
                 $cancel_booking=$_POST['cancel_booking'];
@@ -37,17 +37,17 @@
                   }
               }
               session_start();
-              if(!isset($_SESSION['admin']))//databse ko table ko nam
-              {
-                //yedi session xaina vane login ma pathaidine
-                header("Location:index.php");
-              }
-              $row = $_SESSION['admin'];
-              $adminid = $row['adminid'];
-              echo ($row['email']); 
+              // if(!isset($_SESSION['admin']))//databse ko table ko nam
+              // {
+              //   //yedi session xaina vane login ma pathaidine
+              //   header("Location:index.php");
+              // }
+              // $row = $_SESSION['admin'];
+              // $adminid = $row['adminid'];
+              // echo ($row['email']); 
               ?>
-            </a>
-      </div>
+            <!-- </a>
+      </div> -->
     </nav>
     <div class="home-content">
     <legend>Cancelled Booking</legend>

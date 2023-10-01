@@ -29,6 +29,12 @@
           </a>
         </li>
         <li>
+          <a href="manage_testimonial.php">
+            <i class='bx bx-pie-chart-alt-2'></i>
+            <span class="links_name">Manage Testimonials</span>
+          </a>
+        </li>
+        <li>
           <a href="#" id="bookingsMenu">
             <i class='bx bx-book-alt'></i>
             <span class="links_name">Bookings</span>
@@ -54,16 +60,11 @@
         </li>
         <li class="sub-menu-item" id="analyticsItem">
           <a href="manage_rating.php">
-            <i class='bx bx-pie-chart-alt-2'></i>
+            <i class='bx bxs-star-half'></i>
             <span class="links_name">Manage Ratings</span>
           </a>
         </li>
-        <li class="sub-menu-item" id="analyticsItem">
-          <a href="manage_testimonial.php">
-            <i class='bx bx-pie-chart-alt-2'></i>
-            <span class="links_name">Manage Testimonials</span>
-          </a>
-        </li>
+        
         <!-- <li class="sub-menu-item" id="stockItem">
           <a href="#">
             <i class='bx bx-coin-stack'></i>

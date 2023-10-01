@@ -49,7 +49,7 @@ if (isset($_POST['create'])) {
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard"></span>
       </div>
-      <div class="profile-details">
+      <!-- <div class="profile-details">
       <a href="createbrand.php">
               <?php 
               session_start();
@@ -63,7 +63,7 @@ if (isset($_POST['create'])) {
               echo ($row['email']); 
               ?>
             </a>
-      </div>
+      </div> -->
     </nav>
 
     <div class="home-content">
