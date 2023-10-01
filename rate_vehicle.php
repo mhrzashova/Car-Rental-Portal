@@ -11,7 +11,7 @@
         $message = $_GET['message'];
         echo "<script>alert('$message');</script>";
     }
-    
+
     $user_id = $_SESSION['users']['user_id'];
 
     // Get the vehicle ID from the URL parameter
@@ -34,6 +34,28 @@
         echo "Vehicle ID not provided.";
         exit();
     }
+
+    // Fetch full_name from users table and comment from ratings table where status is 1
+    $fetchDataQuery = "SELECT u.full_name, r.comment
+    FROM users u
+    INNER JOIN ratings r ON u.user_id = r.user_id
+    WHERE r.status = 1
+    AND r.vehicleid = '$vehicleid'
+    AND u.user_id = '$user_id'";
+
+    $fetchDataResult = $connection->query($fetchDataQuery);
+
+    if ($fetchDataResult->num_rows > 0) {
+    while ($row = $fetchDataResult->fetch_assoc()) {
+    $full_name = $row['full_name'];
+    $existingComment = $row['comment'];
+    // Process fetched data here
+    }
+    } else {
+    $full_name = "No Full Name Found";
+    $existingComment = "No Comment Found";
+    }
+
     ?>
 
 <!DOCTYPE html>
@@ -48,6 +70,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css"/> 
     <style>
+        /* Styles for centering the content */
         .center-container {
             display: flex;
             flex-direction: column;
@@ -56,15 +79,26 @@
             height: 100vh;
         }
 
+        /* Styles for the box containing vehicle information */
         .box {
             text-align: center;
         }
 
+        /* Styles for the vehicle image */
         .box-img img {
             max-width: 100%;
             max-height: 350px;
+            margin-top: 300px;
         }
 
+        /* Styles for the heading */
+        .heading {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Styles for the rating and comment form */
         .rating-form {
             margin-top: 20px;
             padding: 20px;
@@ -72,16 +106,22 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 80%; /* Adjust the width as per your design */
+            max-width: 400px; /* Set a maximum width if needed */
         }
 
         .rating-form label {
             font-size: 18px;
             margin-bottom: 10px;
+            display: block;
+            text-align: left;
         }
 
-        .rating-form select {
+        .rating-form select,
+        .rating-form textarea {
             font-size: 16px;
             padding: 10px;
+            width: 100%;
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-bottom: 20px;
@@ -96,6 +136,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            width: 100%;
         }
 
         .rating-form input[type="submit"]:hover {
@@ -129,13 +170,19 @@
                 <option value="5">5 stars</option>
             </select>
             <input type="hidden" name="vehicleid" value="<?php echo $vehicleid; ?>">
+            <label for="comment">Add a comment:</label>
+            <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
             <input type="submit" value="Submit Rating">
         </form>
+        </div>
+        <div class="existing-comments">
+            <h2>Existing Comments</h2>
+            <p><strong>Full Name:</strong> <?php echo $full_name; ?></p>
+            <p><strong>Comment:</strong> <?php echo $existingComment; ?></p>
         </div>
         </div>
     </section>
 
-    <?php include('includes/footer.php');?>
 
 </body>
 </html>

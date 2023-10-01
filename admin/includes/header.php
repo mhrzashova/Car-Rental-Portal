@@ -53,6 +53,12 @@
           </ul>
         </li>
         <li class="sub-menu-item" id="analyticsItem">
+          <a href="manage_rating.php">
+            <i class='bx bx-pie-chart-alt-2'></i>
+            <span class="links_name">Manage Ratings</span>
+          </a>
+        </li>
+        <li class="sub-menu-item" id="analyticsItem">
           <a href="manage_testimonial.php">
             <i class='bx bx-pie-chart-alt-2'></i>
             <span class="links_name">Manage Testimonials</span>
