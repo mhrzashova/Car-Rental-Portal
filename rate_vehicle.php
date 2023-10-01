@@ -35,26 +35,26 @@
         exit();
     }
 
-    // Fetch full_name from users table and comment from ratings table where status is 1
-    $fetchDataQuery = "SELECT u.full_name, r.comment
-    FROM users u
-    INNER JOIN ratings r ON u.user_id = r.user_id
-    WHERE r.status = 1
-    AND r.vehicleid = '$vehicleid'
-    AND u.user_id = '$user_id'";
+    // // Fetch full_name from users table and comment from ratings table where status is 1
+    // $fetchDataQuery = "SELECT u.full_name, r.comment
+    // FROM users u
+    // INNER JOIN ratings r ON u.user_id = r.user_id
+    // WHERE r.status = 1
+    // AND r.vehicleid = '$vehicleid'
+    // AND u.user_id = '$user_id'";
 
-    $fetchDataResult = $connection->query($fetchDataQuery);
+    // $fetchDataResult = $connection->query($fetchDataQuery);
 
-    if ($fetchDataResult->num_rows > 0) {
-    while ($row = $fetchDataResult->fetch_assoc()) {
-    $full_name = $row['full_name'];
-    $existingComment = $row['comment'];
-    // Process fetched data here
-    }
-    } else {
-    $full_name = "No Full Name Found";
-    $existingComment = "No Comment Found";
-    }
+    // if ($fetchDataResult->num_rows > 0) {
+    // while ($row = $fetchDataResult->fetch_assoc()) {
+    // $full_name = $row['full_name'];
+    // $existingComment = $row['comment'];
+    // // Process fetched data here
+    // }
+    // } else {
+    // $full_name = "No Full Name Found";
+    // $existingComment = "No Comment Found";
+    // }
 
     ?>
 
@@ -175,11 +175,11 @@
             <input type="submit" value="Submit Rating">
         </form>
         </div>
-        <div class="existing-comments">
+        <!-- <div class="existing-comments">
             <h2>Existing Comments</h2>
             <p><strong>Full Name:</strong> <?php echo $full_name; ?></p>
             <p><strong>Comment:</strong> <?php echo $existingComment; ?></p>
-        </div>
+        </div> -->
         </div>
     </section>
 

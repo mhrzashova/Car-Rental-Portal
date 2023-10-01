@@ -119,9 +119,9 @@
                       <td>";
       
               if ($row['status'] == '0') {
-                  echo "<a href='manage_rating.php?rating_id=" . htmlentities($row['rating_id']) . "&action=inactive' onclick=\"return confirm('Do you really want to Active')\">Inactive</a>";
+                  echo "<a href='manage_rating.php?rating_id=" . htmlentities($row['rating_id']) . "&action=read' onclick=\"return confirm('Do you really want to UnRead')\">Read</a>";
               } else {
-                  echo "<a href='manage_rating.php?rating_id=" . htmlentities($row['rating_id']) . "&action=active' onclick=\"return confirm('Do you really want to Inactive')\">Active</a>";
+                  echo "<a href='manage_rating.php?rating_id=" . htmlentities($row['rating_id']) . "&action=unread' onclick=\"return confirm('Do you really want to Read')\">UnRead</a>";
               }
       
               echo "</td></tr>";
