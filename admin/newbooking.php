@@ -46,7 +46,6 @@
                 <th>Pickup Date</th>
                 <th>Return Date</th>
                 <th>Trip Type</th>
-                <th>Status</th>
                 <th>Creation Date</th>
                 <th>Action</th>
             </tr>
@@ -77,7 +76,6 @@
                     <td>".$row['pickup_date']."</td> 
                     <td>".$row['return_date']."</td> 
                     <td>".$row['triptype']."</td> 
-                    <td>".$row['status']."</td>
                     <td>".$row['creationdate']."</td>
                     <td>
                         <form action='viewbooking.php' method='post'>
