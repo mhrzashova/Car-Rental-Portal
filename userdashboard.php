@@ -103,6 +103,51 @@
             font-weight: bold; /* Make the average rating bold */
         }
 
+        /* Additional CSS for the Contact Us section */
+        .newsletter {
+            background-color: #f8f8f8;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .newsletter .box {
+            max-width: 400px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .newsletter .box p {
+            margin: 10px 0;
+        }
+
+        /* Optional: Add media queries for responsive design */
+        @media (max-width: 768px) {
+            .newsletter {
+                padding: 30px 10px;
+            }
+
+            .newsletter h2 {
+                font-size: 1.8rem;
+            }
+
+            .newsletter .box {
+                font-size: 1rem;
+            }
+        }
+        .newsletter {
+            background: linear-gradient(to top right, #fe5b3d, #ffac38);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
@@ -276,9 +321,9 @@
             </div>
             <div class="about-text">
                 <span>About Us</span>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe eligendi perferendis et repellat ratione quasi facere nihil. Numquam impedit voluptatibus omnis expedita? Quaerat molestias molestiae rem sunt doloribus ipsa iure voluptatum et accusantium. Suscipit!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, modi quas necessitatibus obcaecati impedit a hic iusto rem.</p>
-                <a href="#" class="btn">Learn More</a>
+                <p>Welcome to Car Rental Portal, your trusted partner in hassle-free and reliable car rentals. At Car Rental Portal , we believe in empowering your journey, whether it's a quick business trip, a family vacation, or an adventurous road trip. With a commitment to exceptional service, cutting-edge technology, and a passion for driving excellence, we are your gateway to convenient and affordable car rentals.</p>
+                <p>At Car Rental Portal, our vision is to redefine the way you travel. We aim to create a seamless and enjoyable experience for every customer, ensuring that renting a car is as simple as it should be. We envision a future where mobility is not just about reaching your destination but enjoying the journey with comfort, safety, and style.</p>
+                <!-- <a href="#" class="btn">Learn More</a> -->
             </div>
         </div>
     </section>
@@ -341,11 +386,16 @@
 
     <!-- NewsLetter -->
     <section class="newsletter">
-        <h2>Subscribe To Newsletter</h2>
-        <div class="box">
-            <input type="text" placeholder="Enter Your Email...">
-            <a href="#" class="btn">Subscribe</a>
-        </div>
+    <h2>Contact Us</h2>
+    <div class="box">
+        <p>
+            <h4>For any inquiries or assistance, feel free to reach out to us at:</h4>
+        <br>
+            Email: info@carrentalportal.com
+       <br>
+            Phone: +9779835673489
+        </p>
+    </div>
     </section>
     <div class="copyright">
         <p>Copyright © 2023 - CRP | All Rights Reserved</p>
