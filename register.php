@@ -155,17 +155,12 @@ if(isset($_POST['register'])) // isset is click, submit vako ho ki haina check g
           <div class="input-box">
           <label>Password</label>
           <div class="column">
-            <input type="password" name="password" pattern="^.{8,}$" placeholder="Enter Your Password" required />
-            <input type="password" name="confirm" pattern="^.{8,}$" placeholder="Confirm Password" required />
+            <input type="password" name="password" pattern="^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" placeholder="Enter Your Password" required />
+            <input type="password" name="confirm" pattern="^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" placeholder="Confirm Password" required />
             <div class="error-message" id="password-error"></div>
-            <!-- password match vayena vane js use garera msg dinxa ki password
-            re comfirm password match vako xaina
-            yesle garda page reload hudaina, user le feri form bharnu pardaina -->
           </div>
-          <!--<br>
-          <label>Choose profile picture</label>
-          <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png" required> -->
-        </div>
+          </div>
+
         <button type="submit" name="register">Submit</button>
 
       </form>
