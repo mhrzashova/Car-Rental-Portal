@@ -163,16 +163,19 @@
                 <div class="box">
                     <i class='bx bxs-map'></i>
                     <h2>Choose A Location</h2>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
                 </div>
 
                 <div class="box">
                     <i class='bx bxs-calendar-check'></i>
-                    <h2>Pick A Date</h2>
+                    <h2>Pick-Up Date</h2>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
                 </div>
 
                 <div class="box">
                     <i class='bx bxs-calendar-star'></i>
                     <h2>Book A Car</h2>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus dolorum ullam molestias dolore nemo reiciendis ad accusantium tempora, corrupti recusandae, exercitationem rem earum expedita similique sed ipsam quia molestiae? Dolor.</p>
                 </div>
             </div>
         </div>
