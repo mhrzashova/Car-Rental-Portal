@@ -144,8 +144,8 @@ $user_id = $_SESSION['users']['user_id'];
             $vehicleid = $_POST['vehicleid'];
 
             // Validate pickup_date and return_date
-            if (strtotime($pickup_date) >= strtotime($return_date)) {
-                echo "<p class='error-message'>Return date should be after the pickup date.</p>";
+            if (strtotime($pickup_date) > strtotime($return_date)) {
+                echo "<p class='error-message'>Return date should be equal to or after the pickup date.</p>";
                 exit();
             }
             // Check vehicle availability

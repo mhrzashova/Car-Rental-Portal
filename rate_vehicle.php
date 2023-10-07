@@ -175,11 +175,6 @@
             <input type="submit" value="Submit Rating">
         </form>
         </div>
-        <!-- <div class="existing-comments">
-            <h2>Existing Comments</h2>
-            <p><strong>Full Name:</strong> <?php echo $full_name; ?></p>
-            <p><strong>Comment:</strong> <?php echo $existingComment; ?></p>
-        </div> -->
         </div>
     </section>
 

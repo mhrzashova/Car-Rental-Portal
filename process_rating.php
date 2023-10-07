@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];
 
     // Check if the user has booked the vehicle and return date has passed
-    $bookingQuery = "SELECT * FROM `booking` WHERE user_id = '$user_id' AND vehicleid = '$vehicleid' AND return_date < NOW()";
+    $bookingQuery = "SELECT * FROM `booking` WHERE user_id = '$user_id' AND vehicleid = '$vehicleid' AND status = 1 AND return_date < NOW()";
     $bookingResult = $connection->query($bookingQuery);
 
     if ($bookingResult->num_rows == 0) {
-        echo "You can only rate the vehicle after your booking and when the return date has passed.";
+        echo "You can only rate the vehicle after your active booking period has ended.";
         exit();
     }
 
