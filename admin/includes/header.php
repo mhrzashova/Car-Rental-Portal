@@ -61,7 +61,7 @@
         <li class="sub-menu-item" id="analyticsItem">
           <a href="manage_rating.php">
             <i class='bx bxs-star-half'></i>
-            <span class="links_name">Manage Ratings</span>
+            <span class="links_name">Ratings</span>
           </a>
         </li>
         

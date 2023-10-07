@@ -25,7 +25,21 @@ if(isset($_POST['update_profile'])){
    $update_l_image_folder = 'uploaded_img/'.$update_l_image;
    $allowed_width = 350;
    $allowed_height = 350;
-   
+
+      $update_full_name = mysqli_real_escape_string($connection, $_POST['update_full_name']);
+      $name_update_query = mysqli_query($connection, "UPDATE `users` SET full_name = '$update_full_name' WHERE user_id = '$user_id'") or die('Query failed');
+
+      if ($name_update_query) {
+         $message[] = 'Name updated successfully!';
+      } else {
+         $message[] = 'Failed to update name.';
+      }
+      $updated_user_query = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'");
+      if ($updated_user_query) {
+         $row = mysqli_fetch_assoc($updated_user_query);
+         // Update the $_SESSION['users'] with the updated data
+         $_SESSION['users'] = $row;
+     }
 
       if (!empty($update_image)) {
          list($width, $height) = getimagesize($update_image_tmp_name);
@@ -120,7 +134,7 @@ if(isset($_POST['update_profile'])){
       <h5><span>Image dimensions exceed the maximum allowed size (350px x 350px) and (maximum allowed: 2MB).</span></h5>
          <div class="inputBox">
             <span>Full Name :</span>
-            <input type="text" name="update_full_name" value="<?php echo ($row['full_name']); ?>" readonly class="box">
+            <input type="text" name="update_full_name" value="<?php echo htmlspecialchars($row['full_name']); ?>" class="box">
             <span>Email :</span>
             <input type="email" name="update_email" value="<?php echo ($row['email']); ?>" readonly class="box">
             <span>Update your pic :</span>
