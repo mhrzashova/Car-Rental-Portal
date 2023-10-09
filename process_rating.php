@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bookingResult = $connection->query($bookingQuery);
 
     if ($bookingResult->num_rows == 0) {
-        echo "You can only rate the vehicle after your active booking period has ended.";
+        echo "You can only rate the vehicle after your active booking and return date has been over.";
         exit();
     }
 
