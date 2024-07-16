@@ -32,47 +32,80 @@ $user_id = $_SESSION['users']['user_id'];
             width: 250px; /* Set a fixed width for the section */
             padding: 20px;
             background: #c3c0c0;
+            background: #fff;
+            border-right: 1px solid #e1e1e1;
+            padding-top: 56px;
             z-index: 1; /* Ensure it appears above other elements */
         }
 
         .recommended-vehicles h2 {
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .recommended-vehicles ul {
             list-style: none;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .recommended-vehicles li {
-            margin-bottom: 10px;
         }
 
         .recommended-vehicles img {
-            width: 80px;
+            width: 90px;
             height: auto;
             margin-right: 10px;
         }
 
         /* Style for Vehicle Listings (Right Side) */
         .services {
+            padding-left: 80px;
             margin-left: 270px; /* Adjust the margin to leave space for the fixed section */
-            width: calc(70% - 270px); /* Adjust the width accordingly */
+            width: calc(70% - 270px); Adjust the width accordingly
             margin-top: 70px; /* Adjust the top margin to avoid overlap with the fixed section */
+            width: calc(100% - 270px);
         }
 
         .services-container {
             /* display: flex; */
-            margin-left:100px;
-            margin-top:-20px;
-            margin-right:-100px;
-            flex-direction: column;
+            display: block;
+            margin-top: 80px;
+        }
+
+        .services-container h1 {
+            margin-bottom: 28px;
+        }
+
+        .box-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
         }
 
         .box {
             /* Your existing box styling */
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
+            padding-bottom: 16px;
+        }
+
+        .box h3 {
+            margin: 12px 0;
+        }
+
+        .services-container .box-container .box .btn {
+            margin: 16px 0;
+        }
+
+        .services-container .box-container .box .rating-container {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .services-container .box-container .box .rating-container .btn {
+            margin: 0;
         }
 
         /* Adjust the media query as needed for responsiveness */
@@ -141,6 +174,7 @@ $user_id = $_SESSION['users']['user_id'];
         <div class="services-container" id="vehicle-container">
         <p id="no-results-message" style="display: none;">No results found.</p>
         <h1>Find The Best Car Suitable For You</h1>
+        <div class="box-container">
             <?php
                 include 'config.php';
 
@@ -190,6 +224,7 @@ $user_id = $_SESSION['users']['user_id'];
                 // Close the database connection
                 $connection->close();
             ?>
+            </div>
         </div>
     </section>
 

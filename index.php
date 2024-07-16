@@ -87,14 +87,14 @@
         .newsletter h2 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #333;
+            color: #ffffff;
         }
 
         .newsletter .box {
             max-width: 400px;
             margin: 0 auto;
             font-size: 1.2rem;
-            color: #555;
+            color: #fff;
         }
 
         .newsletter .box p {

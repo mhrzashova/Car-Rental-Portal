@@ -63,6 +63,7 @@ $user_id = $_SESSION['users']['user_id'];
             // Check if a vehicle was found with the given ID
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
+                $price = $row['priceperday'];
                 // Display the vehicle image, name, and price per day
                 echo "<div class='box'>";
                 echo "<div class='box-img'>";
@@ -98,6 +99,7 @@ $user_id = $_SESSION['users']['user_id'];
                     echo "
                         <form action='rent.php' method='POST' id='rentForm'>
                             <input type='hidden' name='vehicleid' value='$vehicleid'>
+                            <input type='hidden' name='vehicleprice' value='$price'>
                             <div class='input-box'>
                                 <span>From</span>
                                 <input type='search' name='fromlocation' placeholder='Enter a location' required>
@@ -114,6 +116,7 @@ $user_id = $_SESSION['users']['user_id'];
                                 <span>Return Date</span>
                                 <input type='date' name='return_date' min='" . date("Y-m-d") . "' required>
                             </div>
+                            
                             <div class='input-box'>
                                 <label for='tripTypeSelect'>Trip Type</label>
                                 <select name='triptype' id='tripTypeSelect' required>
@@ -132,6 +135,7 @@ $user_id = $_SESSION['users']['user_id'];
             }
         }
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+           
             // Retrieve form data
             $fromlocation = $_POST['fromlocation'];
             $tolocation = $_POST['tolocation'];
@@ -139,10 +143,46 @@ $user_id = $_SESSION['users']['user_id'];
             $return_date = $_POST['return_date'];
             $triptype = $_POST['triptype'];
             $bookingnumber = mt_rand(100000000, 999999999);
+            $booking_price = (int) $_POST['price'];
             $status = 0;
             // Retrieve the vehicleid from the hidden field in the form
             $vehicleid = $_POST['vehicleid'];
+            $return_url  = 'http://';
+            $return_url .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $cancel_url   = 'http://localhost/carrentalportal/rent.php';
+            $redirect = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
+            $payment_type = '_cart';
+            $paypal_args = array(
+                'bn'            => 'etb_SP',
+                'business'      => trim('sb-rqk2w6652234@business.example.com'),
+                'cancel_return' => $cancel_url,
+                'cbt'           =>'test',
+                'charset'       =>'test',
+                'cmd'           => $payment_type,
+                'currency_code' => 'USD',
+                'custom'        => rand(),
+                'invoice'       => rand(),
+                'notify_url'    => '',
+                'return'        => $return_url,
+                'rm'            => '2',
+                'tax'           => 0,
+                'upload'        => '1',
+                'sra'           => '1',
+                'src'           => '1',
+                'no_note'       => '1',
+                'no_shipping'   => '1',
+                'shipping'      => '0',
+            );
+            $paypal_args[ 'item_name_1' ] = 'test car';
+            $paypal_args[ 'amount_1' ]    = $booking_price;
+            $redirect .= http_build_query( $paypal_args );
+            $redirect  = str_replace( '&', '&', $redirect );
 
+              ?>
+              <script>
+                location.href='<?php echo $redirect ?>'
+              </script>;
+              <?php
             // Validate pickup_date and return_date
             if (strtotime($pickup_date) > strtotime($return_date)) {
                 echo "<p class='error-message'>Return date should be equal to or after the pickup date.</p>";

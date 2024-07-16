@@ -354,6 +354,11 @@ header {
 .reviews-container .box .stars .bx {
     color: #ffac38;
 }
+
+.newsletter h2 {
+    color: #ffffff;
+}
+
 .copyright {
     padding: 20px;
     display: flex;
