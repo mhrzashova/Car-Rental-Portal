@@ -202,7 +202,7 @@ $user_id = $_SESSION['users']['user_id'];
                         echo "<img src='uploaded_img/" . $row['vehicleimages'] . "' alt=''>";
                         echo "</div>";
                         echo "<h3>" . $row['vehiclename'] . "</h3>";
-                        echo "<h2>Rs." . $row['priceperday'] . "<span>/day</span></h2>";
+                        echo "<h2>$" . $row['priceperday'] . "<span>/day</span></h2>";
                         echo "<h4>Brand: " . $row['brandname'] . "</h4>";
                         echo "<h4>Availability: " . $row['vehicleavailability'] . "</h4>";
                         echo "<h4>Mileage: " . $row['mileage'] . "<span> kmpl</span></h4>";

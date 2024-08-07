@@ -248,8 +248,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                     echo "<td>" . $booking['pickup_date'] . "</td>";
                     echo "<td>" . $booking['return_date'] . "</td>";
                     echo "<td>" . $total_days . "</td>";
-                    echo "<td>Rs. " . $vehicle_data['priceperday'] . "</td>";
-                    echo "<td>Rs. " . $total_price . "</td>";
+                    echo "<td>$" . $vehicle_data['priceperday'] . "</td>";
+                    echo "<td>$" . $total_price . "</td>";
                     echo "</tr>";
                 }
 
