@@ -163,7 +163,7 @@ $user_id = $_SESSION['users']['user_id'];
 			}
 
 			// Check if the user has uploaded their license image
-			$select = mysqli_query($connection, "SELECT * FROM `users` WHERE user_id = '$user_id'") or die('Query failed');
+			$select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die('Query failed');
 			if (mysqli_num_rows($select) > 0) {
 				$fetch = mysqli_fetch_assoc($select);
 				if (empty($fetch['l_image'])) {
