@@ -137,30 +137,59 @@ $user_id = $_SESSION['users']['user_id'];
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			// Retrieve form data
-			$fromlocation = $_POST['fromlocation'];
-			$tolocation = $_POST['tolocation'];
-			$pickup_date = $_POST['pickup_date'];
-			$return_date = $_POST['return_date'];
-			$triptype = $_POST['triptype'];
-			$bookingnumber = mt_rand(100000000, 999999999);
-			$booking_price = (int) $_POST['vehicleprice'];
-			$status = 0;
-			$vehicleid = $_POST['vehicleid'];
-			$user_id = $_SESSION['users']['user_id'];
+			// $fromlocation = $_POST['fromlocation'];
+			// $tolocation = $_POST['tolocation'];
+			// $pickup_date = $_POST['pickup_date'];
+			// $return_date = $_POST['return_date'];
+			// $triptype = $_POST['triptype'];
+			// $bookingnumber = mt_rand(100000000, 999999999);
+			// $booking_price = (int) $_POST['vehicleprice'];
+			// $status = 0;
+			// $vehicleid = $_POST['vehicleid'];
+			// $user_id = $_SESSION['users']['user_id'];
 
-			// Validate pickup_date and return_date
-			if (strtotime($pickup_date) > strtotime($return_date)) {
-				echo "<p class='error-message'>Return date should be equal to or after the pickup date.</p>";
-				exit();
-			}
+			// // Validate pickup_date and return_date
+			// if (strtotime($pickup_date) > strtotime($return_date)) {
+			// 	echo "<p class='error-message'>Return date should be equal to or after the pickup date.</p>";
+			// 	exit();
+			// }
 
-			// Check vehicle availability
-			$query = "SELECT * FROM booking WHERE vehicleid = $vehicleid AND user_id = $user_id AND return_date > NOW()";
-			$result = mysqli_query($connection, $query);
-			if (mysqli_num_rows($result) > 0) {
-				echo "<p class='error-message'>The vehicle is already booked for the selected dates.</p>";
-				exit();
-			}
+			// // Check vehicle availability
+			// $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid AND user_id = $user_id AND return_date > NOW()";
+			// $result = mysqli_query($connection, $query);
+			// if (mysqli_num_rows($result) > 0) {
+			// 	echo "<p class='error-message'>The vehicle is already booked for the selected dates.</p>";
+			// 	exit();
+			// }
+
+
+            // Check if each POST variable exists before accessing it
+            $fromlocation = isset($_POST['fromlocation']) ? $_POST['fromlocation'] : null;
+            $tolocation = isset($_POST['tolocation']) ? $_POST['tolocation'] : null;
+            $pickup_date = isset($_POST['pickup_date']) ? $_POST['pickup_date'] : null;
+            $return_date = isset($_POST['return_date']) ? $_POST['return_date'] : null;
+            $triptype = isset($_POST['triptype']) ? $_POST['triptype'] : null;
+            $booking_price = isset($_POST['vehicleprice']) ? (int)$_POST['vehicleprice'] : null;
+            $vehicleid = isset($_POST['vehicleid']) ? $_POST['vehicleid'] : null;
+
+            if ($pickup_date && $return_date && strtotime($pickup_date) > strtotime($return_date)) {
+                echo "<p class='error-message'>Return date should be equal to or after the pickup date.</p>";
+                exit();
+            }
+
+            if ($vehicleid && $user_id) {
+                $query = "SELECT * FROM booking WHERE vehicleid = $vehicleid AND user_id = $user_id AND return_date > NOW()";
+                $result = mysqli_query($connection, $query);
+
+                if ($result && mysqli_num_rows($result) > 0) {
+                    echo "<p class='error-message'>The vehicle is already booked for the selected dates.</p>";
+                    exit();
+                }
+
+            } else {
+                echo "<p class='error-message'>Invalid vehicle or user ID.</p>";
+                exit();
+            }
 
 			// Check if the user has uploaded their license image
 			$select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die('Query failed');
@@ -172,6 +201,8 @@ $user_id = $_SESSION['users']['user_id'];
 				}
 			}
 
+            $bookingnumber = mt_rand(100000000, 999999999); // Random booking number
+            $status = 0; // Initial status, adjust if needed
 			// Insert data into the booking table
 			$check = mysqli_query($connection, "SELECT * FROM booking WHERE vehicleid='$vehicleid' AND (pickup_date='$pickup_date' OR return_date='$return_date')");
 			if (mysqli_num_rows($check) < 1) {
@@ -180,7 +211,7 @@ $user_id = $_SESSION['users']['user_id'];
 
 				if (mysqli_query($connection, $insert_query)) {
 					// PayPal integration part
-					$return_url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+					$return_url = 'http://localhost/carrentalportal/thankyou.php';
 					$cancel_url = 'http://localhost/carrentalportal/rent.php';
 					$redirect = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
 					$payment_type = '_cart';
